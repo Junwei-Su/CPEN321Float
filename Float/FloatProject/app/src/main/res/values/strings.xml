@@ -1,4 +1,13 @@
 <resources>
     <string name="app_name">FLOAT</string>
     <string name="start">FakeLogIn</string>
+
+    <string name="createcamp">Create a Campaign!</string>
+    <string name="joincamp">Join a Campaign!</string>
+
+    <string name="titlein">Title</string>
+    <string name="descriptionin">Description</string>
+    <string name="goalin">Goal</string>
+    <string name="pledgein">Pledge amount</string>
+    <string name="launchcamp">Launch Campaign</string>
 </resources>
