@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ProjectModuleManager">
-    <modules />
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/Float/Clarence_Richarch/GoogleAPI/GoogleAPI.iml" filepath="$PROJECT_DIR$/Float/Clarence_Richarch/GoogleAPI/GoogleAPI.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Float/FloatProject/app/src/androidTest/androidTest.iml" filepath="$PROJECT_DIR$/Float/FloatProject/app/src/androidTest/androidTest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Float/FloatProject/app/src/main/main.iml" filepath="$PROJECT_DIR$/Float/FloatProject/app/src/main/main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Float/FloatProject/app/src/test/test.iml" filepath="$PROJECT_DIR$/Float/FloatProject/app/src/test/test.iml" />
+    </modules>
   </component>
 </project>
