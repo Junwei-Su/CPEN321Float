@@ -1,6 +1,6 @@
 
 public enum Action_type {
-    INITIALIZE;
-    SPREAD;
+    INITIALIZE,
+    SPREAD,
     DONATE;
 }

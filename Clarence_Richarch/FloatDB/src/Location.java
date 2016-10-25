@@ -16,4 +16,7 @@ public class Location {
         return this.latitude;
     }
     
+    public String toString(){
+        return String.valueOf(this.longtitude) +"," +String.valueOf(this.latitude);
+    }
 }

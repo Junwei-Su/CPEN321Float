@@ -1,11 +1,12 @@
+import java.util.LinkedList;
+import java.util.List;
+
 /*
  * this is representation of a Campaign object in our float project
  */
 public class Campaign {
-    
-    //name VARCHAR(100), initializer INT,
-    //description VARCHAR(1000), initial_location VARCHAR(30), destination VARCHAR(30), pledge_amount INT);
-    
+
+    //fields in database
     private String name;
     private int owner_id;
     private String description;
@@ -13,10 +14,12 @@ public class Campaign {
     private Location destination;
     private int pledge_amount;
     
+    //extra fields
+    List<Action> list_of_location  = new LinkedList<Action>();
     
     public Campaign(String title, int user_id, String description, Location init, Location dest, int pledge_amount){
         this.name = title;
-        this.user_id = user_id;
+        this.owner_id = user_id;
         this.description = description;
         this.initial_location = init;
         this.destination = dest;
