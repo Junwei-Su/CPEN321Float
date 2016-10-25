@@ -1,7 +1,6 @@
 package com.cpen321.floatproject;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.ContextCompat;
@@ -13,7 +12,6 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.Circle;
 import com.google.android.gms.maps.model.CircleOptions;
@@ -69,7 +67,7 @@ public class Map extends FragmentActivity implements OnMapReadyCallback {
         Circle circle = map.addCircle(new CircleOptions()
                 .center(ubc)
                 .radius(10000)
-                .strokeColor(ContextCompat.getColor(this, R.color.darkbackground))
+                .strokeColor(ContextCompat.getColor(this, R.color.darkerbackground))
                 .fillColor(ContextCompat.getColor(this, R.color.background)));
 
         CameraPosition cameraPosition = new CameraPosition.Builder()

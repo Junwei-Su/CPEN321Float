@@ -18,18 +18,23 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:orientation="horizontal"
-        android:gravity="center_horizontal">
+        android:gravity="center_horizontal"
+        style="?android:attr/buttonBarStyle">
 
         <Button
             android:id="@+id/joincamp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/joincamp"/>
+            android:text="@string/joincamp"
+            android:textColor="@color/darkestbackground"
+            style="?android:attr/buttonBarButtonStyle"/>
 
         <Button
             android:id="@+id/createcamp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/createcamp"/>
+            android:text="@string/createcamp"
+            android:textColor="@color/darkestbackground"
+            style="?android:attr/buttonBarButtonStyle"/>
     </LinearLayout>
 </RelativeLayout>
