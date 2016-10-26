@@ -13,6 +13,7 @@ public class User {
     List<Campaign> list_of_campaign_initialize = new LinkedList<Campaign>();
     
     
+    public User(){}
     
     public User(String name, String account_name, String address){
         this.name = name;
