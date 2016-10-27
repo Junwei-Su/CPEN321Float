@@ -8,7 +8,7 @@ public class Campaign {
 
     //fields in database
     private String name;
-    private int owner_id;
+    private String owner_name;
     private String description;
     private Location initial_location;
     private Location destination;
@@ -17,9 +17,11 @@ public class Campaign {
     //extra fields
     List<Action> list_of_location  = new LinkedList<Action>();
     
-    public Campaign(String title, int user_id, String description, Location init, Location dest, int pledge_amount){
+    public Campaign(){}
+    
+    public Campaign(String title, String owner_name, String description, Location init, Location dest, int pledge_amount){
         this.name = title;
-        this.owner_id = user_id;
+        this.owner_name = owner_name;
         this.description = description;
         this.initial_location = init;
         this.destination = dest;
@@ -30,8 +32,8 @@ public class Campaign {
         return this.name;
     }
     
-    public int returnUser_id(){
-        return this.owner_id;
+    public String returnUser_id(){
+        return this.owner_name;
     }
     
     public String returnDescription(){

@@ -58,9 +58,16 @@ public class Database{
             System.out.println("Records from Database: ");
             while(result_set.next()){
                 String name = result_set.getString("name");
-                String account1 = result_set.getString("account");
-                String address = result_set.getString("address");
-                to_return = new Campaign(name, account1, address);
+                String ownder_name = result_set.getString("account");
+                String description = result_set.getString("description");
+                String initial_loc_string = result_set.getString("initial_location");
+//                private String name;
+//                private int owner_id;
+//                private String description;
+//                private Location initial_location;
+//                private Location destination;
+//                private int pledge_amount;
+                to_return = new Campaign(name, ownder_name, address);
             }
         }catch(Exception ex){
             

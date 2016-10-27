@@ -1,3 +1,4 @@
+import java.sql.Date;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -7,6 +8,15 @@ public class User {
     String name;
     String account_name;
     String address;
+    Date date;
+    String blurb;
+    boolean is_charity;
+    int amount_gain;
+    int amount_raised;
+    int amount_donated;
+    String city;
+    String province;
+    String country;
     
     //extra fields
     List<Campaign> list_of_campaign_followed = new LinkedList<Campaign>();
