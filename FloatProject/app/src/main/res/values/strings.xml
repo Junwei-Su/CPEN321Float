@@ -1,7 +1,8 @@
 <resources>
     <string name="app_name">FLOAT</string>
-    <string name="start">FakeLogIn</string>
+    <string name="app_id">1145386402215712</string>
 
+    <string name="start">Begin</string>
     <string name="createcamp">Create a Campaign!</string>
     <string name="joincamp">Join a Campaign!</string>
 
