@@ -34,12 +34,12 @@ public class Database{
             result_set = statement.executeQuery(query);
             System.out.println("Records from Database: ");
             while(result_set.next()){
-                String name = result_set.getString("name");
+                String name = result_set.getString("user_name");
                 String account1 = result_set.getString("account");
-                String address = result_set.getString("address");
+//                String address = result_set.getString("address");
                 //expand here when when expand the database for user
                 //need to extract a list of associate campaigns
-                to_return = new User(name, account1, address);
+                to_return = new User(name, account1);
             }
         }catch(Exception ex){
             
@@ -67,7 +67,7 @@ public class Database{
 //                private Location initial_location;
 //                private Location destination;
 //                private int pledge_amount;
-                to_return = new Campaign(name, ownder_name, address);
+                //to_return = new Campaign(name, ownder_name, address);
             }
         }catch(Exception ex){
             
