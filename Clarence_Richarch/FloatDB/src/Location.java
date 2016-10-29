@@ -1,22 +1,26 @@
 
 public class Location {
-    private Float longtitude;
-    private Float latitude;
+    private double longtitude;
+    private double latitude;
     
-    public Location(float lo, float la){
-        this.longtitude=lo;
-        this.latitude=la;
+    public Location(double d, double e){
+        this.longtitude=d;
+        this.latitude=e;
     }
     
-    public float returnLongtitude(){
+    public double returnLongtitude(){
         return this.longtitude;
     }
     
-    public float returnLatitude(){
+    public double returnLatitude(){
         return this.latitude;
     }
     
     public String toString(){
         return String.valueOf(this.longtitude) +"," +String.valueOf(this.latitude);
+    }
+    
+    public static Location toLocation(String s){
+        return new Location(1.1,1.2);
     }
 }

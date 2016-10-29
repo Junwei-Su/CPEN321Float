@@ -7,7 +7,7 @@ public class User {
     //field in database
     String name;
     String account_name;
-    Date date;
+    String date;
     String blurb;
     boolean is_charity;
     int amount_gain;
@@ -29,11 +29,12 @@ public class User {
         this.account_name = account;
     }
     
-    public User(String name, String account_name,Date date, boolean is_charity, int amount_gain,
+    public User(String name, String account_name,String date, String blurb, boolean is_charity, int amount_gain,
             int amount_raised, int amount_donated, String city, String province, String country){
         this.name = name;
         this.account_name = account_name;
         this.date = date;
+        this.blurb = blurb;
         this.is_charity=is_charity;
         this.amount_gain = amount_gain;
         this.amount_raised = amount_raised;
@@ -51,7 +52,7 @@ public class User {
         return this.account_name;
     }
     
-    public Date returnDate(){
+    public String returnDate(){
         return this.date;
     }
     
