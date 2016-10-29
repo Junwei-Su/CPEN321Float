@@ -34,10 +34,8 @@ As we are currently using a team organization website called Asana to track our 
 
 ## Adequacy Criterion
 We have set a following list of test obligations that must be satisfied in order for our application to meet its adequacy criterion.
-
- Amongst each subgroup, members will initiate their own testing to ensure all methods written are tested before combining the components together. This includes separate testing for the Facebook login, the database, PayPal payment, and the GUI.
- 
-The use cases will be tested upon combining the application together. We will cover each use case we have provided in our Project Requirements documentation. 
+Amongst each subgroup, members will initiate their own testing to ensure all methods written are tested before combining the components together. This includes separate testing for the Facebook login, the database, PayPal payment, and the GUI.
+The use cases will be tested upon combining the application together. We will cover each use case we have provided in our Project Requirements documentation. Additional, to assure the quality of the test suit, we would aim for a high statement and branch coverage(i.e cover all essential statements and branches of the production code). We understand that high coverage does not necessarily means better test suit but it is one of the necessary conditions for a test suit to be good. For method with complex boolean expression, we will employ MCDC (Modified Condition Decision Coverage) to cover as many possibilities as possible. In the end, we would run our test suit against the mutation test to ensure the ability of our test cases to detect bugs. We will do that by using PIT.
 
 ## Test Cases and Results
 | Test # | Requirement Purpose | Action/Input | Expected Result | Actual Result | P/F | Notes |
