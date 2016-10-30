@@ -37,7 +37,6 @@ public class Database{
         try{
             String query = "SELECT * FROM floatDB.User where account = '"+ account + "\'";
             result_set = statement.executeQuery(query);
-            System.out.println("Records from Database: ");
             while(result_set.next()){
                 //extracting information
                 String account_name = result_set.getString("account");
@@ -66,32 +65,28 @@ public class Database{
     public Campaign getCampaign(String campaign_name){
         Campaign to_return = new Campaign();
         try{
-            String query = "SELECT * FROM floatDB.Campaign where name = '"+ campaign_name + "\'";
+            String query = "SELECT * FROM floatDB.Campaign where campaign_name = '"+ campaign_name + "\'";
             result_set = statement.executeQuery(query);
-            System.out.println("Records from Database: ");
             while(result_set.next()){
                 String campaignName = result_set.getString("campaign_name");
                 String charity = result_set.getString("charity");
                 int goal_amount = Integer.parseInt(result_set.getString("goal_amount"));
                 String initial_loc_string = result_set.getString("initial_location");
-                String destination = result_set.getString("destination");
+                Location initial_loc = Location.toLocation(initial_loc_string);
+                String destination_string = result_set.getString("destination");
+                Location destination = Location.toLocation(destination_string);
                 String owner_account = result_set.getString("owner_account");
                 int accumulated_donation = Integer.parseInt(result_set.getString("accumulated_donation"));
                 int time_left = Integer.parseInt(result_set.getString("time_left"));
+                String description = result_set.getString("description");
+              //query the user name based on the owner_account
+                User owner = this.getUser(owner_account);
                 
-//                private String name;
-//                private int owner_id;
-//                private String description;
-//                private Location initial_location;
-//                private Location destination;
-//                private int pledge_amount;
-                //to_return = new Campaign(name, ownder_name, address);
-//                CREATE TABLE Campaign(campaign_name VARCHAR(100), charity VARCHAR(100), goal_amount INT, 
-//                        initial_location VARCHAR(30), destination VARCHAR(30), owner_account VARCHAR(30),
-//                        accumulated_donation INT, time_left INT)
+
+                return new Campaign(campaignName,owner, description, charity, initial_loc, 
+                        destination, goal_amount, time_left, accumulated_donation);
             }
         }catch(Exception ex){
-            
         }
         return to_return;
     }

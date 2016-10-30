@@ -21,6 +21,8 @@ public class Location {
     }
     
     public static Location toLocation(String s){
-        return new Location(1.1,1.2);
+        String delims = ",";
+        String[] tokens = s.split(delims);
+        return new Location(Double.valueOf(tokens[0]),Double.valueOf(tokens[1]));
     }
 }

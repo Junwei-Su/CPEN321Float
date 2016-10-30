@@ -4,5 +4,7 @@ public class Main {
         Database database = new Database();
         User u = database.getUser("float1");
         System.out.println(u.returnAccount_name());
+        Campaign c = database.getCampaign("testCamp1");
+        System.out.println(c.returnName());
     }
 }
