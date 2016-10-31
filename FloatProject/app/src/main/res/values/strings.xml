@@ -12,4 +12,5 @@
     <string name="pledgein">Pledge amount</string>
     <string name="savecamp">Save Campaign</string>
     <string name="launchcamp">Launch Campaign</string>
+    <string name="deets">Details</string>
 </resources>
