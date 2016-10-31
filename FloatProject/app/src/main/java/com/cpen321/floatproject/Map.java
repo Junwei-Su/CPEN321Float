@@ -5,6 +5,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.ContextCompat;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.Button;
@@ -50,6 +51,7 @@ public class Map extends FragmentActivity implements OnMapReadyCallback,
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Log.d("Tag", "onCreate()");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.map);
 
@@ -77,6 +79,10 @@ public class Map extends FragmentActivity implements OnMapReadyCallback,
                         LinearLayout mapbuttonpanel = (LinearLayout) findViewById(R.id.mapbuttonpanel);
 
                         buttonpanelheight = mapbuttonpanel.getHeight();
+
+                        Log.d("Tag", "Mapbuttonpanel is created.");
+
+                        map.setPadding(0, 0, 0, buttonpanelheight);
                     }
                 }
         );
@@ -115,13 +121,18 @@ public class Map extends FragmentActivity implements OnMapReadyCallback,
                 map.animateCamera(CameraUpdateFactory.newCameraPosition(defaultcamerapos));
             }
         });
+
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
         client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
+
+        Log.d("Tag", Integer.toString(buttonpanelheight));
     }
 
     @Override
     public void onMapReady(GoogleMap map) {
+        Log.d("Tag", "onMapReady()");
+
         this.map = map;
 
         //disable toolbar from appearing when a marker is clicked
@@ -139,9 +150,11 @@ public class Map extends FragmentActivity implements OnMapReadyCallback,
 
         map.setOnMarkerClickListener(this);
 
+        map.animateCamera(CameraUpdateFactory.newCameraPosition(defaultcamerapos));
+
         map.setPadding(0, 0, 0, buttonpanelheight);
 
-        map.animateCamera(CameraUpdateFactory.newCameraPosition(defaultcamerapos));
+        Log.d("Tag", Integer.toString(buttonpanelheight));
     }
 
     /**
