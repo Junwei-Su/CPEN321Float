@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_pay_pal"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation= "vertical"
+    tools:context="test.test.PayPal">
+
+    <!-- create a text input field to get the amount the user wants to donate-->
+    <EditText android:id="@+id/user_input"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint = "Enter amount:"
+        android:inputType="number" />
+
+    <!-- Button that starts the payment process-->
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Donate now"
+        android:textSize="30sp"
+        android:onClick="makeDonation" />
+
+    <!-- Button that starts the payment process for "pledges". Doesn't do anything yet -->
+  <!--  <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Pledge money"
+        android:textSize = "30sp"
+        android:onClick = "makePledge"/> -->
+
+    <!-- Small coloured icon that displays the status-->
+    <TextView
+        android:background="@color/colorAccent"
+        android:id="@+id/response"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text = "test"
+        android:textSize="30sp" />
+</LinearLayout>
