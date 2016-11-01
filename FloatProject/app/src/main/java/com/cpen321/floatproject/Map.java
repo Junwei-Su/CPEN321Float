@@ -2,6 +2,7 @@ package com.cpen321.floatproject;
 
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.ContextCompat;
@@ -65,6 +66,13 @@ public class Map extends FragmentActivity implements OnMapReadyCallback,
                         LinearLayout infowindow = (LinearLayout) findViewById(R.id.infowindow);
 
                         infowindowheight = infowindow.getHeight();
+
+                        Log.d("Tag", "infowindowheight = " + infowindowheight);
+
+                        if(Build.VERSION.SDK_INT <= 14)
+                            infowindow.getViewTreeObserver().removeGlobalOnLayoutListener( this );
+                        else
+                            infowindow.getViewTreeObserver().removeOnGlobalLayoutListener(this);
                     }
                 }
         );
@@ -80,9 +88,14 @@ public class Map extends FragmentActivity implements OnMapReadyCallback,
 
                         buttonpanelheight = mapbuttonpanel.getHeight();
 
-                        Log.d("Tag", "Mapbuttonpanel is created.");
+                        Log.d("Tag", "buttonpanelheight = " + buttonpanelheight);
 
                         map.setPadding(0, 0, 0, buttonpanelheight);
+
+                        if(Build.VERSION.SDK_INT <= 14)
+                            mapbuttonpanel.getViewTreeObserver().removeGlobalOnLayoutListener( this );
+                        else
+                            mapbuttonpanel.getViewTreeObserver().removeOnGlobalLayoutListener( this );
                     }
                 }
         );
