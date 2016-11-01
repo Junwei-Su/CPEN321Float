@@ -122,6 +122,16 @@ public class Map extends FragmentActivity implements OnMapReadyCallback,
             }
         });
 
+        button = (Button) findViewById(R.id.details);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //start _Submenu activity
+                Intent intent = new Intent(v.getContext(), JoinCampaign.class);
+                startActivity(intent);
+            }
+        });
+
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
         client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
