@@ -108,7 +108,7 @@ public class Map extends FragmentActivity implements OnMapReadyCallback,
             @Override
             public void onClick(View v) {
                 //start _Submenu activity
-                Intent intent = new Intent(v.getContext(), JoinCampaign.class);
+                Intent intent = new Intent(v.getContext(), CampDetails.class);
                 startActivity(intent);
             }
         });
@@ -140,7 +140,7 @@ public class Map extends FragmentActivity implements OnMapReadyCallback,
             @Override
             public void onClick(View v) {
                 //start _Submenu activity
-                Intent intent = new Intent(v.getContext(), JoinCampaign.class);
+                Intent intent = new Intent(v.getContext(), CampDetails.class);
                 startActivity(intent);
             }
         });

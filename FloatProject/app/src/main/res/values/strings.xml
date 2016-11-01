@@ -8,7 +8,7 @@
 
     <string name="titlein">Title</string>
     <string name="descriptionin">Description</string>
-    <string name="goalin">Goal</string>
+    <string name="goalin">Goal location</string>
     <string name="pledgein">Pledge amount</string>
     <string name="savecamp">Save Campaign</string>
     <string name="launchcamp">Launch Campaign</string>
