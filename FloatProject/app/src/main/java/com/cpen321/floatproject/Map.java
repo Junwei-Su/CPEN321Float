@@ -134,6 +134,7 @@ public class Map extends FragmentActivity implements OnMapReadyCallback,
                 //start _Submenu activity
                 Intent intent = new Intent(v.getContext(), CreateCampaign.class);
                 startActivity(intent);
+
             }
         });
 
