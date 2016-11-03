@@ -8,6 +8,8 @@
         android:id="@+id/titlein"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_marginRight="@dimen/activity_horizontal_margin"
         android:layout_centerHorizontal="true"
         android:layout_alignParentTop="true"
         android:hint="@string/titlein"/>
@@ -16,6 +18,8 @@
         android:id="@+id/goalin"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_marginRight="@dimen/activity_horizontal_margin"
         android:layout_centerHorizontal="true"
         android:layout_below="@+id/titlein"
         android:hint="@string/goalin"/>
@@ -24,6 +28,8 @@
         android:id="@+id/pledgein"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_marginRight="@dimen/activity_horizontal_margin"
         android:layout_centerHorizontal="true"
         android:layout_below="@+id/goalin"
         android:hint="@string/pledgein"/>
@@ -33,16 +39,33 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/pledgein"
-        android:layout_above="@+id/launchcamp"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_marginRight="@dimen/activity_horizontal_margin"
+        android:layout_above="@+id/campbuttonpanel"
         android:layout_centerHorizontal="true"
         android:gravity="top"
         android:hint="@string/descriptionin"/>
 
-    <Button
-        android:id="@+id/launchcamp"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:id="@+id/campbuttonpanel"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
         android:layout_alignParentBottom="true"
-        android:text="@string/launchcamp"/>
+        android:gravity="center_horizontal"
+        style="?android:attr/buttonBarStyle">
+        <Button
+            android:id="@+id/savecamp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/savecamp"
+            android:textColor="@color/darkestbackground"
+            style="?android:attr/buttonBarButtonStyle" />
+        <Button
+            android:id="@+id/launchcamp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/launchcamp"
+            android:textColor="@color/darkestbackground"
+            style="?android:attr/buttonBarButtonStyle"/>
+    </LinearLayout>
 </RelativeLayout>
