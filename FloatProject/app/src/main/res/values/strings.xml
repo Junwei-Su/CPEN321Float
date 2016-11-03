@@ -1,16 +1,13 @@
 <resources>
     <string name="app_name">FLOAT</string>
-    <string name="app_id">1145386402215712</string>
+    <string name="start">FakeLogIn</string>
 
-    <string name="start">Begin</string>
     <string name="createcamp">Create a Campaign!</string>
     <string name="joincamp">Join a Campaign!</string>
 
     <string name="titlein">Title</string>
     <string name="descriptionin">Description</string>
-    <string name="goalin">Goal location</string>
+    <string name="goalin">Goal</string>
     <string name="pledgein">Pledge amount</string>
-    <string name="savecamp">Save Campaign</string>
     <string name="launchcamp">Launch Campaign</string>
-    <string name="deets">Details</string>
 </resources>
