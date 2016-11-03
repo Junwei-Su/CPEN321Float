@@ -50,6 +50,20 @@ public class Map extends FragmentActivity implements OnMapReadyCallback,
      */
     private GoogleApiClient client;
 
+    boolean mapready = false; //true when onMapReady() is called
+    boolean buttonpanelready = false;
+
+    //initialize map paddings when map, buttonpanel, and
+    private void layoutreadylistener(String caller){
+        if(caller.equals("map"))
+            mapready = true;
+        else if(caller.equals("buttonpanel"))
+            buttonpanelready = true;
+
+        if(mapready && buttonpanelready)
+            map.setPadding(0, 0, 0, buttonpanelheight);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Log.d("Tag", "onCreate()");
@@ -90,7 +104,7 @@ public class Map extends FragmentActivity implements OnMapReadyCallback,
 
                         Log.d("Tag", "buttonpanelheight = " + buttonpanelheight);
 
-                        map.setPadding(0, 0, 0, buttonpanelheight);
+                        layoutreadylistener("buttonpanel");
 
                         if(Build.VERSION.SDK_INT <= 14)
                             mapbuttonpanel.getViewTreeObserver().removeGlobalOnLayoutListener( this );
@@ -149,7 +163,7 @@ public class Map extends FragmentActivity implements OnMapReadyCallback,
         // See https://g.co/AppIndexing/AndroidStudio for more information.
         client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
 
-        Log.d("Tag", Integer.toString(buttonpanelheight));
+        Log.d("Tag", "buttonpanelheight in onCreate() = " + Integer.toString(buttonpanelheight));
     }
 
     @Override
@@ -177,7 +191,8 @@ public class Map extends FragmentActivity implements OnMapReadyCallback,
 
         map.setPadding(0, 0, 0, buttonpanelheight);
 
-        Log.d("Tag", Integer.toString(buttonpanelheight));
+        layoutreadylistener("map");
+        Log.d("Tag", "buttonpanelheight in onMapReady() = " + Integer.toString(buttonpanelheight));
     }
 
     /**
