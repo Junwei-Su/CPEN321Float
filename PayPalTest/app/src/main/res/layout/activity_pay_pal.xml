@@ -8,10 +8,10 @@
     tools:context="test.test.PayPal">
 
     <!-- create a text input field to get the amount the user wants to donate-->
-    <EditText android:id="@+id/user_input"
+    <EditText android:id="@+id/user_donation_input"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint = "Enter amount:"
+        android:hint = "Enter donation amount:"
         android:inputType="number" />
 
     <!-- Button that starts the payment process-->
@@ -22,15 +22,22 @@
         android:textSize="30sp"
         android:onClick="makeDonation" />
 
-    <!-- Button that starts the payment process for "pledges". Doesn't do anything yet -->
-  <!--  <Button
+    <!-- create a text input field to get the amount the user wants to pledge-->
+    <EditText android:id="@+id/user_pledge_input"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint = "Enter pledge amount:"
+        android:inputType="number" />
+
+    <!-- Button that starts the payment process for future payments (pledges) -->
+    <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Pledge money"
         android:textSize = "30sp"
-        android:onClick = "makePledge"/> -->
+        android:onClick = "makePledge"/>
 
-    <!-- Small coloured icon that displays the status-->
+    <!-- Small coloured icon -->
     <TextView
         android:background="@color/colorAccent"
         android:id="@+id/response"
@@ -38,4 +45,5 @@
         android:layout_height="wrap_content"
         android:text = "test"
         android:textSize="30sp" />
+
 </LinearLayout>
