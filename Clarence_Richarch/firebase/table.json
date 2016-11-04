@@ -1,0 +1,57 @@
+{
+
+	"User":{	
+		"user1":{
+			"account"        : "", 
+			"user_name"      : "", 
+			"date_join"      : "", 
+			"blurb"          : "", 
+			"is_charity"     : "",
+			"amount_gained"  : "", 
+			"amount_raised"  : "", 
+			"amount_donated" : "", 
+			"city"           : "", 
+			"province"       : "", 
+			"country"        : ""	
+		}
+	},
+	
+	
+	"Campaign":{
+		"campagin1" :　{
+			"campaign_name" 		: "", 
+			"charity"				: "",
+			"goal_amount" 			: "", 
+			"initial_location" 		: "",
+			"destination"			: "", 
+			"owner_account"			: "",
+			"accumulated_donation"	: "",
+			"time_left" 			: ""
+		}
+	},
+	
+	
+	"Actions":{
+		"action1":{
+			"action_i"				: "", 
+			"action_type" 			: "", 
+			"associated_camp_name" 	: "",
+			"description" 			: "", 
+			"associated_user_name" 	: "",
+			"date" 					: "" ,
+			"location" 				: "",
+		}
+	},
+	
+	
+	"camp_follower_map" :{
+		"map1" :　{
+				account 		： "", 
+				campaign_name   ： "", 
+				date 			： ""
+		}
+	
+	}
+
+
+}
