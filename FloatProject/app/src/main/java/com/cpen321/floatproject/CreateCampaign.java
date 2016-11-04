@@ -24,8 +24,7 @@ public class CreateCampaign extends Activity {
             @Override
             public void onClick(View v) {
 
-                Log.d("Tag","buttonPress");
-                //addCampaign();
+                addCampaign();
                 //launchCampaign();
             }
         });
@@ -34,7 +33,7 @@ public class CreateCampaign extends Activity {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d("Tag","buttonPress");
+                Log.d("Tag","buttonPress2");
             }
         });
 
@@ -42,11 +41,23 @@ public class CreateCampaign extends Activity {
 
     //add campaign to online database
     public void addCampaign (){
+
+        //these are the strings we need to save for a new campaign
         EditText myText = (EditText) findViewById(R.id.titlein);
         String title = myText.getText().toString();
+        Log.d("Tag",title);
 
-        Log.d("Tag","test");
+        myText = (EditText) findViewById(R.id.goalin);
+        String goal = myText.getText().toString();
+        Log.d("Tag",goal);
 
+        myText = (EditText) findViewById(R.id.pledgein);
+        String pledge = myText.getText().toString();
+        Log.d("Tag",pledge);
+
+        myText = (EditText) findViewById(R.id.descriptionin);
+        String description = myText.getText().toString();
+        Log.d("Tag",description);
     }
 
     //launch campaign
