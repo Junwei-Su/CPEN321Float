@@ -18,14 +18,14 @@
 	
 	
 	"Campaign":{
-		"campagin1" :　{
+		"campagin1" : {
 			"campaign_name" 		: "", 
-			"charity"				: "",
+			"charity"			: "",
 			"goal_amount" 			: "", 
 			"initial_location" 		: "",
 			"destination"			: "", 
 			"owner_account"			: "",
-			"accumulated_donation"	: "",
+			"accumulated_donation"		: "",
 			"time_left" 			: ""
 		}
 	},
@@ -34,10 +34,10 @@
 	"Actions":{
 		"action1":{
 			"action_i"				: "", 
-			"action_type" 			: "", 
-			"associated_camp_name" 	: "",
-			"description" 			: "", 
-			"associated_user_name" 	: "",
+			"action_type" 				: "", 
+			"associated_camp_name" 			: "",
+			"description" 				: "", 
+			"associated_user_name" 			: "",
 			"date" 					: "" ,
 			"location" 				: "",
 		}
@@ -46,9 +46,9 @@
 	
 	"camp_follower_map" :{
 		"map1" :　{
-				account 		： "", 
-				campaign_name   ： "", 
-				date 			： ""
+				"account" 		: "", 
+				"campaign_name"   	: "", 
+				"date" 			: ""
 		}
 	
 	}
