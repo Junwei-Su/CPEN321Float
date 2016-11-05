@@ -36,3 +36,23 @@ metadata = new StorageMetadata.Builder()
 fileRef.putFile(file,metadata);
 
 
+
+
+//Getting the picture
+FirebaseStorage storage = FirebaseStorage.getInstance();
+StorageReference storageRef = storage.getReferenceFromUrl("gs://float-568c7.appspot.com");
+
+lighthouseRef = storageRef.child("images/lighthouse.png");
+File localFile = File.createTempFile("images","jpg");
+
+lighthouseRef.getFile(localFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+    @Override
+    public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+        // Local temp file has been created
+    }
+}).addOnFailureListener(new OnFailureListener() {
+    @Override
+    public void onFailure(@NonNull Exception exception) {
+        // Handle any errors
+    }
+});
