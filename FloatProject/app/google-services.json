@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "540828093269",
+    "firebase_url": "https://float-568c7.firebaseio.com",
+    "project_id": "float-568c7",
+    "storage_bucket": "float-568c7.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:540828093269:android:15a2188c38f95e2b",
+        "android_client_info": {
+          "package_name": "com.cpen321.floatproject"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "540828093269-48255fhd38g4kqibj2kjhas6monhivbe.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCBxPnK3uikT7aBof-GWgbzaVERieg6iVw"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
