@@ -2,6 +2,8 @@ package com.cpen321.floatproject;
 
 import android.location.Location;
 
+import com.google.android.gms.maps.model.LatLng;
+
 import java.util.LinkedList;
 import java.util.List;
 
@@ -23,6 +25,7 @@ public class Campaign {
 
     //extra fields
     //List<Action> list_of_location  = new LinkedList<Action>();
+    List<LatLng> list_of_locations = new LinkedList<LatLng>();
 
     public Campaign(){}
 

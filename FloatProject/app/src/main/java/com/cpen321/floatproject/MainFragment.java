@@ -2,7 +2,6 @@ package com.cpen321.floatproject;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,7 +14,6 @@ import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.FacebookSdk;
 import com.facebook.Profile;
-import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 
@@ -35,8 +33,8 @@ public class MainFragment extends Fragment {
             profile.getId(); //get Id
             //can access info about profile
 
-            //start Map activity
-            Intent intent = new Intent(getContext(), Map.class);
+            //start MapPage activity
+            Intent intent = new Intent(getContext(), MapPage.class);
             startActivity(intent);
         }
 

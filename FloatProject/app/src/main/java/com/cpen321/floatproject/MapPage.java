@@ -21,26 +21,41 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.CameraPosition;
-import com.google.android.gms.maps.model.Circle;
 import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
+import java.util.Map;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * Created by sfarinas on 10/17/2016.
  */
-public class Map extends FragmentActivity implements OnMapReadyCallback,
+public class MapPage extends FragmentActivity implements OnMapReadyCallback,
         GoogleMap.OnMarkerClickListener {
+
+    private DatabaseReference databaseref;
+    private DatabaseReference listcampaignsref;
+    private DatabaseReference listlocationsref;
 
     GoogleMap map;
     int buttonpanelheight;
     int infowindowheight;
 
-    LatLng ubc = new LatLng(49.261312, -123.253783);
+    List<LatLng> listLocations = new LinkedList<LatLng>();
+
+    LatLng userlocation = new LatLng(49.251899, -123.231948);
     CameraPosition defaultcamerapos = new CameraPosition.Builder()
-            .target(ubc)   // Sets the center of the map to Mountain View
-            .zoom(10)                   // Sets the zoom
+            .target(userlocation)   // Sets the center of the map to Mountain View
+            .zoom(15)                   // Sets the zoom
             .bearing(0)                // Sets the orientation of the camera to east
             .tilt(0)                   // Sets the tilt of the camera to 30 degrees
             .build();                   // Creates a CameraPosition from the builder
@@ -165,6 +180,91 @@ public class Map extends FragmentActivity implements OnMapReadyCallback,
         client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
 
         Log.d("Tag", "buttonpanelheight in onCreate() = " + Integer.toString(buttonpanelheight));
+
+        databaseref = FirebaseDatabase.getInstance().getReference();
+        listcampaignsref = databaseref.child("campaigns");
+        listlocationsref = listcampaignsref.child("testCamp1").child("list_locations");
+
+        ChildEventListener listcampaignslistener = new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                //get name of campaign
+                String title = dataSnapshot.child("campaign_name").getValue(String.class);
+
+                //get coordinates of campaign launch location
+                Map<String, Double> mapcoords = (HashMap<String,Double>) dataSnapshot
+                                                        .child("initial_location")
+                                                        .getValue();
+                //create LatLng object out of coordinates
+                LatLng latlngcoords = new LatLng(
+                        mapcoords.get("latitude"), mapcoords.get("longitude"));
+
+                //create marker at campaign launch location
+                Marker marker = map.addMarker(new MarkerOptions()
+                        .position(latlngcoords)
+                        .title(title));
+
+                //attaches campaign name to marker
+                marker.setTag(title);
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        };
+        listcampaignsref.addChildEventListener(listcampaignslistener);
+
+        ChildEventListener listlocationslistener = new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                /*LatLng floatLocation = dataSnapshot.getValue(LatLng.class);
+
+                map.addCircle(new CircleOptions()
+                        .center(floatLocation)
+                        .radius(getResources().getInteger(R.integer.floatradius))
+                        .strokeColor(ContextCompat.getColor(getApplicationContext(), R.color.circleoutline))
+                        .fillColor(ContextCompat.getColor(getApplicationContext(), R.color.circlefill)));
+*/
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        };
+        //add listener to database's campaign testCamp1's list of locations
+        listlocationsref.addChildEventListener(listlocationslistener);
     }
 
     @Override
@@ -175,16 +275,6 @@ public class Map extends FragmentActivity implements OnMapReadyCallback,
 
         //disable toolbar from appearing when a marker is clicked
         map.getUiSettings().setMapToolbarEnabled(false);
-
-        map.addMarker(new MarkerOptions()
-                .position(ubc)
-                .title("UBC"));
-
-        Circle circle = map.addCircle(new CircleOptions()
-                .center(ubc)
-                .radius(10000)
-                .strokeColor(ContextCompat.getColor(this, R.color.darkerbackground))
-                .fillColor(ContextCompat.getColor(this, R.color.background)));
 
         map.setOnMarkerClickListener(this);
 
@@ -207,6 +297,16 @@ public class Map extends FragmentActivity implements OnMapReadyCallback,
         LinearLayout campinfo = (LinearLayout) findViewById(R.id.spacerparent);
         campinfo.setVisibility(View.VISIBLE);
 
+        //add circles of sample campaign
+        for(int i=0; i<listLocations.size(); i++) {
+            map.addCircle(new CircleOptions()
+                    .center(listLocations.get(i))
+                    .radius(getResources().getInteger(R.integer.floatradius))
+                    .strokeColor(ContextCompat.getColor(this, R.color.circleoutline))
+                    .fillColor(ContextCompat.getColor(this, R.color.circlefill)));
+
+        }
+
         map.setPadding(0, 0, 0, buttonpanelheight + infowindowheight);
 
         map.animateCamera(CameraUpdateFactory.newCameraPosition(defaultcamerapos));
@@ -223,7 +323,7 @@ public class Map extends FragmentActivity implements OnMapReadyCallback,
         client.connect();
         Action viewAction = Action.newAction(
                 Action.TYPE_VIEW, // TODO: choose an action type.
-                "Map Page", // TODO: Define a title for the content shown.
+                "MapPage Page", // TODO: Define a title for the content shown.
                 // TODO: If you have web page content that matches this app activity's content,
                 // make sure this auto-generated web page URL is correct.
                 // Otherwise, set the URL to null.
@@ -242,7 +342,7 @@ public class Map extends FragmentActivity implements OnMapReadyCallback,
         // See https://g.co/AppIndexing/AndroidStudio for more information.
         Action viewAction = Action.newAction(
                 Action.TYPE_VIEW, // TODO: choose an action type.
-                "Map Page", // TODO: Define a title for the content shown.
+                "MapPage Page", // TODO: Define a title for the content shown.
                 // TODO: If you have web page content that matches this app activity's content,
                 // make sure this auto-generated web page URL is correct.
                 // Otherwise, set the URL to null.

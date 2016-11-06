@@ -7,6 +7,9 @@
     <color name="black">#000000</color>
     <color name="white">#FFFFFF</color>
 
+    <color name="circlefill">#45B9EAEE</color>
+    <color name="circleoutline">#80A0DDFF</color>
+
     <color name="background">#CCB9EAEE</color>
     <color name="darkerbackground">#CCA0DDFF</color>
     <color name="darkestbackground">#CC0CAAFF</color>
