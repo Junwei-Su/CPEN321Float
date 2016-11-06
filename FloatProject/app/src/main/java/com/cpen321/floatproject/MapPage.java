@@ -21,6 +21,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.CameraPosition;
+import com.google.android.gms.maps.model.Circle;
 import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
@@ -45,15 +46,16 @@ public class MapPage extends FragmentActivity implements OnMapReadyCallback,
     private DatabaseReference databaseref;
     private DatabaseReference listcampaignsref;
     private DatabaseReference listlocationsref;
+    private ChildEventListener listlocationslistener;
 
-    GoogleMap map;
-    int buttonpanelheight;
-    int infowindowheight;
+    private GoogleMap map;
+    private int buttonpanelheight;
+    private int infowindowheight;
 
-    List<LatLng> listLocations = new LinkedList<LatLng>();
+    private List<Circle> listCircles = new LinkedList<Circle>();
 
-    LatLng userlocation = new LatLng(49.251899, -123.231948);
-    CameraPosition defaultcamerapos = new CameraPosition.Builder()
+    private LatLng userlocation = new LatLng(49.251899, -123.231948);
+    private CameraPosition defaultcamerapos = new CameraPosition.Builder()
             .target(userlocation)   // Sets the center of the map to Mountain View
             .zoom(15)                   // Sets the zoom
             .bearing(0)                // Sets the orientation of the camera to east
@@ -183,7 +185,6 @@ public class MapPage extends FragmentActivity implements OnMapReadyCallback,
 
         databaseref = FirebaseDatabase.getInstance().getReference();
         listcampaignsref = databaseref.child("campaigns");
-        listlocationsref = listcampaignsref.child("testCamp1").child("list_locations");
 
         ChildEventListener listcampaignslistener = new ChildEventListener() {
             @Override
@@ -191,17 +192,11 @@ public class MapPage extends FragmentActivity implements OnMapReadyCallback,
                 //get name of campaign
                 String title = dataSnapshot.child("campaign_name").getValue(String.class);
 
-                //get coordinates of campaign launch location
-                Map<String, Double> mapcoords = (HashMap<String,Double>) dataSnapshot
-                                                        .child("initial_location")
-                                                        .getValue();
-                //create LatLng object out of coordinates
-                LatLng latlngcoords = new LatLng(
-                        mapcoords.get("latitude"), mapcoords.get("longitude"));
+                LatLng launchcoords = dataSnapshotToLatLng(dataSnapshot.child("initial_location"));
 
                 //create marker at campaign launch location
                 Marker marker = map.addMarker(new MarkerOptions()
-                        .position(latlngcoords)
+                        .position(launchcoords)
                         .title(title));
 
                 //attaches campaign name to marker
@@ -230,17 +225,21 @@ public class MapPage extends FragmentActivity implements OnMapReadyCallback,
         };
         listcampaignsref.addChildEventListener(listcampaignslistener);
 
-        ChildEventListener listlocationslistener = new ChildEventListener() {
+        listlocationslistener = new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                /*LatLng floatLocation = dataSnapshot.getValue(LatLng.class);
+                LatLng floatLocation = dataSnapshotToLatLng(dataSnapshot);
 
-                map.addCircle(new CircleOptions()
+                //add a campaign circle to the map
+                Circle circle = map.addCircle(new CircleOptions()
                         .center(floatLocation)
                         .radius(getResources().getInteger(R.integer.floatradius))
                         .strokeColor(ContextCompat.getColor(getApplicationContext(), R.color.circleoutline))
                         .fillColor(ContextCompat.getColor(getApplicationContext(), R.color.circlefill)));
-*/
+
+                //add a campaign circle to the list of circles
+                listCircles.add(circle);
+                Log.d("Tag", "add circle: " + listCircles);
             }
 
             @Override
@@ -263,8 +262,6 @@ public class MapPage extends FragmentActivity implements OnMapReadyCallback,
 
             }
         };
-        //add listener to database's campaign testCamp1's list of locations
-        listlocationsref.addChildEventListener(listlocationslistener);
     }
 
     @Override
@@ -291,21 +288,31 @@ public class MapPage extends FragmentActivity implements OnMapReadyCallback,
      */
     @Override
     public boolean onMarkerClick(final Marker marker) {
-        // Can retrieve the data from the marker.
-        //Integer clickCount = (Integer) marker.getTag();
+        // Get name of campaign
+        String campaignname = (String) marker.getTag();
 
+        //make campaign preview pop-up window appear
         LinearLayout campinfo = (LinearLayout) findViewById(R.id.spacerparent);
         campinfo.setVisibility(View.VISIBLE);
 
-        //add circles of sample campaign
-        for(int i=0; i<listLocations.size(); i++) {
-            map.addCircle(new CircleOptions()
-                    .center(listLocations.get(i))
-                    .radius(getResources().getInteger(R.integer.floatradius))
-                    .strokeColor(ContextCompat.getColor(this, R.color.circleoutline))
-                    .fillColor(ContextCompat.getColor(this, R.color.circlefill)));
+            //stop updating map from last clicked campaign
+            databaseref.removeEventListener(listlocationslistener);
 
-        }
+            Log.d("Tag", "Started removing circles.");
+            //remove old circles
+            while(listCircles.size()!=0) {
+                //remove circle from map
+                listCircles.get(0).remove();
+                //remove circle from list
+                listCircles.remove(0);
+                Log.d("Tag", "remove circle: " + listCircles);
+            }
+
+            //get database reference to list of locations of different campaign
+            listlocationsref = listcampaignsref.child(campaignname).child("list_locations");
+
+            //attach listener to list of locations of different campaign
+            listlocationsref.addChildEventListener(listlocationslistener);
 
         map.setPadding(0, 0, 0, buttonpanelheight + infowindowheight);
 
@@ -353,4 +360,12 @@ public class MapPage extends FragmentActivity implements OnMapReadyCallback,
         AppIndex.AppIndexApi.end(client, viewAction);
         client.disconnect();
     }
+
+    private LatLng dataSnapshotToLatLng (DataSnapshot datasnapshot){
+        //get coordinates of campaign launch location
+        Map<String, Double> mapcoords = (HashMap<String,Double>) datasnapshot.getValue();
+
+        //create LatLng object out of coordinates
+        return new LatLng(mapcoords.get("latitude"), mapcoords.get("longitude"));
+    };
 }
