@@ -319,6 +319,12 @@ public class MapPage extends FragmentActivity implements OnMapReadyCallback,
         LinearLayout campinfo = (LinearLayout) findViewById(R.id.spacerparent);
         campinfo.setVisibility(View.VISIBLE);
 
+        //changing fields of details window
+        TextView tv = (TextView) findViewById(R.id.campaigntitle);
+        tv.setText(campaignname);
+
+
+
             //stop updating map from last clicked campaign
             databaseref.removeEventListener(listlocationslistener);
 
