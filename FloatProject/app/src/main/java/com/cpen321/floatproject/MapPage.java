@@ -14,6 +14,7 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.facebook.Profile;
 import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -32,6 +33,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.Map;
 import java.util.HashMap;
@@ -45,6 +47,7 @@ public class MapPage extends FragmentActivity implements OnMapReadyCallback,
         GoogleMap.OnMarkerClickListener {
 
     private DatabaseReference databaseref;
+    private DatabaseReference usersref;
     private DatabaseReference listcampaignsref;
     private DatabaseReference listlocationsref;
     private ChildEventListener listlocationslistener;
@@ -186,6 +189,26 @@ public class MapPage extends FragmentActivity implements OnMapReadyCallback,
 
         databaseref = FirebaseDatabase.getInstance().getReference();
         listcampaignsref = databaseref.child("campaigns");
+        usersref = databaseref.child("users");
+
+        Profile profile = Profile.getCurrentProfile();
+        String userid = profile.getId();
+        Log.d("Tag", "My userid is: " + userid);
+
+        DatabaseReference thisuserref = usersref.child(userid);
+        thisuserref.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                String thisusernamestr = dataSnapshot.child("name").getValue(String.class);
+                TextView thisusername = (TextView) findViewById(R.id.thisusername);
+                thisusername.setText(thisusernamestr);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
 
         ChildEventListener listcampaignslistener = new ChildEventListener() {
             @Override

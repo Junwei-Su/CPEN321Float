@@ -7,9 +7,13 @@
     <string name="joincamp">Join a Campaign!</string>
 
     <string name="titlein">Title</string>
+    <string name="charityin">Charity</string> <!-- TODO remove when we have a list to choose from -->
     <string name="descriptionin">Description</string>
-    <string name="goalin">Goal location</string>
+    <string name="goalin">Goal Location Name</string>
     <string name="pledgein">Pledge amount</string>
+    <string name="initiallocationin">Launch Location Coordinates</string>
+    <string name="destinationlocationin">Goal Location Coordinates</string>
+
     <string name="savecamp">Save Campaign</string>
     <string name="launchcamp">Launch Campaign</string>
     <string name="deets">Details</string>
