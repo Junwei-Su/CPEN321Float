@@ -313,7 +313,7 @@ public class MapPage extends FragmentActivity implements OnMapReadyCallback,
                 tv.setText(title);
 
                 tv = (TextView) findViewById(R.id.charityname);
-                tv.setText(title);
+                tv.setText(charity);
 
             }
 
