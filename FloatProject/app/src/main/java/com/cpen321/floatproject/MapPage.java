@@ -12,6 +12,7 @@ import android.view.ViewTreeObserver;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
@@ -294,6 +295,12 @@ public class MapPage extends FragmentActivity implements OnMapReadyCallback,
         //make campaign preview pop-up window appear
         LinearLayout campinfo = (LinearLayout) findViewById(R.id.spacerparent);
         campinfo.setVisibility(View.VISIBLE);
+
+        //changing fields of details window
+        TextView tv = (TextView) findViewById(R.id.campaigntitle);
+        tv.setText(campaignname);
+
+
 
             //stop updating map from last clicked campaign
             databaseref.removeEventListener(listlocationslistener);
