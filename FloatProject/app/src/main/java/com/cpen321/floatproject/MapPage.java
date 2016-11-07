@@ -292,6 +292,11 @@ public class MapPage extends FragmentActivity implements OnMapReadyCallback,
         // Get name of campaign
         String campaignname = (String) marker.getTag();
 
+        // Get campaign starter
+        String user =
+
+
+
         //make campaign preview pop-up window appear
         LinearLayout campinfo = (LinearLayout) findViewById(R.id.spacerparent);
         campinfo.setVisibility(View.VISIBLE);
@@ -299,6 +304,11 @@ public class MapPage extends FragmentActivity implements OnMapReadyCallback,
         //changing fields of details window
         TextView tv = (TextView) findViewById(R.id.campaigntitle);
         tv.setText(campaignname);
+
+        tv = (TextView) findViewById(R.id.username);
+        tv.setText(user);
+
+
 
 
 

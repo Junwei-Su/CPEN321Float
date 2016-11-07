@@ -13,5 +13,7 @@ public class CampDetails extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.campdetails);
 
+
+
     }
 }
