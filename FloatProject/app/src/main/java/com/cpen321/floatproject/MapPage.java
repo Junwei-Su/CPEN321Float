@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.renderscript.Sampler;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
@@ -35,6 +36,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import org.w3c.dom.Text;
+
 import java.util.Map;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -50,7 +53,11 @@ public class MapPage extends FragmentActivity implements OnMapReadyCallback,
     private DatabaseReference usersref;
     private DatabaseReference listcampaignsref;
     private DatabaseReference listlocationsref;
+    private DatabaseReference campaignobjectref;
+
     private ChildEventListener listlocationslistener;
+    private ValueEventListener campaignobjectlistener;
+
 
     private GoogleMap map;
     private int buttonpanelheight;
@@ -216,6 +223,9 @@ public class MapPage extends FragmentActivity implements OnMapReadyCallback,
                 //get name of campaign
                 String title = dataSnapshot.child("campaign_name").getValue(String.class);
 
+
+
+
                 LatLng launchcoords = dataSnapshotToLatLng(dataSnapshot.child("initial_location"));
 
                 //create marker at campaign launch location
@@ -286,6 +296,33 @@ public class MapPage extends FragmentActivity implements OnMapReadyCallback,
 
             }
         };
+
+        campaignobjectlistener = new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                String user = dataSnapshot.child("owner_account").getValue(String.class);
+
+                String title = dataSnapshot.child("campaign_name").getValue(String.class);
+
+                String charity = dataSnapshot.child("charity").getValue(String.class);
+
+                TextView tv = (TextView) findViewById(R.id.username);
+                tv.setText(user);
+
+                tv = (TextView) findViewById(R.id.campaigntitle);
+                tv.setText(title);
+
+                tv = (TextView) findViewById(R.id.charityname);
+                tv.setText(title);
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        };
+
     }
 
     @Override
@@ -315,24 +352,12 @@ public class MapPage extends FragmentActivity implements OnMapReadyCallback,
         // Get name of campaign
         String campaignname = (String) marker.getTag();
 
-        // Get campaign starter
-        String user =
 
 
 
         //make campaign preview pop-up window appear
         LinearLayout campinfo = (LinearLayout) findViewById(R.id.spacerparent);
         campinfo.setVisibility(View.VISIBLE);
-
-        //changing fields of details window
-        TextView tv = (TextView) findViewById(R.id.campaigntitle);
-        tv.setText(campaignname);
-
-        tv = (TextView) findViewById(R.id.username);
-        tv.setText(user);
-
-
-
 
 
             //stop updating map from last clicked campaign
@@ -357,6 +382,13 @@ public class MapPage extends FragmentActivity implements OnMapReadyCallback,
         map.setPadding(0, 0, 0, buttonpanelheight + infowindowheight);
 
         map.animateCamera(CameraUpdateFactory.newCameraPosition(defaultcamerapos));
+
+       databaseref.removeEventListener(campaignobjectlistener);
+
+        campaignobjectref = listcampaignsref.child(campaignname);
+
+        campaignobjectref.addValueEventListener(campaignobjectlistener);
+
 
         return false;
     }

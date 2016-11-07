@@ -18,7 +18,7 @@
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:layout_above="@+id/mapbuttonpanel"
-        android:visibility="invisible">
+        android:visibility="visible">
         <Space
             android:id="@+id/spacer"
             android:layout_width="match_parent"
