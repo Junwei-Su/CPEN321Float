@@ -58,23 +58,34 @@ import java.util.List;
 public class MapPage extends FragmentActivity implements OnMapReadyCallback,
         GoogleMap.OnMarkerClickListener {
 
+    //references to points in Firebase database
     private DatabaseReference databaseref;
     private DatabaseReference usersref;
     private DatabaseReference listcampaignsref;
     private DatabaseReference listlocationsref;
     private DatabaseReference campaignobjectref;
 
+    //references to points in Firebase storage
+    private FirebaseStorage storage;
+    private StorageReference storageRef;
+
+    //listeners for realtime database
     private ChildEventListener listlocationslistener;
     private ValueEventListener campaignobjectlistener;
 
-
     private GoogleMap map;
+
+    //height, in pixels, of buttonpanel and infowindow
     private int buttonpanelheight;
     private int infowindowheight;
 
-    private List<Circle> listCircles = new LinkedList<Circle>();
+    //list of circles presently on 'map'
+    private List<Circle> listCircles = new LinkedList<>();
 
+    //default location of user on map on activity creation
     private LatLng userlocation = new LatLng(49.251899, -123.231948);
+
+    //default position of camera on map on activity creation
     private CameraPosition defaultcamerapos = new CameraPosition.Builder()
             .target(userlocation)   // Sets the center of the map to Mountain View
             .zoom(15)                   // Sets the zoom
@@ -90,7 +101,7 @@ public class MapPage extends FragmentActivity implements OnMapReadyCallback,
     boolean mapready = false; //true when onMapReady() is called
     boolean buttonpanelready = false;
 
-    //initialize map paddings when map, buttonpanel, and
+    //initialize map paddings when map and buttonpanel are ready
     private void layoutreadylistener(String caller){
         if(caller.equals("map"))
             mapready = true;
@@ -103,11 +114,13 @@ public class MapPage extends FragmentActivity implements OnMapReadyCallback,
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        Log.d("Tag", "onCreate()");
+        //Log.d("Tag", "onCreate()");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.map);
 
         LinearLayout infowindow = (LinearLayout) findViewById(R.id.infowindow);
+
+        //listen to infowindow once to obtain height in pixels
         infowindow.getViewTreeObserver().addOnGlobalLayoutListener(
                 new ViewTreeObserver.OnGlobalLayoutListener() {
                     @Override
@@ -115,10 +128,9 @@ public class MapPage extends FragmentActivity implements OnMapReadyCallback,
                         //called when layout is ready yet before drawn
 
                         LinearLayout infowindow = (LinearLayout) findViewById(R.id.infowindow);
-
                         infowindowheight = infowindow.getHeight();
 
-                        Log.d("Tag", "infowindowheight = " + infowindowheight);
+                        //Log.d("Tag", "infowindowheight = " + infowindowheight);
 
                         if(Build.VERSION.SDK_INT <= 14)
                             infowindow.getViewTreeObserver().removeGlobalOnLayoutListener( this );
@@ -136,13 +148,14 @@ public class MapPage extends FragmentActivity implements OnMapReadyCallback,
                         //called when layout is ready yet before drawn
 
                         LinearLayout mapbuttonpanel = (LinearLayout) findViewById(R.id.mapbuttonpanel);
-
                         buttonpanelheight = mapbuttonpanel.getHeight();
 
-                        Log.d("Tag", "buttonpanelheight = " + buttonpanelheight);
+                        //Log.d("Tag", "buttonpanelheight = " + buttonpanelheight);
 
+                        //alert layoutreadylistener buttonpanel is created
                         layoutreadylistener("buttonpanel");
 
+                        //remove listener
                         if(Build.VERSION.SDK_INT <= 14)
                             mapbuttonpanel.getViewTreeObserver().removeGlobalOnLayoutListener( this );
                         else
@@ -151,9 +164,11 @@ public class MapPage extends FragmentActivity implements OnMapReadyCallback,
                 }
         );
 
+        //get a handle on map
         MapFragment mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
+        //wire joincamp button to CampDetails activity
         Button button = (Button) findViewById(R.id.joincamp);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -164,6 +179,7 @@ public class MapPage extends FragmentActivity implements OnMapReadyCallback,
             }
         });
 
+        //wire createcamp button to CreateCampaign activity
         button = (Button) findViewById(R.id.createcamp);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -175,6 +191,7 @@ public class MapPage extends FragmentActivity implements OnMapReadyCallback,
             }
         });
 
+        //after infowindow is closed, update map paddings and camera
         ImageButton imageButton = (ImageButton) findViewById(R.id.closeWindow);
         imageButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -187,6 +204,7 @@ public class MapPage extends FragmentActivity implements OnMapReadyCallback,
             }
         });
 
+        //wire details button to CampDetails activity
         button = (Button) findViewById(R.id.details);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -201,16 +219,19 @@ public class MapPage extends FragmentActivity implements OnMapReadyCallback,
         // See https://g.co/AppIndexing/AndroidStudio for more information.
         client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
 
-        Log.d("Tag", "buttonpanelheight in onCreate() = " + Integer.toString(buttonpanelheight));
+        //Log.d("Tag", "buttonpanelheight in onCreate() = " + Integer.toString(buttonpanelheight));
 
+        //obtain references to Firebase database
         databaseref = FirebaseDatabase.getInstance().getReference();
         listcampaignsref = databaseref.child("campaigns");
         usersref = databaseref.child("users");
 
+        //obtain Facebook ID of logged in user
         Profile profile = Profile.getCurrentProfile();
         String userid = profile.getId();
-        Log.d("Tag", "My userid is: " + userid);
+        //Log.d("Tag", "My userid is: " + userid);
 
+        //update Facebook username on top right of screen
         DatabaseReference thisuserref = usersref.child(userid);
         thisuserref.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -226,14 +247,12 @@ public class MapPage extends FragmentActivity implements OnMapReadyCallback,
             }
         });
 
+        //add listener to add markers to campaigns' launch points on map in realtime
         ChildEventListener listcampaignslistener = new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 //get name of campaign
                 String title = dataSnapshot.child("campaign_name").getValue(String.class);
-
-
-
 
                 LatLng launchcoords = dataSnapshotToLatLng(dataSnapshot.child("initial_location"));
 
@@ -268,6 +287,7 @@ public class MapPage extends FragmentActivity implements OnMapReadyCallback,
         };
         listcampaignsref.addChildEventListener(listcampaignslistener);
 
+        //listener to draw float circles of a campaign
         listlocationslistener = new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
@@ -282,7 +302,7 @@ public class MapPage extends FragmentActivity implements OnMapReadyCallback,
 
                 //add a campaign circle to the list of circles
                 listCircles.add(circle);
-                Log.d("Tag", "add circle: " + listCircles);
+                //Log.d("Tag", "add circle: " + listCircles);
             }
 
             @Override
@@ -306,6 +326,7 @@ public class MapPage extends FragmentActivity implements OnMapReadyCallback,
             }
         };
 
+        //listener to update username, campaign_name and charity name on infowindow
         campaignobjectlistener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -333,8 +354,8 @@ public class MapPage extends FragmentActivity implements OnMapReadyCallback,
         };
 
         //Getting the picture
-        FirebaseStorage storage = FirebaseStorage.getInstance();
-        StorageReference storageRef = storage.getReferenceFromUrl("gs://float-568c7.appspot.com");
+        storage = FirebaseStorage.getInstance();
+        storageRef = storage.getReferenceFromUrl("gs://float-568c7.appspot.com");
         StorageReference lighthouseRef = storageRef.child("images/lighthouse.png");
         setDBPictureOnImageView(lighthouseRef, R.id.campaignpic);
         setDBPictureOnImageView(lighthouseRef, R.id.userpic);
@@ -345,7 +366,7 @@ public class MapPage extends FragmentActivity implements OnMapReadyCallback,
 
 
     /**
-     * Updates an ImageView object with th
+     * Updates an ImageView object with file in Firebase database at storageReference
      * @param storageReference
      * @param imageViewID
      */
@@ -374,7 +395,7 @@ public class MapPage extends FragmentActivity implements OnMapReadyCallback,
 
     @Override
     public void onMapReady(GoogleMap map) {
-        Log.d("Tag", "onMapReady()");
+        //Log.d("Tag", "onMapReady()");
 
         this.map = map;
 
@@ -385,10 +406,10 @@ public class MapPage extends FragmentActivity implements OnMapReadyCallback,
 
         map.animateCamera(CameraUpdateFactory.newCameraPosition(defaultcamerapos));
 
-        map.setPadding(0, 0, 0, buttonpanelheight);
-
+        //map.setPadding(0, 0, 0, buttonpanelheight);
         layoutreadylistener("map");
-        Log.d("Tag", "buttonpanelheight in onMapReady() = " + Integer.toString(buttonpanelheight));
+
+        //Log.d("Tag", "buttonpanelheight in onMapReady() = " + Integer.toString(buttonpanelheight));
     }
 
     /**
@@ -399,44 +420,45 @@ public class MapPage extends FragmentActivity implements OnMapReadyCallback,
         // Get name of campaign
         String campaignname = (String) marker.getTag();
 
-
-
-
         //make campaign preview pop-up window appear
         LinearLayout campinfo = (LinearLayout) findViewById(R.id.spacerparent);
         campinfo.setVisibility(View.VISIBLE);
 
+        //stop updating map from last clicked campaign
+        databaseref.removeEventListener(listlocationslistener);
 
-            //stop updating map from last clicked campaign
-            databaseref.removeEventListener(listlocationslistener);
+        //Log.d("Tag", "Started removing circles.");
+        //remove old circles
+        while(listCircles.size()!=0) {
+            //remove circle from map
+            listCircles.get(0).remove();
+            //remove circle from list
+            listCircles.remove(0);
+            //Log.d("Tag", "remove circle: " + listCircles);
+        }
 
-            Log.d("Tag", "Started removing circles.");
-            //remove old circles
-            while(listCircles.size()!=0) {
-                //remove circle from map
-                listCircles.get(0).remove();
-                //remove circle from list
-                listCircles.remove(0);
-                Log.d("Tag", "remove circle: " + listCircles);
-            }
+        //get database reference to list of locations of different campaign
+        listlocationsref = listcampaignsref.child(campaignname).child("list_locations");
 
-            //get database reference to list of locations of different campaign
-            listlocationsref = listcampaignsref.child(campaignname).child("list_locations");
+        //attach listener to list of locations of different campaign
+        listlocationsref.addChildEventListener(listlocationslistener);
 
-            //attach listener to list of locations of different campaign
-            listlocationsref.addChildEventListener(listlocationslistener);
-
+        //update map padding to bring Google logo up
         map.setPadding(0, 0, 0, buttonpanelheight + infowindowheight);
 
+        //move map camera to default position
         map.animateCamera(CameraUpdateFactory.newCameraPosition(defaultcamerapos));
 
-       databaseref.removeEventListener(campaignobjectlistener);
+        //remove listener from campaign to switch to different campaign
+        databaseref.removeEventListener(campaignobjectlistener);
 
+        //update campaign reference to new campaign
         campaignobjectref = listcampaignsref.child(campaignname);
 
+        //add listener to new campaign
         campaignobjectref.addValueEventListener(campaignobjectlistener);
 
-
+        //tell caller we have not consumed the click event, enabling default marker behaviour
         return false;
     }
 
@@ -480,6 +502,11 @@ public class MapPage extends FragmentActivity implements OnMapReadyCallback,
         client.disconnect();
     }
 
+    /**
+     * Takes in a datashapshot and returns a LatLng object with the coordinates
+     * @param datasnapshot
+     * @return a LatLng object with the coordinates in datasnapshot
+     */
     private LatLng dataSnapshotToLatLng (DataSnapshot datasnapshot){
         //get coordinates of campaign launch location
         Map<String, Double> mapcoords = (HashMap<String,Double>) datasnapshot.getValue();
