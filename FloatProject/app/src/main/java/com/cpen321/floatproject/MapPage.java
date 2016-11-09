@@ -5,6 +5,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.renderscript.Sampler;
+import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
@@ -12,6 +13,7 @@ import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -29,15 +31,22 @@ import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FileDownloadTask;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import org.w3c.dom.Text;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.Map;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -323,6 +332,44 @@ public class MapPage extends FragmentActivity implements OnMapReadyCallback,
             }
         };
 
+        //Getting the picture
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+        StorageReference storageRef = storage.getReferenceFromUrl("gs://float-568c7.appspot.com");
+        StorageReference lighthouseRef = storageRef.child("images/lighthouse.png");
+        setDBPictureOnImageView(lighthouseRef, R.id.campaignpic);
+        setDBPictureOnImageView(lighthouseRef, R.id.userpic);
+        setDBPictureOnImageView(lighthouseRef, R.id.charitypic);
+
+    }
+
+
+
+    /**
+     * Updates an ImageView object with th
+     * @param storageReference
+     * @param imageViewID
+     */
+    public void setDBPictureOnImageView(StorageReference storageReference, final int imageViewID){
+        final File localFile;
+        try {
+            localFile = File.createTempFile("images", "png");
+            storageReference.getFile(localFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                    // Local temp file has been created
+                    ImageView testPic = (ImageView) findViewById(imageViewID);
+                    Uri uri = Uri.fromFile(localFile);
+                    testPic.setImageURI(uri);
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception exception) {
+                    // Handle any errors
+                }
+            });
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
