@@ -21,4 +21,4 @@ private DatabaseReference mDatabase;
 // ...
 mDatabase = FirebaseDatabase.getInstance().getReference();
 Charities temp = new Charities("charity");
-mDatabase.child("charities").child("testCampFromApp").setValue(temp);
+mDatabase.child("charities").child("testCharityFromApp").setValue(temp);
