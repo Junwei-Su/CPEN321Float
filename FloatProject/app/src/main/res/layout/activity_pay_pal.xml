@@ -1,0 +1,33 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_pay_pal"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation= "vertical">
+
+    <!-- create a text input field to get the amount the user wants to donate-->
+    <EditText android:id="@+id/user_donation_input"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint = "Enter donation amount:"
+        android:inputType="number" />
+
+    <!-- Button that starts the payment process-->
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Confirm Donation"
+        android:textSize="30sp"
+        android:onClick="makeDonation" />
+
+    <!-- Small coloured icon -->
+    <TextView
+        android:background="@color/colorAccent"
+        android:id="@+id/response"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text = "test - using sandbox"
+        android:textSize="30sp" />
+
+</LinearLayout>
+
