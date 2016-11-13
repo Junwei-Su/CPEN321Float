@@ -10,6 +10,8 @@ Richard Xie 55786140
 Samuel Farinas 17721144  
 Selina Suen 14022140
 
+Last updated: November 7th, 2016
+
 
 | | Relevant Subsystems | Bug Description | Proposed Solution | 
 | --- | --- | --- | --- |
