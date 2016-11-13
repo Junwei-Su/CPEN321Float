@@ -30,8 +30,9 @@ public class MainFragment extends Fragment {
         public void onSuccess(LoginResult loginResult) {
             AccessToken accessToken = loginResult.getAccessToken();
             Profile profile = Profile.getCurrentProfile();
-            profile.getId(); //get Id
-            //can access info about profile
+            if(profile!=null)
+                profile.getId(); //get Id
+                //can access info about profile
 
             //start MapPage activity
             Intent intent = new Intent(getContext(), MapPage.class);

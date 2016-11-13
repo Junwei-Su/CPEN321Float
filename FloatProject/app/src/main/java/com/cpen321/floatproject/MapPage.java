@@ -241,24 +241,28 @@ public class MapPage extends FragmentActivity implements OnMapReadyCallback,
 
         //obtain Facebook ID of logged in user
         Profile profile = Profile.getCurrentProfile();
-        String userid = profile.getId();
-        //Log.d("Tag", "My userid is: " + userid);
 
-        //update Facebook username on top right of screen
-        DatabaseReference thisuserref = usersref.child(userid);
-        thisuserref.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                String thisusernamestr = dataSnapshot.child("name").getValue(String.class);
-                TextView thisusername = (TextView) findViewById(R.id.thisusername);
-                thisusername.setText(thisusernamestr);
-            }
+        if(profile!=null) {
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
+            String userid = profile.getId();
+            //Log.d("Tag", "My userid is: " + userid);
 
-            }
-        });
+            //update Facebook username on top right of screen
+            DatabaseReference thisuserref = usersref.child(userid);
+            thisuserref.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    String thisusernamestr = dataSnapshot.child("name").getValue(String.class);
+                    TextView thisusername = (TextView) findViewById(R.id.thisusername);
+                    thisusername.setText(thisusernamestr);
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+        }
 
         //add listener to add markers to campaigns' launch points on map in realtime
         listcampaignslistener = new ChildEventListener() {
