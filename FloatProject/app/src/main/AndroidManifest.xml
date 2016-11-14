@@ -3,7 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.cpen321.floatproject">
 
-    <uses-sdk tools:overrideLibrary="com.paypal.android.sdk.payments"/>
+    <uses-sdk tools:overrideLibrary="com.paypal.android.sdk.payments" />
+
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
@@ -42,7 +43,11 @@
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
 
-        <activity android:name=".PayPal"></activity>
+        <activity android:name=".PayPal" />
+        <activity
+            android:name=".PaymentStatus"
+            android:label="@string/title_activity_payment_status"
+            android:theme="@style/AppTheme.NoActionBar" />
     </application>
 
 </manifest>
