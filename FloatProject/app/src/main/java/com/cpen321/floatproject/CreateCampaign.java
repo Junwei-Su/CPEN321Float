@@ -3,7 +3,6 @@ package com.cpen321.floatproject;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.Editable;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -31,9 +30,15 @@ public class CreateCampaign extends Activity {
             @Override
             public void onClick(View v) {
 
-                addCampaign();
+                 addCampaign();
+
                 //launchCampaign();
                 //TODO remove listener or grey out button after campaign is launched.
+
+                //start pledge_agreement activity (where the user agrees to pay the specified amount in the future)
+                //things to pass in: amount they paid
+                startActivity(new Intent(v.getContext(), PledgeAgreement.class)
+                        .putExtra("PledgeAmount", ((EditText)findViewById(R.id.pledgein)).getText().toString()));
             }
         });
 
@@ -105,7 +110,8 @@ public class CreateCampaign extends Activity {
     }
 
     //launch campaign
-    private static void launchCampaign(){}
+    private static void launchCampaign(){
+    }
 
     //save campaign
     private static void saveCampaign(){}

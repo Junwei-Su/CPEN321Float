@@ -48,6 +48,7 @@
             android:name=".PaymentStatus"
             android:label="@string/title_activity_payment_status"
             android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".PledgeAgreement"></activity>
     </application>
 
 </manifest>

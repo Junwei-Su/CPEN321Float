@@ -2,19 +2,21 @@ package com.cpen321.floatproject;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
+import android.net.Uri;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.TextView;
-import android.net.Uri;
+
 import com.paypal.android.sdk.payments.PayPalConfiguration;
 import com.paypal.android.sdk.payments.PayPalPayment;
 import com.paypal.android.sdk.payments.PayPalService;
 import com.paypal.android.sdk.payments.PaymentActivity;
 import com.paypal.android.sdk.payments.PaymentConfirmation;
+
 import org.json.JSONException;
+
 import java.math.BigDecimal;
 
 
@@ -26,7 +28,6 @@ public class PayPal extends AppCompatActivity {
     private static final String CLIENT_ID = "Af5k4cThWWw1eesKCntlNvvQVKoL0OcT1ecA_tCjM4w1tetK0YuR1WndV_RGF_iJthLkFeHrwcikrEWf";
 
     private String payment_amount;
-    TextView p_response;
 
     //configure PayPal with the environment and client ID
     private static PayPalConfiguration p_configuration = new PayPalConfiguration()
@@ -43,9 +44,9 @@ public class PayPal extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pay_pal);
 
-        Intent p_service = new Intent(this, PayPalService.class);
-        p_service.putExtra(PayPalService.EXTRA_PAYPAL_CONFIGURATION, p_configuration);
-        startService(p_service); //the PayPal service
+        Intent paypal_service = new Intent(this, PayPalService.class);
+        paypal_service.putExtra(PayPalService.EXTRA_PAYPAL_CONFIGURATION, p_configuration);
+        startService(paypal_service); //the PayPal service
     }
 
     public void makeDonation(View view){
@@ -69,10 +70,10 @@ public class PayPal extends AppCompatActivity {
                 new PayPalPayment(new BigDecimal(String.valueOf(payment_amount)), "USD", "Test Payment", PayPalPayment.PAYMENT_INTENT_SALE);
 
         //create intent and send the same configuration for restart resiliency
-        Intent p_intent = new Intent(this, PaymentActivity.class);
-        p_intent.putExtra(PayPalService.EXTRA_PAYPAL_CONFIGURATION, p_configuration);
-        p_intent.putExtra(PaymentActivity.EXTRA_PAYMENT, payment);
-        startActivityForResult(p_intent, REQUEST_CODE_PAYMENT);
+        Intent paypal_intent = new Intent(this, PaymentActivity.class);
+        paypal_intent.putExtra(PayPalService.EXTRA_PAYPAL_CONFIGURATION, p_configuration);
+        paypal_intent.putExtra(PaymentActivity.EXTRA_PAYMENT, payment);
+        startActivityForResult(paypal_intent, REQUEST_CODE_PAYMENT);
     }
 
     @Override
