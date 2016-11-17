@@ -15,6 +15,9 @@ import com.paypal.android.sdk.payments.PayPalAuthorization;
 import com.paypal.android.sdk.payments.PayPalConfiguration;
 import com.paypal.android.sdk.payments.PayPalFuturePaymentActivity;
 import com.paypal.android.sdk.payments.PayPalService;
+import com.paypal.api.payments.FuturePayment;
+import com.paypal.base.rest.APIContext;
+import com.paypal.base.rest.PayPalRESTException;
 
 import org.json.JSONException;
 
@@ -54,37 +57,14 @@ public class PledgeAgreement extends AppCompatActivity {
         startService(paypal_service); //the PayPal service
     }
 
-    private void sendAuthorizationToServer(PayPalAuthorization authorization) throws JSONException{
-
-        String authorization_code = authorization.getAuthorizationCode();
-
-//        APIContext context = new APIContext(CLIENT_ID, CLIENT_SECRET, "sandbox");
-//        String refreshToken = FuturePayment.fetchRefreshToken(context, authorization_code);
-//
-//        context.setRefreshToken(refreshToken);
-
-        // Create Payment Object
-        /**
-         * Send authorization response to server, where it can
-         * exchange the authorization code for OAuth access and refresh tokens.
-         *
-         * Your server must then store these tokens, so that your server code
-         * can execute payments for this user in the future.
-         *
-         * A more complete example that includes the required app-server to
-         * PayPal-server integration is available from
-         * https://github.com/paypal/rest-api-sdk-python/tree/master/samples/mobile_backend
-         */
-    }
-
-    //used for future payments (pledges)
-    public void sendData() {
-        // Get the Client Metadata ID from the SDK
+    private void sendAuthorizationToServer(PayPalAuthorization authorization) throws JSONException, PayPalRESTException {
         String metadataId = PayPalConfiguration.getClientMetadataId(this);
-
-        //  Log.i("FuturePaymentExample", "Client Metadata ID: " + metadataId);
-        // TODO: Send metadataId and transaction details to your server for processing with paypal
-        // displayResultText("Client Metadata Id received from SDK");
+        String authorization_code = authorization.getAuthorizationCode();
+        APIContext api_context = new APIContext(CLIENT_ID, CLIENT_SECRET, "sandbox");
+        String refresh_token = FuturePayment.fetchRefreshToken(api_context, authorization_code);
+        api_context.setRefreshToken(refresh_token);
+        //send metadataId to firebase
+        //send APIContext to firebase
     }
 
     public void agreePayment(View pressed) {
@@ -115,6 +95,8 @@ public class PledgeAgreement extends AppCompatActivity {
 
                     } catch (JSONException e) {
                         Log.e("FuturePaymentExample", "an extremely unlikely failure occurred: ", e);
+                    } catch (PayPalRESTException e) {
+                        e.printStackTrace();
                     }
                 }
             } else if (resultCode == Activity.RESULT_CANCELED) {
@@ -131,23 +113,4 @@ public class PledgeAgreement extends AppCompatActivity {
         stopService(new Intent(this, PayPalService.class));
         super.onDestroy();
     }
-
-//    Payer payer = new Payer();
-//    payer.setPaymentMethod("paypal");
-//    Amount amount = new Amount();
-//    amount.setTotal("0.17");
-//    amount.setCurrency("USD");
-//    Transaction transaction = new Transaction();
-//    transaction.setAmount(amount);
-//    transaction.setDescription("This is the payment tranasction description.");
-//    List<Transaction> transactions = new ArrayList<Transaction>();
-//    transactions.add(transaction);
-//
-//    FuturePayment futurePayment = new FuturePayment();
-//    futurePayment.setIntent("authorize");
-//    futurePayment.setPayer(payer);
-//    futurePayment.setTransactions(transactions);
-//
-//    Payment createdPayment = futurePayment.create(context, correlationId);
-//    System.out.println(createdPayment.toString());
 }
