@@ -43,12 +43,13 @@
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
 
-        <activity android:name=".PayPal" />
+        <activity android:name=".InstantPayment" />
         <activity
-            android:name=".PaymentStatus"
+            android:name=".InstantPaymentStatus"
             android:label="@string/title_activity_payment_status"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".PledgeAgreement"></activity>
+        <activity android:name=".FuturePaymentAgreement" />
+        <activity android:name=".MakeFuturePayment"></activity>
     </application>
 
 </manifest>

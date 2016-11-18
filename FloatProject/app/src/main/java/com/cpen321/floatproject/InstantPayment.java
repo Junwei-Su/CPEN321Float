@@ -21,7 +21,7 @@ import java.math.BigDecimal;
 
 
 
-public class PayPal extends AppCompatActivity {
+public class InstantPayment extends AppCompatActivity {
 
     //set environment as the testing sandbox (can also be set to do actual transactions)
     private static final String CONFIG_ENVIRONMENT = PayPalConfiguration.ENVIRONMENT_SANDBOX;
@@ -30,7 +30,7 @@ public class PayPal extends AppCompatActivity {
     private String payment_amount;
 
     //configure PayPal with the environment and client ID
-    private static PayPalConfiguration p_configuration = new PayPalConfiguration()
+    private static PayPalConfiguration paypal_configuration = new PayPalConfiguration()
             .environment(CONFIG_ENVIRONMENT)
             .clientId(CLIENT_ID)
             .merchantName("test")
@@ -42,10 +42,10 @@ public class PayPal extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_pay_pal);
+        setContentView(R.layout.instant_payment);
 
         Intent paypal_service = new Intent(this, PayPalService.class);
-        paypal_service.putExtra(PayPalService.EXTRA_PAYPAL_CONFIGURATION, p_configuration);
+        paypal_service.putExtra(PayPalService.EXTRA_PAYPAL_CONFIGURATION, paypal_configuration);
         startService(paypal_service); //the PayPal service
     }
 
@@ -71,7 +71,7 @@ public class PayPal extends AppCompatActivity {
 
         //create intent and send the same configuration for restart resiliency
         Intent paypal_intent = new Intent(this, PaymentActivity.class);
-        paypal_intent.putExtra(PayPalService.EXTRA_PAYPAL_CONFIGURATION, p_configuration);
+        paypal_intent.putExtra(PayPalService.EXTRA_PAYPAL_CONFIGURATION, paypal_configuration);
         paypal_intent.putExtra(PaymentActivity.EXTRA_PAYMENT, payment);
         startActivityForResult(paypal_intent, REQUEST_CODE_PAYMENT);
     }
@@ -87,7 +87,7 @@ public class PayPal extends AppCompatActivity {
                         String payment_details = confirmation.toJSONObject().toString(4);
 
                         //Starting a new activity to show the payment status
-                        startActivity(new Intent(this, PaymentStatus.class)
+                        startActivity(new Intent(this, InstantPaymentStatus.class)
                                 .putExtra("PaymentDetails", payment_details)
                                 .putExtra("PaymentAmount", payment_amount));
 
