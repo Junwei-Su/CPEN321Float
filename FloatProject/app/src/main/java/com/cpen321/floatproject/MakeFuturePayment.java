@@ -26,10 +26,12 @@ import java.util.List;
 
 public class MakeFuturePayment extends AppCompatActivity {
 
+    User user;
     Campaign myCampaign;
     Payment createdPayment;
     String title;
     String payment_amount;
+    String userid;
 
     private DatabaseReference databaseref = FirebaseDatabase.getInstance().getReference();
 
@@ -41,8 +43,17 @@ public class MakeFuturePayment extends AppCompatActivity {
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             title = extras.getString("Title");
+            userid = extras.getString("UserID");
         }
         showScript();
+
+        try {
+            makePayment();
+        } catch (PayPalRESTException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         //listener for returning to map page
         Button map_button = (Button) findViewById(R.id.return_map2);
@@ -60,14 +71,23 @@ public class MakeFuturePayment extends AppCompatActivity {
         databaseref.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+                user = dataSnapshot.child("users").child(userid).getValue(User.class);
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {}
+        });
+
+        databaseref.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
                 myCampaign = dataSnapshot.child("campaigns").child(title).getValue(Campaign.class);
             }
             @Override
             public void onCancelled(DatabaseError databaseError) {}
         });
 
-        String json = myCampaign.json_api_context;
-        String metadata_id = myCampaign.metadata_id;
+        String json = user.json_api_context;
+        String metadata_id = user.metadata_id;
         payment_amount = myCampaign.goal_amount;
         //BigDecimal payment_amount = new BigDecimal(String.valueOf(myCampaign.goal_amount));
 
@@ -100,8 +120,9 @@ public class MakeFuturePayment extends AppCompatActivity {
         TextView text_id = (TextView) findViewById(R.id.future_payment_id);
 
         //Showing the details of the transaction
-        text_title.setText(payment_amount);
+        text_title.setText(title);
         text_amount.setText(payment_amount);
-        //text_id.setText(createdPayment.toString());
+        if (createdPayment != null)
+            text_id.setText(createdPayment.toString());
     }
 }

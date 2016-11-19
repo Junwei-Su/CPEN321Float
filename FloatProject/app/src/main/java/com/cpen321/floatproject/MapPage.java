@@ -588,8 +588,12 @@ public class MapPage extends FragmentActivity implements OnMapReadyCallback,
     };
 
     private void makeFuturePayment(String title){
+        Profile profile = Profile.getCurrentProfile();
+        String userid = profile.getId();
+
         startActivity(new Intent(this, MakeFuturePayment.class)
-            .putExtra("Title", title));
+            .putExtra("Title", title)
+            .putExtra("UserID", userid));
     }
 
 }

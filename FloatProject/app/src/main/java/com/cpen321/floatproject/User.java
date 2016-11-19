@@ -1,6 +1,5 @@
 package com.cpen321.floatproject;
 
-import java.sql.Date;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -18,6 +17,8 @@ public class User {
     String city;
     String province;
     String country;
+    String metadata_id;
+    String json_api_context;
 
     //extra fields
     List<Campaign> list_of_campaign_followed = new LinkedList<Campaign>();
