@@ -18,13 +18,16 @@ public class Campaign {
     public List<LatLng> list_locations;
     public String owner_account;
     public String time_left;
+    public int status; //0 if campaign is in progress,
+    // 1 if campaign succeeded,
+    //3 when campaign is finished (campaign succeeded and payment completed) or campaign failed
 
     public Campaign() {
     }
 
     public Campaign(String accumulated_donation, String campaign_name, String charity, String description,
                     String destination, String goal_amount, Double start_lat, Double start_long, Double end_lat, Double end_long, String owner_account,
-                    String time_left) {
+                    String time_left, int status) {
         this.accumulated_donation = accumulated_donation;
         this.campaign_name = campaign_name;
         this.charity = charity;
@@ -37,6 +40,7 @@ public class Campaign {
         this.dest_location = new LatLng(end_lat, end_long);
         list_locations = new ArrayList<LatLng>();
         list_locations.add(initial_location);
+        this.status = status;
     }
 }
 

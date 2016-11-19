@@ -10,12 +10,12 @@ import android.widget.TextView;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class PaymentStatus extends AppCompatActivity {
+public class InstantPaymentStatus extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.content_payment_status);
+        setContentView(R.layout.instant_payment_status);
 
         //listener for returning to map page
         Button map_button = (Button) findViewById(R.id.return_map);
@@ -23,6 +23,15 @@ public class PaymentStatus extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(v.getContext(), MapPage.class);
+                startActivity(intent);
+            }
+        });
+
+        Button again_button = (Button) findViewById(R.id.donate_again);
+        again_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(v.getContext(), InstantPaymentStatus.class);
                 startActivity(intent);
             }
         });

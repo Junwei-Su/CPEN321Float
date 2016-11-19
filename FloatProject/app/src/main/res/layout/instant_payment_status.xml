@@ -91,6 +91,16 @@
 
         </TableRow>
 
+         <TableRow>
+             <Button
+                 android:id="@+id/donate_again"
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content"
+                 android:text="Donate again"
+                 android:layout_weight="1"/>
+
+         </TableRow>
+
     </TableLayout>
 
 

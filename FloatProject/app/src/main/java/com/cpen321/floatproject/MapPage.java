@@ -41,11 +41,14 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.google.gson.Gson;
+import com.paypal.android.sdk.payments.PayPalService;
 import com.paypal.api.payments.Amount;
 import com.paypal.api.payments.FuturePayment;
 import com.paypal.api.payments.Payer;
 import com.paypal.api.payments.Payment;
 import com.paypal.api.payments.Transaction;
+import com.paypal.base.rest.APIContext;
 
 import java.io.File;
 import java.io.IOException;
@@ -54,6 +57,8 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+
+import static com.paypal.base.Constants.CLIENT_ID;
 
 /**
  * Created by sfarinas on 10/17/2016.
@@ -582,26 +587,13 @@ public class MapPage extends FragmentActivity implements OnMapReadyCallback,
         return new LatLng(mapcoords.get("latitude"), mapcoords.get("longitude"));
     };
 
+    private void makeFuturePayment(String title){
+        Profile profile = Profile.getCurrentProfile();
+        String userid = profile.getId();
 
-   /* private void pay() {
-        //TODO: add a listener to see when campaigns succeed  and charge user appropriately
-        Payer payer = new Payer();
-        payer.setPaymentMethod("paypal");
-        Amount amount = new Amount();
-        amount.setTotal("11"); //get the amount from the database
-        amount.setCurrency("CAD");
-        Transaction transaction = new Transaction();
-        transaction.setAmount(amount);
-        transaction.setDescription("Payment for succeeded campaign");
-        List<Transaction> transactions = new ArrayList<Transaction>();
-        transactions.add(transaction);
+        startActivity(new Intent(this, MakeFuturePayment.class)
+            .putExtra("Title", title)
+            .putExtra("UserID", userid));
+    }
 
-        FuturePayment futurePayment = new FuturePayment();
-        futurePayment.setIntent("authorize");
-        futurePayment.setPayer(payer);
-        futurePayment.setTransactions(transactions);
-
-        //get the metadataId and api_context from the database
-        Payment createdPayment = futurePayment.create(api_context, metadataId);
-    }*/
 }
