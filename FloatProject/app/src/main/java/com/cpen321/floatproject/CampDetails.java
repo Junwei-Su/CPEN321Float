@@ -3,6 +3,7 @@ package com.cpen321.floatproject;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
@@ -15,6 +16,10 @@ public class CampDetails extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.campdetails);
+
+        //Intent intent = getIntent();
+        //String Value = intent.getStringExtra("key");
+        //Log.d("Tag", "camptitleinfo = " + Value);
 
         Button donate_button = (Button) findViewById(R.id.donate_button);
 

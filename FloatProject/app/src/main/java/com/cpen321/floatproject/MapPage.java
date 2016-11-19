@@ -141,7 +141,7 @@ public class MapPage extends FragmentActivity implements OnMapReadyCallback,
         super.onCreate(savedInstanceState);
         setContentView(R.layout.map);
 
-        LinearLayout infowindow = (LinearLayout) findViewById(R.id.infowindow);
+        final LinearLayout infowindow = (LinearLayout) findViewById(R.id.infowindow);
 
         //listen to infowindow once to obtain height in pixels
         infowindow.getViewTreeObserver().addOnGlobalLayoutListener(
@@ -232,9 +232,17 @@ public class MapPage extends FragmentActivity implements OnMapReadyCallback,
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+               // TextView tv = (TextView) findViewById(R.id.campaigntitle);
+
+               // String campaignname = (String) tv.getTag();
+               // Log.d("Tag", "camptitleinfo = " + campaignname);
+
                 //start _Submenu activity
                 Intent intent = new Intent(v.getContext(), CampDetails.class);
+                //intent.putExtra("key",campaignname);
                 startActivity(intent);
+
             }
         });
 
