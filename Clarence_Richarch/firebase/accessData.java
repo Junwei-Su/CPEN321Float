@@ -1,6 +1,6 @@
 public abstract class accessData{
 	protected DatabaseReference dataRef;
-	protected JSONObject obj; //can specify the actual type later
+	protected JsonObject obj; //can specify the actual type later
 	
 	protected accessData(DatabaseReference dataRef){
 		this.dataRef = dataRef;
@@ -11,7 +11,7 @@ public abstract class accessData{
 		dataRef.addListenerForSingleValueEvent(new ValueEventListener() {
 					@Override
 					public void onDataChange(DataSnapshot dataSnapshot) {
-						this.obj = dataSnapshot.getValue(JSONObject.class);
+						this.obj = dataSnapshot.getValue(JsonObject.class);
 					}
 					@Override
 					public void onCancelled(DatabaseError databaseError) {
