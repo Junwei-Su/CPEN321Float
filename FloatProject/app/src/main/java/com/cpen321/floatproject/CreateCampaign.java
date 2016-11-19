@@ -22,10 +22,11 @@ public class CreateCampaign extends Activity {
     private String description;
     private String goal;
     private String pledge;
-    double initlocatlatitude;
-    double initlocatlongitude;
-    double destlocatlatitude;
-    double destlocatlongitude;
+    private String userid;
+    private double initlocatlatitude;
+    private double initlocatlongitude;
+    private double destlocatlatitude;
+    private double destlocatlongitude;
 
     private DatabaseReference databaseref = FirebaseDatabase.getInstance().getReference();
 
@@ -47,7 +48,8 @@ public class CreateCampaign extends Activity {
                 //things to pass in: amount they paid, title
                 startActivity(new Intent(v.getContext(), FuturePaymentAgreement.class)
                         .putExtra("PledgeAmount", pledge)
-                        .putExtra("Title", title));
+                        .putExtra("Title", title)
+                        .putExtra("UserID", userid));
             }
         });
 
@@ -102,7 +104,7 @@ public class CreateCampaign extends Activity {
 
         //get Facebook numerical ID of signed in user
         Profile profile = Profile.getCurrentProfile();
-        String userid = profile.getId();
+        userid = profile.getId();
 
         //get pro
         Query queryRef =  databaseref.child("users").child(userid);
