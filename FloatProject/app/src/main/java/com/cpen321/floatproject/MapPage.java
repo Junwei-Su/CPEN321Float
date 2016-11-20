@@ -233,14 +233,15 @@ public class MapPage extends FragmentActivity implements OnMapReadyCallback,
             @Override
             public void onClick(View v) {
 
-               // TextView tv = (TextView) findViewById(R.id.campaigntitle);
+                TextView tv = (TextView) findViewById(R.id.campaigntitle);
 
-               // String campaignname = (String) tv.getTag();
-               // Log.d("Tag", "camptitleinfo = " + campaignname);
+               String campaignname = tv.getText().toString();
+
+               Log.d("Tag", "camptitleinfo = " + campaignname);
 
                 //start _Submenu activity
                 Intent intent = new Intent(v.getContext(), CampDetails.class);
-                //intent.putExtra("key",campaignname);
+                intent.putExtra("key",campaignname);
                 startActivity(intent);
 
             }
