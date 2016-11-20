@@ -5,6 +5,9 @@ import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 
 import com.facebook.Profile;
+import com.firebase.client.Firebase;
+
+import org.json.JSONObject;
 
 public class MainActivity extends FragmentActivity {
 
