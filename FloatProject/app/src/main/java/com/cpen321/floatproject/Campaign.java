@@ -21,6 +21,7 @@ public class Campaign {
     public int status; //0 if campaign is in progress,
     // 1 if campaign succeeded,
     //3 when campaign is finished (campaign succeeded and payment completed) or campaign failed
+    public String campaign_pic = "lighthouse.png"; //TODO remove hardcoded default value
 
     public Campaign() {
     }

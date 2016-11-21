@@ -35,10 +35,16 @@ public class CreateCampaign extends AppCompatActivity {
 
     private GetGPSLocation gps;
 
+    private EditText launchLat;
+    private EditText launchLong;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.createcampaign);
+
+        launchLat = (EditText) findViewById(R.id.initlocatlatitude);
+        launchLong = (EditText) findViewById(R.id.initlocatlongitude);
 
         Button button = (Button) findViewById(R.id.launchcamp);
         button.setOnClickListener(new View.OnClickListener() {
@@ -72,12 +78,11 @@ public class CreateCampaign extends AppCompatActivity {
             public void onClick(View v) {
                 gps = new GetGPSLocation(CreateCampaign.this, CreateCampaign.this);
 
-
                 if (gps.canGetLocation()) {
                     double latitude = gps.getLatitude();
                     double longitude = gps.getLongitude();
-
-                    Toast.makeText(getApplicationContext(), "Your Location is -\nLat: " + latitude + "\nLong: " + longitude, Toast.LENGTH_LONG).show();
+                    launchLat.setText(Double.toString(latitude));
+                    launchLong.setText(Double.toString(longitude));
                 }
                 else{
                     gps.showSettingsAlert();

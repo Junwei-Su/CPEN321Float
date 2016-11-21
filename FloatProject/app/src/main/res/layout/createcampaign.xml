@@ -66,14 +66,21 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:maxLines="1"
             android:hint="Latitude"/>
         <EditText
             android:id="@+id/initlocatlongitude"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:maxLines="1"
             android:hint="Longitude"/>
-
+        <Button
+            android:id="@+id/getCoords"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Get My Coords"/>
     </LinearLayout>
 
     <TextView
@@ -106,7 +113,12 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:hint="Longitude"/>
-
+        <Button
+            android:id="@+id/findCoords"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Search Coords"/>
     </LinearLayout>
 
     <EditText
@@ -143,10 +155,4 @@
             android:textColor="@color/darkestbackground"
             style="?android:attr/buttonBarButtonStyle"/>
     </LinearLayout>
-
-    <Button
-        android:id="@+id/getCoords"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Get My Coords"/>
 </RelativeLayout>
