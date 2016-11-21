@@ -41,6 +41,7 @@
                         android:src="@drawable/sampcamp"
                         android:layout_weight="8"/>
                     <TextView
+                        android:id="@+id/userdeets"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:paddingLeft="3pt"
@@ -60,6 +61,7 @@
                         android:src="@drawable/sampcamp"
                         android:layout_weight="8"/>
                     <TextView
+                        android:id="@+id/charitydeets"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:paddingLeft="3pt"
@@ -92,6 +94,7 @@
 
                 </LinearLayout>
                 <TextView
+                    android:id="@+id/descriptiondeets"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="5"
