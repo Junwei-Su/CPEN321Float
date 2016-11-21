@@ -19,7 +19,7 @@
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:layout_above="@+id/mapbuttonpanel"
-        android:visibility="visible">
+        android:visibility="invisible">
         <Space
             android:id="@+id/spacer"
             android:layout_width="match_parent"
@@ -33,7 +33,7 @@
             <LinearLayout
                 android:id="@+id/infowindow"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:orientation="horizontal"
                 android:padding="@dimen/activity_horizontal_margin"
                 android:background="@color/white">
