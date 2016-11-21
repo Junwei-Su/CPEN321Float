@@ -2,11 +2,14 @@ package com.cpen321.floatproject;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.location.Location;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.facebook.Profile;
 import com.google.firebase.database.DatabaseReference;
@@ -16,7 +19,7 @@ import com.google.firebase.database.Query;
 /**
  * Created by sfarinas on 10/17/2016.
  */
-public class CreateCampaign extends Activity {
+public class CreateCampaign extends AppCompatActivity {
     private String title;
     private String charity;
     private String description;
@@ -29,6 +32,8 @@ public class CreateCampaign extends Activity {
     private double destlocatlongitude;
 
     private DatabaseReference databaseref = FirebaseDatabase.getInstance().getReference();
+
+    private GetGPSLocation gps;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +63,25 @@ public class CreateCampaign extends Activity {
             @Override
             public void onClick(View v) {
                 addCampaign();
+            }
+        });
+
+        Button getCoords = (Button) findViewById(R.id.getCoords);
+        getCoords.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                gps = new GetGPSLocation(CreateCampaign.this, CreateCampaign.this);
+
+
+                if (gps.canGetLocation()) {
+                    double latitude = gps.getLatitude();
+                    double longitude = gps.getLongitude();
+
+                    Toast.makeText(getApplicationContext(), "Your Location is -\nLat: " + latitude + "\nLong: " + longitude, Toast.LENGTH_LONG).show();
+                }
+                else{
+                    gps.showSettingsAlert();
+                }
             }
         });
     }

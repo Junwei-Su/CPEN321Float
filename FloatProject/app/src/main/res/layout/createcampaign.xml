@@ -143,4 +143,10 @@
             android:textColor="@color/darkestbackground"
             style="?android:attr/buttonBarButtonStyle"/>
     </LinearLayout>
+
+    <Button
+        android:id="@+id/getCoords"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Get My Coords"/>
 </RelativeLayout>
