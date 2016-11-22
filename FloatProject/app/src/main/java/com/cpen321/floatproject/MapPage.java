@@ -20,6 +20,7 @@ import com.facebook.Profile;
 import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
@@ -28,6 +29,7 @@ import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.Circle;
 import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -81,7 +83,7 @@ public class MapPage extends FragmentActivity implements OnMapReadyCallback,
     private StorageReference imagesRef;
 
     //listeners for realtime database
-    private ChildEventListener listlocationslistener;
+    private ValueEventListener listlocationslistener;
     private ChildEventListener listcampaignslistener;
     private ValueEventListener campaignlistener;
     private ValueEventListener charitylistener;
@@ -222,8 +224,14 @@ public class MapPage extends FragmentActivity implements OnMapReadyCallback,
                 LinearLayout infowindow = (LinearLayout) findViewById(R.id.spacerparent);
                 infowindow.setVisibility(View.GONE);
 
+                //update map margins after window is gone
                 map.setPadding(0, 0, 0, buttonpanelheight);
-                map.animateCamera(CameraUpdateFactory.newCameraPosition(defaultcamerapos));
+
+                //move camera to fit campaign circles in screen
+                zoomFitCircles();
+
+                //TODO add button to reset camera position to user's location
+                //map.animateCamera(CameraUpdateFactory.newCameraPosition(defaultcamerapos));
             }
         });
 
@@ -325,36 +333,38 @@ public class MapPage extends FragmentActivity implements OnMapReadyCallback,
         listcampaignsref.addChildEventListener(listcampaignslistener);
 
         //listener to draw float circles of a campaign
-        listlocationslistener = new ChildEventListener() {
+        listlocationslistener = new ValueEventListener() {
             @Override
-            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                LatLng floatLocation = dataSnapshotToLatLng(dataSnapshot);
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                int i=0;
+                DataSnapshot locat;
+                Circle circle;
 
-                //add a campaign circle to the map
-                Circle circle = map.addCircle(new CircleOptions()
-                        .center(floatLocation)
-                        .radius(getResources().getInteger(R.integer.floatradius))
-                        .strokeColor(ContextCompat.getColor(getApplicationContext(), R.color.circleoutline))
-                        .fillColor(ContextCompat.getColor(getApplicationContext(), R.color.circlefill)));
+                while(true){
+                    Log.d("Tag", "Another iteration!");
+                    if(! dataSnapshot.hasChild(Integer.toString(i)))
+                        break;
 
-                //add a campaign circle to the list of circles
-                listCircles.add(circle);
-                //Log.d("Tag", "add circle: " + listCircles);
-            }
+                    locat = dataSnapshot.child(Integer.toString(i));
 
-            @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+                    LatLng floatLocation = dataSnapshotToLatLng(locat);
 
-            }
+                    //add a campaign circle to the map
+                    circle = map.addCircle(new CircleOptions()
+                            .center(floatLocation)
+                            .radius(getResources().getInteger(R.integer.floatradius))
+                            .strokeColor(ContextCompat.getColor(getApplicationContext(), R.color.circleoutline))
+                            .fillColor(ContextCompat.getColor(getApplicationContext(), R.color.circlefill)));
 
-            @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {
+                    //add a campaign circle to the list of circles
+                    listCircles.add(circle);
+                    //Log.d("Tag", "add circle: " + listCircles);
 
-            }
+                    i++;
+                }
 
-            @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
+                //move camera to fit circles on screen
+                zoomFitCircles();
             }
 
             @Override
@@ -531,13 +541,10 @@ public class MapPage extends FragmentActivity implements OnMapReadyCallback,
         //get database reference to list of locations of different campaign
         listlocationsref = campaignref.child("list_locations");
         //attach listener to list of locations of different campaign
-        listlocationsref.addChildEventListener(listlocationslistener);
+        listlocationsref.addListenerForSingleValueEvent(listlocationslistener);
 
         //update map padding to bring Google logo up
         map.setPadding(0, 0, 0, buttonpanelheight + infowindowheight);
-
-        //move map camera to default position
-        map.animateCamera(CameraUpdateFactory.newCameraPosition(defaultcamerapos));
 
         //tell caller we have not consumed the click event, enabling default marker behaviour
         return false;
@@ -605,4 +612,45 @@ public class MapPage extends FragmentActivity implements OnMapReadyCallback,
             .putExtra("UserID", userid));
     }
 
+    private void zoomFitCircles(){
+        //if no circles, do nothing
+        if(listCircles.size() == 0)
+            return;
+
+        //create bounds object by supplying coordinates we need to include
+        LatLngBounds.Builder builder = new LatLngBounds.Builder();
+        for(Circle c : listCircles){
+            builder.include(c.getCenter());
+        }
+
+        //create a bounds object the contains the included
+        LatLngBounds bounds = builder.build();
+        double degoffsetnorth = getResources().getInteger(R.integer.floatradius)/111111.0;
+        double degoffseteast = getResources().getInteger(R.integer.floatradius)/
+                111111.0/Math.cos(bounds.northeast.latitude/180.0*Math.PI);
+        double degoffsetwest = getResources().getInteger(R.integer.floatradius)/
+                111111.0/Math.cos(bounds.southwest.latitude/180.0*Math.PI);
+        Log.d("Tag", "degoffsetnorth = " + degoffsetnorth);
+        Log.d("Tag", "degoffseteast = " + degoffseteast);
+        Log.d("Tag", "degoffsetwest = " + degoffsetwest);
+
+        Log.d("Tag", "old northeast = " + bounds.northeast.latitude + ", " + bounds.northeast.longitude);
+        Log.d("Tag", "old southwest = " + bounds.southwest.latitude + ", " + bounds.southwest.longitude);
+
+        LatLng northeast = new LatLng(bounds.northeast.latitude + degoffsetnorth,
+                bounds.northeast.longitude + degoffseteast);
+        LatLng southwest = new LatLng(bounds.southwest.latitude - degoffsetnorth,
+                bounds.southwest.longitude - degoffsetwest);
+
+        bounds = bounds.including(northeast);
+        bounds = bounds.including(southwest);
+
+        Log.d("Tag", "new northeast = " + bounds.northeast.latitude + ", " + bounds.northeast.longitude);
+        Log.d("Tag", "new southwest = " + bounds.southwest.latitude + ", " + bounds.southwest.longitude);
+
+        //provide bounds object and padding
+        CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds,
+                (int)getResources().getDimension(R.dimen.activity_horizontal_margin));
+        map.animateCamera(cu);
+    }
 }
