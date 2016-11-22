@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.facebook.Profile;
@@ -35,16 +36,16 @@ public class CreateCampaign extends AppCompatActivity {
 
     private GetGPSLocation gps;
 
-    private EditText launchLat;
-    private EditText launchLong;
+    private TextView launchLat;
+    private TextView launchLong;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.createcampaign);
 
-        launchLat = (EditText) findViewById(R.id.initlocatlatitude);
-        launchLong = (EditText) findViewById(R.id.initlocatlongitude);
+        launchLat = (TextView) findViewById(R.id.initlocatlatitude);
+        launchLong = (TextView) findViewById(R.id.initlocatlongitude);
 
         Button button = (Button) findViewById(R.id.launchcamp);
         button.setOnClickListener(new View.OnClickListener() {
@@ -111,12 +112,12 @@ public class CreateCampaign extends AppCompatActivity {
         pledge = myText.getText().toString();
         Log.d("Tag", pledge);
 
-        myText = (EditText) findViewById(R.id.initlocatlatitude);
-        initlocatlatitude = Double.parseDouble(myText.getText().toString());
+        TextView myTextView = (TextView) findViewById(R.id.initlocatlatitude);
+        initlocatlatitude = Double.parseDouble(myTextView.getText().toString());
         Log.d("Tag", "initlocatlatitude: " + initlocatlatitude);
 
-        myText = (EditText) findViewById(R.id.initlocatlongitude);
-        initlocatlongitude = Double.parseDouble(myText.getText().toString());
+        myTextView = (TextView) findViewById(R.id.initlocatlongitude);
+        initlocatlongitude = Double.parseDouble(myTextView.getText().toString());
         Log.d("Tag", "initlocatlongitude: " + initlocatlongitude);
 
         myText = (EditText) findViewById(R.id.destlocatlatitude);
