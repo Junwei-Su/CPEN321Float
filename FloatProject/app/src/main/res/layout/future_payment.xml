@@ -8,102 +8,39 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation= "vertical"
-        >
-    </LinearLayout>
+        android:layout_height="match_parent">
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text = "Your campaign:"
-        android:textSize = "15sp"
-        android:paddingTop = "20sp"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text = "Your campaign:  "
+            android:textSize = "15sp"
+            android:paddingTop = "50sp" />
 
-    <TextView
-        android:layout_width="match_parent"
+        <TextView
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/campaign_title"
+        android:id="@+id/campaign_title1"
+        android:text = "Title"
         android:textStyle="bold"
         android:gravity="center"
-        android:textSize = "15sp"
-        android:paddingTop = "40sp"/>
+        android:textSize = "15sp" />
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text = "has succeeded!"
-        android:gravity="center"
-        android:textSize = "15sp"
-        android:paddingTop = "60sp"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text = "  has succeeded!"
+            android:gravity="center"
+            android:textSize = "15sp" />
 
+    </LinearLayout>
 
-    <TableLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingTop="150sp"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true">
-
-        <TableRow>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="The amount : " />
-
-            <TextView
-                android:id="@+id/future_payment_amount"
-                android:layout_width="wrap_content"
-                android:textStyle="bold"
-                android:layout_height="wrap_content" />
-        </TableRow>
-
-        <TableRow>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="has been charged to your account"/>
-        </TableRow>
-
-        <TableRow>
-            <TextView/>
-        </TableRow>
-
-
-        <TableRow>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Payment Id : " />
-
-        </TableRow>
-
-        <TableRow>
-
-            <TextView
-                android:id="@+id/future_payment_id"
-                android:textStyle="bold"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-
-        </TableRow>
-
-        <TableRow>
-            <Button
-                android:layout_marginTop="130dp"
-                android:id="@+id/return_map2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Return to Map Page"
-                android:layout_weight="1"/>
-
-        </TableRow>
-
-
-    </TableLayout>
-
+        <TextView
+            android:layout_marginTop="120sp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text = "Please stand by while your payment is processed"
+            android:gravity="center"
+            android:textSize = "15sp" />
 
 </RelativeLayout>
