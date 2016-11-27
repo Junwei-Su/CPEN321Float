@@ -35,10 +35,9 @@ public class MakeFuturePayment extends AppCompatActivity {
     String userid;
 
     private static final String CLIENT_ID =
-            "AaeuSB3UXO3lpq6BSvl6wan9CzqH71hDWnF2K8iBKgJPGGBtkEAvoTQ-ooxWWaCioyoYDE-x0wgHjsuQ";
+            "AfwKVfqhDY263y2WMId3yTpSlalnyNCP47ebWaVH0q0d20sXeO8je9-kM2zWHuV2zKXmxIkbf9UMggdF";
     private static final String CLIENT_SECRET =
-            "ED5YbURCLIgiNGuO8OfL9yY3MPUNHvejc_0MjVCzKhxR_v1pQVn9MqO944bdEMUp1TGiF-V65VU9LMhW";
-
+            "EDoORf_P0yhpdjSDkCuQ1vDcIRQLGEtqXSZi34nA5UxZQ0xHqFuXNxUqDiLX6jYwGUHuewSbOcxBTMNQ";
     private static final String MAKE_PAYMENT =
             "http://ec2-54-213-91-175.us-west-2.compute.amazonaws.com/paypal-sdk/future_payment.php";
 
