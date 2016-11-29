@@ -11,6 +11,6 @@ public interface Readable {
     /*
     * Read object from database with ID
     */
-    public  Object read(String ID, DataSnapshot dataSnapshot);
+    public Object read(String ID, DataSnapshot dataSnapshot);
 
 }

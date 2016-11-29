@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.View;
@@ -11,7 +12,6 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.firebase.client.Firebase;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
@@ -33,7 +33,8 @@ public class CampDetails extends Activity {
 
     private DatabaseReference databaseref;
     private DatabaseReference campaignref;
-    private DatabaseReference listcharitiesref;
+    private DatabaseReference campaignsref;
+    private DatabaseReference charitiesref;
     private DatabaseReference charityref;
     private DatabaseReference launchuserref;
     private DatabaseReference usersref;
@@ -43,6 +44,8 @@ public class CampDetails extends Activity {
 
     private ValueEventListener launchuserlistener;
     private ValueEventListener charitylistener;
+
+    private CampsDBInteractor dbInteractor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,37 +62,36 @@ public class CampDetails extends Activity {
 
         databaseref = FirebaseDatabase.getInstance().getReference();
         usersref = databaseref.child("users");
-        campaignref = databaseref.child("campaigns").child(theCampaign);
-        listcharitiesref = databaseref.child("charities");
-        Log.d("Tag", "testingreference = " + campaignref.toString());
+        charitiesref = databaseref.child("charities");
+        campaignsref = databaseref.child("campaigns");
+        campaignref = campaignsref.child(theCampaign);
+//        Log.d("Tag", "testingreference = " + campaignref.toString());
 
         //Getting the picture
         storageref = FirebaseStorage.getInstance();
         imagesref = storageref.getReferenceFromUrl("gs://float-568c7.appspot.com/images");
 
-        campaignref.addListenerForSingleValueEvent(new ValueEventListener() {
+        dbInteractor = new CampsDBInteractor();
+        campaignsref.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+                Campaign campaign = dbInteractor.read(theCampaign, dataSnapshot);
 
                 //update campaign image
-                String campaignpic = dataSnapshot.child("campaign_pic").getValue(String.class);
-                StorageReference imageref = imagesref.child(campaignpic);
+                StorageReference imageref = imagesref.child(campaign.campaign_pic);
                 setDBPictureOnImageView(imageref, R.id.campaignpicdeets);
 
-                String user = dataSnapshot.child("owner_account").getValue(String.class);
-                Log.d("Tag", "campdeetuser = " + user);
-                launchuserref = usersref.child(user);
+                launchuserref = usersref.child(campaign.owner_account);
                 launchuserref.addListenerForSingleValueEvent(launchuserlistener);
 
-                String charity = dataSnapshot.child("charity").getValue(String.class);
+                String charity = campaign.charity;
                 TextView tv = (TextView) findViewById(R.id.charitydeets);
                 tv.setText(charity);
-                charityref = listcharitiesref.child(charity);
+                charityref = charitiesref.child(charity);
                 charityref.addListenerForSingleValueEvent(charitylistener);
 
-                String description = dataSnapshot.child("description").getValue(String.class);
                 tv = (TextView) findViewById(R.id.descriptiondeets);
-                tv.setText(description);
+                tv.setText(campaign.description);
 
             }
 

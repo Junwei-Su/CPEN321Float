@@ -47,8 +47,16 @@ public class Campaign {
                     String destination, String goal_amount, LatLng initial_location, LatLng dest_location,
                     String owner_account, String time_left, List<LatLng> list_of_locations) {
 
-        new Campaign(accumulated_donation, campaign_name, charity, description,
-                destination, goal_amount, initial_location,  dest_location, owner_account, time_left);
+    this.accumulated_donation = accumulated_donation;
+        this.campaign_name = campaign_name;
+        this.charity = charity;
+        this.description = description;
+        this.destination = destination;
+        this.goal_amount = goal_amount;
+        this.owner_account = owner_account;
+        this.time_left = time_left;
+        this.initial_location = initial_location;
+        this.dest_location = dest_location;
         this.list_locations = list_of_locations;
     }
 

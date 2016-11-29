@@ -1,8 +1,12 @@
 package com.cpen321.floatproject;
 
+import android.util.Log;
+
 import com.google.firebase.database.DataSnapshot;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -14,6 +18,48 @@ import java.util.Map;
  */
 
 public class CampsDBInteractor implements Readable, Writable {
+
+    Campaign campaign_read;
+    List<Campaign> nearby_campaigns_list;
+    /*
+    *   This method read a Campaign object from database with the campaign ID
+    *   @param:
+    *       ID: the unique ID of the campaign object in database
+    *       dataSnapshot: dataSnapshot of all campaigns object
+    *   @return:
+    *       Campaign object search for
+     */
+    public Campaign read2(String ID, DatabaseReference db_ref) {
+        final String user_id = ID;
+        db_ref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                //get the dataSnapshot of the campaign object with this ID
+                DataSnapshot camp_snap =  dataSnapshot.child(user_id);
+                //retrive the camp information
+                String accumulated_donation = (String)camp_snap.child("accumulated_donation").getValue();
+                String campaign_name = (String)camp_snap.child("campaign_name").getValue();
+                String charity = (String)camp_snap.child("charity").getValue();
+                String description = (String)camp_snap.child("description").getValue();
+                String destination = (String)camp_snap.child("destination").getValue();
+                String goal_amount = (String)camp_snap.child("goal_amount").getValue();
+                LatLng initial_location =  dataSnapshotToLatLng(camp_snap.child("initial_location"));
+                LatLng dest_location = dataSnapshotToLatLng(camp_snap.child("dest_location"));
+                List<LatLng> list_locations = dataSnapshotToLatLngList(camp_snap.child("list_locations"));
+                String owner_account = (String)camp_snap.child("owner_account").getValue();
+                String time_left = (String)camp_snap.child("time_left").getValue();
+                campaign_read = new Campaign(
+                        accumulated_donation, campaign_name, charity, description,
+                        destination, goal_amount, initial_location,  dest_location,
+                        owner_account, time_left, list_locations
+                );
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+            }
+        });
+        return campaign_read;
+    }
 
     /*
     *   This method read a Campaign object from database with the campaign ID
@@ -55,6 +101,12 @@ public class CampsDBInteractor implements Readable, Writable {
                 owner_account, time_left, list_locations
         );
 
+        Log.d("Tag", to_return.campaign_name);
+        Log.d("Tag", to_return.accumulated_donation);
+        Log.d("Tag", to_return.charity);
+        Log.d("Tag", to_return.goal_amount);
+        Log.d("Tag", to_return.description);
+
         return to_return;
     }
 
@@ -91,16 +143,16 @@ public class CampsDBInteractor implements Readable, Writable {
      *  dataSnapshot: a datasnapshot of all campaigns object in firebase
     */
     public List<Campaign> searchNearbyCamps(LatLng currentLoc, int radius, DataSnapshot dataSnapshot){
-        List<Campaign> nearbyCamp_list = new LinkedList<Campaign>();
+        List<Campaign> nearbyCamp_list = new LinkedList<>();
         for(DataSnapshot camps : dataSnapshot.getChildren()){
 
             List<LatLng> list_location = dataSnapshotToLatLngList(camps);
             //List<LatLng> list_location = (List<LatLng>) camps.child("list_locations");
 
-            //iterate through the location and chekc if there exist one within radius
+            //iterate through the location and check if there exist one within radius
             for(LatLng location: list_location){
                 if(Algorithms.calculateDistance(currentLoc, location) <= radius ){
-                    Campaign camp_within_radius = read((String)camps.child("campaign_name").getValue(),
+                    Campaign camp_within_radius = read((String) camps.child("campaign_name").getValue(),
                             dataSnapshot);
                     nearbyCamp_list.add(camp_within_radius);
                 }

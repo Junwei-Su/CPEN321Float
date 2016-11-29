@@ -245,7 +245,7 @@ public class MapPage extends FragmentActivity implements OnMapReadyCallback,
 
                String campaignname = tv.getText().toString();
 
-               Log.d("Tag", "camptitleinfo = " + campaignname);
+                 Log.d("Tag", "camptitleinfo = " + campaignname);
 
                 //start _Submenu activity
                 Intent intent = new Intent(v.getContext(), CampDetails.class);
@@ -341,7 +341,7 @@ public class MapPage extends FragmentActivity implements OnMapReadyCallback,
                 Circle circle;
 
                 while(true){
-                    Log.d("Tag", "Another iteration!");
+//                    Log.d("Tag", "Another iteration!");
                     if(! dataSnapshot.hasChild(Integer.toString(i)))
                         break;
 
@@ -455,6 +455,36 @@ public class MapPage extends FragmentActivity implements OnMapReadyCallback,
         StorageReference lighthouseRef = imagesRef.child("lighthouse.png");
         //setDBPictureOnImageView(lighthouseRef, R.id.campaignpic);
         //setDBPictureOnImageView(lighthouseRef, R.id.userpic);
+
+        final CampsDBInteractor testReader = new CampsDBInteractor();
+
+        listcampaignsref.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Campaign campaign = testReader.read("testCamp1", dataSnapshot);
+                Log.d("Tag", campaign.campaign_name);
+                Log.d("Tag", campaign.accumulated_donation);
+                Log.d("Tag", campaign.campaign_pic);
+                Log.d("Tag", campaign.charity);
+                Log.d("Tag", campaign.goal_amount);
+                Log.d("Tag", campaign.description);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+          //testing code for read
+//        Campaign campaign = testReader.read("testCamp1", listcampaignsref.child("testCamp1"));
+//        Log.d("Tag", "MapPage " + campaign.campaign_name);
+//        Log.d("Tag", "MapPage " + campaign.accumulated_donation);
+//        Log.d("Tag", "MapPage " + campaign.campaign_pic);
+//        Log.d("Tag", "MapPage " + campaign.charity);
+//        Log.d("Tag", "MapPage " + campaign.goal_amount);
+//        Log.d("Tag", "MapPage " + campaign.description);
+
     }
 
 
@@ -608,8 +638,8 @@ public class MapPage extends FragmentActivity implements OnMapReadyCallback,
         String userid = profile.getId();
 
         startActivity(new Intent(this, MakeFuturePayment.class)
-            .putExtra("Title", title)
-            .putExtra("UserID", userid));
+                .putExtra("Title", title)
+                .putExtra("UserID", userid));
     }
 
     private void zoomFitCircles(){
@@ -630,12 +660,12 @@ public class MapPage extends FragmentActivity implements OnMapReadyCallback,
                 111111.0/Math.cos(bounds.northeast.latitude/180.0*Math.PI);
         double degoffsetwest = getResources().getInteger(R.integer.floatradius)/
                 111111.0/Math.cos(bounds.southwest.latitude/180.0*Math.PI);
-        Log.d("Tag", "degoffsetnorth = " + degoffsetnorth);
-        Log.d("Tag", "degoffseteast = " + degoffseteast);
-        Log.d("Tag", "degoffsetwest = " + degoffsetwest);
+        //Log.d("Tag", "degoffsetnorth = " + degoffsetnorth);
+        //Log.d("Tag", "degoffseteast = " + degoffseteast);
+        //Log.d("Tag", "degoffsetwest = " + degoffsetwest);
 
-        Log.d("Tag", "old northeast = " + bounds.northeast.latitude + ", " + bounds.northeast.longitude);
-        Log.d("Tag", "old southwest = " + bounds.southwest.latitude + ", " + bounds.southwest.longitude);
+        //Log.d("Tag", "old northeast = " + bounds.northeast.latitude + ", " + bounds.northeast.longitude);
+        //Log.d("Tag", "old southwest = " + bounds.southwest.latitude + ", " + bounds.southwest.longitude);
 
         LatLng northeast = new LatLng(bounds.northeast.latitude + degoffsetnorth,
                 bounds.northeast.longitude + degoffseteast);
@@ -645,8 +675,8 @@ public class MapPage extends FragmentActivity implements OnMapReadyCallback,
         bounds = bounds.including(northeast);
         bounds = bounds.including(southwest);
 
-        Log.d("Tag", "new northeast = " + bounds.northeast.latitude + ", " + bounds.northeast.longitude);
-        Log.d("Tag", "new southwest = " + bounds.southwest.latitude + ", " + bounds.southwest.longitude);
+        //Log.d("Tag", "new northeast = " + bounds.northeast.latitude + ", " + bounds.northeast.longitude);
+        //Log.d("Tag", "new southwest = " + bounds.southwest.latitude + ", " + bounds.southwest.longitude);
 
         //provide bounds object and padding
         CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds,

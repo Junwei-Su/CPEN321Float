@@ -138,15 +138,16 @@ public class CreateCampaign extends AppCompatActivity {
 
         //get pro
         Query queryRef =  databaseref.child("users").child(userid);
-        if(queryRef != null) {
+        //TODO change to use to LatLng
+        /*if(queryRef != null) {
             String user_name = queryRef.orderByKey().equalTo("name").toString();
             Campaign myCampaign = new Campaign("0", title, charity, description,
                     goal, pledge, initlocatlatitude, initlocatlongitude, destlocatlatitude, destlocatlongitude, user_name,
-                    Integer.toString(R.integer.defaulttimeremaining), 0);
+                    Integer.toString(R.integer.defaulttimeremaining));
             databaseref.child("campaigns").child(title).setValue(myCampaign);
         }else{
             Log.d("Tag", "Error creating campaign. Need to create account first.");
-        }
+        }*/
     }
 
     //launch campaign
