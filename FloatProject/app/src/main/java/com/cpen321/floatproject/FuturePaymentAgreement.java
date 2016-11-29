@@ -10,47 +10,41 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
+import com.android.volley.AuthFailureError;
+import com.android.volley.DefaultRetryPolicy;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.RetryPolicy;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import com.google.gson.Gson;
 import com.paypal.android.sdk.payments.PayPalAuthorization;
 import com.paypal.android.sdk.payments.PayPalConfiguration;
 import com.paypal.android.sdk.payments.PayPalFuturePaymentActivity;
 import com.paypal.android.sdk.payments.PayPalService;
-import com.paypal.api.payments.FuturePayment;
-import com.paypal.base.rest.APIContext;
 import com.paypal.base.rest.PayPalRESTException;
 
-import com.android.volley.*;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
 public class FuturePaymentAgreement extends AppCompatActivity {
 
     private DatabaseReference databaseref = FirebaseDatabase.getInstance().getReference();
-    User user;
     String pledge_amount;
     String title;
     String userid;
     //set environment as the testing sandbox (can also be set to do actual transactions)
     private static final String CONFIG_ENVIRONMENT = PayPalConfiguration.ENVIRONMENT_SANDBOX;
     private static final String CLIENT_ID =
-            "AaeuSB3UXO3lpq6BSvl6wan9CzqH71hDWnF2K8iBKgJPGGBtkEAvoTQ-ooxWWaCioyoYDE-x0wgHjsuQ";
+            "AfwKVfqhDY263y2WMId3yTpSlalnyNCP47ebWaVH0q0d20sXeO8je9-kM2zWHuV2zKXmxIkbf9UMggdF";
     private static final String CLIENT_SECRET =
-            "ED5YbURCLIgiNGuO8OfL9yY3MPUNHvejc_0MjVCzKhxR_v1pQVn9MqO944bdEMUp1TGiF-V65VU9LMhW";
+            "EDoORf_P0yhpdjSDkCuQ1vDcIRQLGEtqXSZi34nA5UxZQ0xHqFuXNxUqDiLX6jYwGUHuewSbOcxBTMNQ";
     private static final String GET_REFRESH =
-            "http://ec2-54-213-91-175.us-west-2.compute.amazonaws.com/paypal-sdk/test_refresh.php";
-
-//    private static final String CLIENT_ID = "AX8PdEKmNADu_-4PQJ5sGojLRhWzV4yLXkOb9tGVRi_yLsii9a7SNNQ4g_VOr7VexhmjDgXUvf2vqZaN";
-//    private static final String CLIENT_SECRET = "EC8mkhijObvyvT29FZzGQXJDaU6F6mS-IxUcUWHLFIhruWvoUPEP8wzspEPJYae0w9jUEgK3yUZzAwi_";
+            "http://ec2-54-213-91-175.us-west-2.compute.amazonaws.com/paypal-sdk/refresh.php";
 
     //configure PayPal with the environment and client ID
     private static PayPalConfiguration paypal_configuration = new PayPalConfiguration()
@@ -96,22 +90,28 @@ public class FuturePaymentAgreement extends AppCompatActivity {
     private void sendAuthorizationToServer(PayPalAuthorization authorization) throws PayPalRESTException {
         final String authorization_code = authorization.getAuthorizationCode();
         final String metadata_id = PayPalConfiguration.getClientMetadataId(this);
-        String environment = "sandbox";
+
+        Log.d("auth", authorization_code);
+        Log.d("metadata", metadata_id);
 
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         StringRequest putRequest = new StringRequest(Request.Method.POST, GET_REFRESH,
-                new Response.Listener<String>()
-                {
+                new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        // response
-                        // The server should return a refresh token
                         Log.d("Refresh Token Response", response);
                         String refresh_token = response;
+
+                        User u = new User();
+                        u.refresh_token = refresh_token;
+                        u.metadata_id = metadata_id;
+
+                        Gson g = new Gson();
+                        String child = g.toJson(u);
+                        databaseref.child("users").child(userid).setValue(child);
                     }
                 },
-                new Response.ErrorListener()
-                {
+                new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         // error
@@ -121,55 +121,28 @@ public class FuturePaymentAgreement extends AppCompatActivity {
         ) {
             // We send the strings we want to the server in this method
             @Override
-            protected Map<String, String> getParams()
-            {
-                Map<String, String>  params = new HashMap<String, String> ();
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<String, String>();
                 //for future payments
                 params.put("authorizationCode", authorization_code);
                 params.put("clientMetadataId", metadata_id);
-                params.put("clientSecret",CLIENT_SECRET);
-                params.put("clientId",CLIENT_ID);
+                params.put("clientSecret", CLIENT_SECRET);
+                params.put("clientId", CLIENT_ID);
                 return params;
             }
+
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
-                Map<String,String> params = new HashMap<String, String>();
-                params.put("Content-Type","application/x-www-form-urlencoded");
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("Content-Type", "application/x-www-form-urlencoded");
                 return params;
             }
 
         };
+        int socketTimeout = 5000; // 50 seconds
+        RetryPolicy policy = new DefaultRetryPolicy(socketTimeout, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
+        putRequest.setRetryPolicy(policy);
         requestQueue.add(putRequest);
-
-       APIContext api_context = new APIContext(CLIENT_ID, CLIENT_SECRET, "sandbox");
-        //APIContext api_context = new APIContext(CLIENT_ID, CLIENT_SECRET, "sandbox");
-        //String refresh_token = FuturePayment.fetchRefreshToken(api_context, authorization_code);
-        //Log.i("refresh", refresh_token);
-        //api_context.setRefreshToken(refresh_token);
-
-        Gson gson = new Gson();
-        String json_api_context = gson.toJson(api_context);
-
-        TextView text_amount = (TextView) findViewById(R.id.pledge_amount);
-        text_amount.setText("send");
-
-        Log.i("json_api_context", json_api_context);
-        Log.i("metadata", metadata_id);
-
-        databaseref.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                user = dataSnapshot.child("users").child(userid).getValue(User.class);
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-            }
-        });
-
-        user.json_api_context = json_api_context;
-        user.metadata_id = metadata_id;
-        databaseref.child("users").child(userid).setValue(user);
     }
 
     public void agreePayment(View pressed) {
@@ -198,13 +171,15 @@ public class FuturePaymentAgreement extends AppCompatActivity {
                     Log.i("failure", "paypalrestexception");
                     e.printStackTrace();
                 }
-        }
+            }
         } else if (resultCode == Activity.RESULT_CANCELED) {
             Log.i("FuturePaymentExample", "The user canceled.");
         } else if (resultCode == PayPalFuturePaymentActivity.RESULT_EXTRAS_INVALID) {
             Log.i("FuturePaymentExample",
                     "Invalid PayPalConfiguration");
         }
+        Intent intent = new Intent(this, MapPage.class);
+        startActivity(intent);
     }
 
     @Override

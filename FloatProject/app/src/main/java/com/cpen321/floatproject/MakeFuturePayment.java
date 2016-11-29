@@ -3,35 +3,43 @@ package com.cpen321.floatproject;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.DefaultRetryPolicy;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.RetryPolicy;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.gson.Gson;
-import com.paypal.api.payments.Amount;
-import com.paypal.api.payments.Payer;
-import com.paypal.api.payments.Payment;
-import com.paypal.api.payments.Transaction;
-import com.paypal.base.rest.APIContext;
 import com.paypal.base.rest.PayPalRESTException;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 public class MakeFuturePayment extends AppCompatActivity {
 
-    User user;
-    Campaign myCampaign;
-    Payment createdPayment;
     String title;
-    String payment_amount;
     String userid;
+
+    private static final String CLIENT_ID =
+            "AfwKVfqhDY263y2WMId3yTpSlalnyNCP47ebWaVH0q0d20sXeO8je9-kM2zWHuV2zKXmxIkbf9UMggdF";
+    private static final String CLIENT_SECRET =
+            "EDoORf_P0yhpdjSDkCuQ1vDcIRQLGEtqXSZi34nA5UxZQ0xHqFuXNxUqDiLX6jYwGUHuewSbOcxBTMNQ";
+    private static final String MAKE_PAYMENT =
+            "http://ec2-54-213-91-175.us-west-2.compute.amazonaws.com/paypal-sdk/future_payment.php";
 
     private DatabaseReference databaseref = FirebaseDatabase.getInstance().getReference();
 
@@ -45,7 +53,9 @@ public class MakeFuturePayment extends AppCompatActivity {
             title = extras.getString("Title");
             userid = extras.getString("UserID");
         }
-        showScript();
+
+        TextView text_title = (TextView) findViewById(R.id.campaign_title1);
+        text_title.setText(title);
 
         try {
             makePayment();
@@ -56,6 +66,96 @@ public class MakeFuturePayment extends AppCompatActivity {
         }
 
         //listener for returning to map page
+
+    }
+
+    private void makePayment() throws PayPalRESTException, IOException {
+
+        databaseref.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                String user = dataSnapshot.child("users").child(userid).getValue(String.class);
+
+                String amount = "10";
+                // String amount = dataSnapshot.child("campaigns").child(title).child(amount).getValue(String.class); *****
+
+                Gson gson = new Gson();
+                User u = gson.fromJson(user, User.class);
+
+                makePayment(amount, u.refresh_token, u.metadata_id);
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {}
+        });
+    }
+
+    private void makePayment(final String payment_amount, final String refresh_token, final String metadata_id){
+
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        StringRequest putRequest = new StringRequest(Request.Method.POST, MAKE_PAYMENT,
+                new Response.Listener<String>()
+                {
+                    @Override
+                    public void onResponse(String response) {
+                        // response
+                        // The server should return a refresh token
+                        Log.d("Payment ID", response);
+                        setContentView(R.layout.future_payment_status);
+                        showScript(payment_amount, response);
+                    }
+                },
+                new Response.ErrorListener()
+                {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        // error
+                        Log.d("Error.Response", "Something Went Wrong");
+                    }
+                }
+        ) {
+            // We send the strings we want to the server in this method
+            @Override
+            protected Map<String, String> getParams()
+            {
+                Map<String, String>  params = new HashMap<String, String> ();
+
+                // Hardcoded....add the actual values in
+                params.put("payment_amount", payment_amount);
+                params.put("metadata_id", metadata_id);
+                params.put("client_secret",
+                        CLIENT_SECRET);
+                params.put("client_id",
+                        CLIENT_ID);
+                params.put("refresh_token", refresh_token);
+                params.put("payment_description",
+                        "test payment");
+                return params;
+            }
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String,String> params = new HashMap<String, String>();
+                params.put("Content-Type","application/x-www-form-urlencoded");
+                return params;
+            }
+
+        };
+        int socketTimeout = 30000; // 30 seconds
+        RetryPolicy policy = new DefaultRetryPolicy(socketTimeout, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
+        putRequest.setRetryPolicy(policy);
+        requestQueue.add(putRequest);
+    }
+
+    private void showScript(String payment_amount, String payment_id){
+        TextView text_title = (TextView) findViewById(R.id.campaign_title2);
+        TextView text_amount = (TextView) findViewById(R.id.amount);
+        TextView text_id = (TextView) findViewById(R.id.future_payment_id);
+
+        payment_amount = payment_amount.concat(" CAD");
+
+        text_title.setText(title);
+        text_amount.setText(payment_amount);
+        text_id.setText(payment_id);
+
         Button map_button = (Button) findViewById(R.id.return_map2);
         map_button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -64,65 +164,5 @@ public class MakeFuturePayment extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-    }
-
-    private void makePayment() throws PayPalRESTException, IOException {
-
-        databaseref.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                user = dataSnapshot.child("users").child(userid).getValue(User.class);
-            }
-            @Override
-            public void onCancelled(DatabaseError databaseError) {}
-        });
-
-        databaseref.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                myCampaign = dataSnapshot.child("campaigns").child(title).getValue(Campaign.class);
-            }
-            @Override
-            public void onCancelled(DatabaseError databaseError) {}
-        });
-
-        String json = user.json_api_context;
-        String metadata_id = user.metadata_id;
-        payment_amount = myCampaign.goal_amount;
-        //BigDecimal payment_amount = new BigDecimal(String.valueOf(myCampaign.goal_amount));
-
-        Gson gson = new Gson();
-        APIContext api_context = gson.fromJson(json, APIContext.class);
-
-        Payer payer = new Payer();
-        payer.setPaymentMethod("paypal");
-        Amount amount = new Amount();
-        amount.setTotal(payment_amount); //get the amount from the database
-        amount.setCurrency("CAD");
-        Transaction transaction = new Transaction();
-        transaction.setAmount(amount);
-        transaction.setDescription("Payment for succeeded campaign");
-        List<Transaction> transactions = new ArrayList<Transaction>();
-        transactions.add(transaction);
-
-        com.paypal.api.payments.FuturePayment futurePayment = new com.paypal.api.payments.FuturePayment();
-        futurePayment.setIntent("authorize");
-        futurePayment.setPayer(payer);
-        futurePayment.setTransactions(transactions);
-
-        //get the metadataId and api_context from the database
-        createdPayment = futurePayment.create(api_context, metadata_id);
-    }
-
-    private void showScript(){
-        TextView text_title = (TextView) findViewById(R.id.campaign_title);
-        TextView text_amount = (TextView) findViewById(R.id.future_payment_amount);
-        TextView text_id = (TextView) findViewById(R.id.future_payment_id);
-
-        //Showing the details of the transaction
-        text_title.setText(title);
-        text_amount.setText(payment_amount);
-        if (createdPayment != null)
-            text_id.setText(createdPayment.toString());
     }
 }

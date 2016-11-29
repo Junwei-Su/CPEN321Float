@@ -6,6 +6,7 @@
 
     <EditText
         android:id="@+id/titlein"
+        android:maxLength = "15"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/activity_horizontal_margin"
@@ -36,6 +37,8 @@
 
     <EditText
         android:id="@+id/pledgein"
+        android:inputType="number"
+        android:maxLength = "5"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/activity_horizontal_margin"

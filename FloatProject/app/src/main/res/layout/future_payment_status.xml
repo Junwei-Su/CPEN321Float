@@ -1,0 +1,95 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text = "Your campaign:  "
+            android:textSize = "15sp"
+            android:paddingTop = "50sp"
+            android:id = "@+id/campaign_title_tag"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/campaign_title2"
+            android:text = "Title"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:textSize = "15sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/succeded_tag"
+            android:text = "  has succeeded!"
+            android:gravity="center"
+            android:textSize = "15sp" />
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <TextView
+            android:layout_marginTop="135sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text = "The amount:  "
+            android:textSize = "15sp" />
+
+        <TextView
+            android:layout_marginTop="135sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/amount"
+            android:text = "amount"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:textSize = "15sp" />
+
+        <TextView
+            android:layout_marginTop="135sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/charged_tag"
+            android:text = " has been charged to your account"
+            android:gravity="center"
+            android:textSize = "15sp" />
+    </LinearLayout>
+
+    <TextView
+        android:layout_marginTop="220sp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Payment Id : " />
+
+
+    <TextView
+        android:id="@+id/future_payment_id"
+        android:textStyle="bold"
+        android:layout_marginTop="240sp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <Button
+        android:layout_marginTop="400dp"
+        android:id="@+id/return_map2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Return to Map Page"
+        android:layout_weight="1"/>
+
+
+
+</RelativeLayout>

@@ -18,7 +18,7 @@ public class User {
     String province;
     String country;
     String metadata_id;
-    String json_api_context;
+    String refresh_token;
 
     //extra fields
     List<Campaign> list_of_campaign_followed = new LinkedList<Campaign>();
