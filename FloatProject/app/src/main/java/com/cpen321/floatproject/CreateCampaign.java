@@ -13,6 +13,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.facebook.Profile;
+import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
@@ -31,6 +32,8 @@ public class CreateCampaign extends AppCompatActivity {
     private double initlocatlongitude;
     private double destlocatlatitude;
     private double destlocatlongitude;
+    private LatLng init_location;
+    private LatLng dest_location;
 
     private DatabaseReference databaseref = FirebaseDatabase.getInstance().getReference();
 
@@ -120,6 +123,8 @@ public class CreateCampaign extends AppCompatActivity {
         initlocatlongitude = Double.parseDouble(myTextView.getText().toString());
         Log.d("Tag", "initlocatlongitude: " + initlocatlongitude);
 
+        init_location = new LatLng(initlocatlatitude, initlocatlongitude);
+
         myText = (EditText) findViewById(R.id.destlocatlatitude);
         destlocatlatitude = Double.parseDouble(myText.getText().toString());
         Log.d("Tag", "destlocatlatitude: " + destlocatlatitude);
@@ -127,6 +132,8 @@ public class CreateCampaign extends AppCompatActivity {
         myText = (EditText) findViewById(R.id.destlocatlongitude);
         destlocatlongitude = Double.parseDouble(myText.getText().toString());
         Log.d("Tag", "destlocatlongitude: " + destlocatlongitude);
+
+        dest_location = new LatLng(destlocatlatitude, destlocatlongitude);
 
         myText = (EditText) findViewById(R.id.descriptionin);
         description = myText.getText().toString();
@@ -138,16 +145,15 @@ public class CreateCampaign extends AppCompatActivity {
 
         //get pro
         Query queryRef =  databaseref.child("users").child(userid);
-        //TODO change to use to LatLng
-        /*if(queryRef != null) {
+        if(queryRef != null) {
             String user_name = queryRef.orderByKey().equalTo("name").toString();
             Campaign myCampaign = new Campaign("0", title, charity, description,
-                    goal, pledge, initlocatlatitude, initlocatlongitude, destlocatlatitude, destlocatlongitude, user_name,
+                    goal, pledge, init_location, dest_location, user_name,
                     Integer.toString(R.integer.defaulttimeremaining));
             databaseref.child("campaigns").child(title).setValue(myCampaign);
         }else{
             Log.d("Tag", "Error creating campaign. Need to create account first.");
-        }*/
+        }
     }
 
     //launch campaign
