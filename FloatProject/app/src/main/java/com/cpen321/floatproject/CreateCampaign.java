@@ -3,20 +3,34 @@ package com.cpen321.floatproject;
 import android.app.Activity;
 import android.content.Intent;
 import android.location.Location;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.ContactsContract;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.facebook.Profile;
+import com.firebase.client.utilities.Base64;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 
 /**
  * Created by sfarinas on 10/17/2016.
@@ -41,6 +55,11 @@ public class CreateCampaign extends AppCompatActivity {
 
     private TextView launchLat;
     private TextView launchLong;
+    private ImageView photo;
+    private Uri selectedImageURI;
+
+    private FirebaseStorage storage;
+    private StorageReference imagesRef;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +68,7 @@ public class CreateCampaign extends AppCompatActivity {
 
         launchLat = (TextView) findViewById(R.id.initlocatlatitude);
         launchLong = (TextView) findViewById(R.id.initlocatlongitude);
+        photo = (ImageView) findViewById(R.id.photo);
 
         Button button = (Button) findViewById(R.id.launchcamp);
         button.setOnClickListener(new View.OnClickListener() {
@@ -93,6 +113,37 @@ public class CreateCampaign extends AppCompatActivity {
                 }
             }
         });
+
+        storage = FirebaseStorage.getInstance();
+        imagesRef = storage.getReferenceFromUrl("gs://float-568c7.appspot.com/images");
+    }
+
+    public void loadImagefromGallery(View view) {
+        // Create intent to Open Image applications like Gallery, Google Photos
+        Intent galleryIntent = new Intent(Intent.ACTION_PICK,
+                android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        // Start the Intent
+        startActivityForResult(galleryIntent, 1);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        try {
+            // When an Image is picked
+            if (requestCode == 1 && resultCode == RESULT_OK
+                    && null != data) {
+                // Get the Image from data
+
+                selectedImageURI = data.getData();
+                photo.setImageURI(selectedImageURI);
+                Log.d("url2", selectedImageURI.toString());
+            }
+        } catch (Exception e) {
+            Toast.makeText(this, "Something went wrong", Toast.LENGTH_LONG)
+                    .show();
+        }
+
     }
 
     //add campaign to online database
@@ -142,6 +193,23 @@ public class CreateCampaign extends AppCompatActivity {
         //get Facebook numerical ID of signed in user
         Profile profile = Profile.getCurrentProfile();
         userid = profile.getId();
+
+        StorageReference riversRef = imagesRef.child(title + "_pic.jpg");
+        UploadTask uploadTask = riversRef.putFile(selectedImageURI);
+
+// Register observers to listen for when the download is done or if it fails
+        uploadTask.addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                // Handle unsuccessful uploads
+            }
+        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                // taskSnapshot.getMetadata() contains file metadata such as size, content-type, and download URL.
+                Uri downloadUrl = taskSnapshot.getDownloadUrl();
+            }
+        });
 
         //get pro
         Query queryRef =  databaseref.child("users").child(userid);

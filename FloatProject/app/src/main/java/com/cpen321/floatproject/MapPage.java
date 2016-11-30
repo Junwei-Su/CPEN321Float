@@ -15,6 +15,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.facebook.Profile;
 import com.google.android.gms.appindexing.Action;
@@ -486,8 +487,6 @@ public class MapPage extends FragmentActivity implements OnMapReadyCallback,
 //        Log.d("Tag", "MapPage " + campaign.description);
 
     }
-
-
 
     /**
      * Updates an ImageView object with file in Firebase database at storageReference
