@@ -299,6 +299,7 @@ public class MapPage extends FragmentActivity implements OnMapReadyCallback,
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 //get name of campaign
                 String title = dataSnapshot.child("campaign_name").getValue(String.class);
+                Log.d("Tag", "title = " + title);
 
                 LatLng launchcoords = dataSnapshotToLatLng(dataSnapshot.child("initial_location"));
 
