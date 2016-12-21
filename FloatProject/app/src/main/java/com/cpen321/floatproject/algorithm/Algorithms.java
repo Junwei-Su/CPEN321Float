@@ -1,4 +1,4 @@
-package com.cpen321.floatproject;
+package com.cpen321.floatproject.algorithm;
 
 import com.google.android.gms.maps.model.LatLng;
 

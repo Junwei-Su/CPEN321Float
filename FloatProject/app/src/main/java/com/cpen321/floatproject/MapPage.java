@@ -18,6 +18,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.cpen321.floatproject.database.CampsDBInteractor;
 import com.facebook.Profile;
 import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
@@ -467,6 +468,10 @@ public class MapPage extends FragmentActivity implements OnMapReadyCallback,
                 Log.d("Tag", campaign.charity);
                 Log.d("Tag", campaign.goal_amount);
                 Log.d("Tag", campaign.description);
+                campaign.goal_amount = "9999";
+
+                //test update
+                testReader.update(campaign, listcampaignsref);
             }
 
             @Override
