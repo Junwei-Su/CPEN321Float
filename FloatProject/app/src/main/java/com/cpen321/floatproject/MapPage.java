@@ -1,5 +1,6 @@
 package com.cpen321.floatproject;
 
+import android.animation.ObjectAnimator;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
@@ -14,6 +15,7 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.facebook.Profile;
@@ -80,9 +82,22 @@ public class MapPage extends FragmentActivity implements OnMapReadyCallback,
 
     private GoogleMap map;
 
+    //views
+    RelativeLayout infowindow;
+
     //height, in pixels, of buttonpanel and infowindow
     private int buttonpanelheight;
     private int infowindowheight;
+
+    //top of views
+    private int buttonpaneltop;
+    private int infowindowtop;
+
+    //animation durations
+    private long slideduration = 300;
+
+    //infowindow visibility flag
+    private boolean infowindowvisible = false;
 
     //list of circles presently on 'map'
     private List<Circle> listCircles = new LinkedList<>();
@@ -132,7 +147,7 @@ public class MapPage extends FragmentActivity implements OnMapReadyCallback,
         super.onCreate(savedInstanceState);
         setContentView(R.layout.map);
 
-        final LinearLayout infowindow = (LinearLayout) findViewById(R.id.infowindow);
+        infowindow = (RelativeLayout) findViewById(R.id.infowindow);
 
         //listen to infowindow once to obtain height in pixels
         infowindow.getViewTreeObserver().addOnGlobalLayoutListener(
@@ -141,8 +156,8 @@ public class MapPage extends FragmentActivity implements OnMapReadyCallback,
                     public void onGlobalLayout() {
                         //called when layout is ready yet before drawn
 
-                        LinearLayout infowindow = (LinearLayout) findViewById(R.id.infowindow);
                         infowindowheight = infowindow.getHeight();
+                        infowindowtop = infowindow.getTop();
 
                         //Log.d("Tag", "infowindowheight = " + infowindowheight);
 
@@ -163,6 +178,7 @@ public class MapPage extends FragmentActivity implements OnMapReadyCallback,
 
                         LinearLayout mapbuttonpanel = (LinearLayout) findViewById(R.id.mapbuttonpanel);
                         buttonpanelheight = mapbuttonpanel.getHeight();
+                        buttonpaneltop = mapbuttonpanel.getTop();
 
                         //Log.d("Tag", "buttonpanelheight = " + buttonpanelheight);
 
@@ -199,8 +215,6 @@ public class MapPage extends FragmentActivity implements OnMapReadyCallback,
         imageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                LinearLayout infowindow = (LinearLayout) findViewById(R.id.spacerparent);
-                infowindow.setVisibility(View.GONE);
 
                 //update map margins after window is gone
                 map.setPadding(0, 0, 0, buttonpanelheight);
@@ -210,6 +224,12 @@ public class MapPage extends FragmentActivity implements OnMapReadyCallback,
 
                 //TODO add button to reset camera position to user's location
                 //map.animateCamera(CameraUpdateFactory.newCameraPosition(defaultcamerapos));
+
+                //animate infowindow disappearing
+                ObjectAnimator infowindowanimator = ObjectAnimator.ofFloat(infowindow, View.Y, infowindowtop, buttonpaneltop);
+                infowindowanimator.setDuration(slideduration);
+                infowindowanimator.start();
+                infowindowvisible = false;
             }
         });
 
@@ -552,6 +572,14 @@ public class MapPage extends FragmentActivity implements OnMapReadyCallback,
 
         //update map padding to bring Google logo up
         map.setPadding(0, 0, 0, buttonpanelheight + infowindowheight);
+
+        //animate infowindow appearing
+        if( !infowindowvisible ) {
+            ObjectAnimator infowindowanimator = ObjectAnimator.ofFloat(infowindow, View.Y, buttonpaneltop, infowindowtop);
+            infowindowanimator.setDuration(slideduration);
+            infowindowanimator.start();
+            infowindowvisible = true;
+        }
 
         //tell caller we have not consumed the click event, enabling default marker behaviour
         return false;
