@@ -155,7 +155,7 @@ public class MapPage extends FragmentActivity implements OnMapReadyCallback,
         );
 
         LinearLayout mapbuttonpanel = (LinearLayout) findViewById(R.id.mapbuttonpanel);
-        infowindow.getViewTreeObserver().addOnGlobalLayoutListener(
+        mapbuttonpanel.getViewTreeObserver().addOnGlobalLayoutListener(
                 new ViewTreeObserver.OnGlobalLayoutListener() {
                     @Override
                     public void onGlobalLayout() {

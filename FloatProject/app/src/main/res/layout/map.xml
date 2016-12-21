@@ -137,30 +137,42 @@
 
         </RelativeLayout>
     </LinearLayout>
-    <LinearLayout
-        android:id="@+id/mapbuttonpanel"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:orientation="horizontal"
-        android:gravity="center_horizontal"
-        style="?android:attr/buttonBarStyle">
 
-        <Button
-            android:id="@+id/joincamp"
-            android:layout_width="wrap_content"
+    <LinearLayout android:id="@+id/mapbuttonpanel"
+                  android:orientation="horizontal"
+                  android:layout_width="match_parent"
+                  android:layout_height="55dp"
+                  android:layout_alignParentBottom="true"
+                  android:gravity="center"
+                  android:background="@color/white"
+                  style="?android:attr/buttonBarStyle">
+
+        <ImageButton
+            android:id="@+id/createcamp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/joincamp"
-            android:textColor="@color/darkestbackground"
+            android:layout_weight="1"
+            android:scaleType="fitCenter"
+            android:adjustViewBounds="true"
+            android:src="@drawable/pencil"
             style="?android:attr/buttonBarButtonStyle"/>
-
+        <ImageButton
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:scaleType="fitCenter"
+            android:adjustViewBounds="true"
+            android:src="@drawable/map"
+            style="?android:attr/buttonBarButtonStyle"/>
+        <ImageButton
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:scaleType="fitCenter"
+            android:adjustViewBounds="true"
+            android:src="@drawable/list"
+            style="?android:attr/buttonBarButtonStyle"/>
     </LinearLayout>
-
-    <include
-        android:id="@+id/tabs"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        layout="@layout/buttontoolbar"/>
 
     <TextView
         android:id="@+id/thisusername"
