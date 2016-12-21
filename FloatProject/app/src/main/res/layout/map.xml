@@ -3,16 +3,15 @@
                 xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                xmlns:app="http://schemas.android.com/apk/res-auto"
                 android:background="@color/background"
                 tools:context=".MapPage">
 
     <fragment xmlns:android="http://schemas.android.com/apk/res/android"
-               android:name="com.google.android.gms.maps.MapFragment"
-               android:id="@+id/map"
-               android:layout_width="match_parent"
-               android:layout_height="match_parent"
-               tools:layout="@layout/map"/>
+              android:name="com.google.android.gms.maps.MapFragment"
+              android:id="@+id/map"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              tools:layout="@layout/map"/>
     <LinearLayout
         android:id="@+id/spacerparent"
         android:layout_width="match_parent"
@@ -117,11 +116,12 @@
                 </LinearLayout>
             </LinearLayout>
             <ImageButton
-                android:id="@+id/closeWindow"
+                android:id="@+id/closewindow"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
                 android:layout_alignParentRight="true"
                 android:layout_alignParentTop="true"
+                android:layout_margin="5dp"
                 android:background="@drawable/xbutton" />
             <Button
                 android:id="@+id/details"
@@ -154,14 +154,13 @@
             android:textColor="@color/darkestbackground"
             style="?android:attr/buttonBarButtonStyle"/>
 
-        <Button
-            android:id="@+id/createcamp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/createcamp"
-            android:textColor="@color/darkestbackground"
-            style="?android:attr/buttonBarButtonStyle"/>
     </LinearLayout>
+
+    <include
+        android:id="@+id/tabs"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        layout="@layout/buttontoolbar"/>
 
     <TextView
         android:id="@+id/thisusername"

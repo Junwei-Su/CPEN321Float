@@ -15,7 +15,6 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.facebook.Profile;
 import com.google.android.gms.appindexing.Action;
@@ -44,24 +43,13 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-import com.google.gson.Gson;
-import com.paypal.android.sdk.payments.PayPalService;
-import com.paypal.api.payments.Amount;
-import com.paypal.api.payments.FuturePayment;
-import com.paypal.api.payments.Payer;
-import com.paypal.api.payments.Payment;
-import com.paypal.api.payments.Transaction;
-import com.paypal.base.rest.APIContext;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-
-import static com.paypal.base.Constants.CLIENT_ID;
 
 /**
  * Created by sfarinas on 10/17/2016.
@@ -182,10 +170,10 @@ public class MapPage extends FragmentActivity implements OnMapReadyCallback,
                         layoutreadylistener("buttonpanel");
 
                         //remove listener
-                        if(Build.VERSION.SDK_INT <= 14)
-                            mapbuttonpanel.getViewTreeObserver().removeGlobalOnLayoutListener( this );
+                        if (Build.VERSION.SDK_INT <= 14)
+                            mapbuttonpanel.getViewTreeObserver().removeGlobalOnLayoutListener(this);
                         else
-                            mapbuttonpanel.getViewTreeObserver().removeOnGlobalLayoutListener( this );
+                            mapbuttonpanel.getViewTreeObserver().removeOnGlobalLayoutListener(this);
                     }
                 }
         );
@@ -194,20 +182,9 @@ public class MapPage extends FragmentActivity implements OnMapReadyCallback,
         MapFragment mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
-        //wire joincamp button to CampDetails activity
-        Button button = (Button) findViewById(R.id.joincamp);
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //start _Submenu activity
-                Intent intent = new Intent(v.getContext(), CampDetails.class);
-                startActivity(intent);
-            }
-        });
-
         //wire createcamp button to CreateCampaign activity
-        button = (Button) findViewById(R.id.createcamp);
-        button.setOnClickListener(new View.OnClickListener() {
+        ImageButton imageButton = (ImageButton) findViewById(R.id.createcamp);
+        imageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //start _Submenu activity
@@ -218,7 +195,7 @@ public class MapPage extends FragmentActivity implements OnMapReadyCallback,
         });
 
         //after infowindow is closed, update map paddings and camera
-        ImageButton imageButton = (ImageButton) findViewById(R.id.closeWindow);
+        imageButton = (ImageButton) findViewById(R.id.closewindow);
         imageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -237,7 +214,7 @@ public class MapPage extends FragmentActivity implements OnMapReadyCallback,
         });
 
         //wire details button to CampDetails activity
-        button = (Button) findViewById(R.id.details);
+        Button button = (Button) findViewById(R.id.details);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
