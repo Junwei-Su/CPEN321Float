@@ -162,8 +162,8 @@ public class MapPage extends FragmentActivity implements OnMapReadyCallback,
 
                         //Log.d("Tag", "infowindowheight = " + infowindowheight);
 
-                        if(Build.VERSION.SDK_INT <= 14)
-                            infowindow.getViewTreeObserver().removeGlobalOnLayoutListener( this );
+                        if (Build.VERSION.SDK_INT <= 14)
+                            infowindow.getViewTreeObserver().removeGlobalOnLayoutListener(this);
                         else
                             infowindow.getViewTreeObserver().removeOnGlobalLayoutListener(this);
                     }
@@ -242,13 +242,13 @@ public class MapPage extends FragmentActivity implements OnMapReadyCallback,
 
                 TextView tv = (TextView) findViewById(R.id.campaigntitle);
 
-               String campaignname = tv.getText().toString();
+                String campaignname = tv.getText().toString();
 
-                 Log.d("Tag", "camptitleinfo = " + campaignname);
+                Log.d("Tag", "camptitleinfo = " + campaignname);
 
                 //start _Submenu activity
                 Intent intent = new Intent(v.getContext(), CampDetails.class);
-                intent.putExtra("key",campaignname);
+                intent.putExtra("key", campaignname);
                 startActivity(intent);
 
             }
@@ -269,7 +269,7 @@ public class MapPage extends FragmentActivity implements OnMapReadyCallback,
         //obtain Facebook ID of logged in user
         Profile profile = Profile.getCurrentProfile();
 
-        if(profile!=null) {
+        if (profile != null) {
 
             String userid = profile.getId();
             //Log.d("Tag", "My userid is: " + userid);
@@ -336,13 +336,13 @@ public class MapPage extends FragmentActivity implements OnMapReadyCallback,
         listlocationslistener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                int i=0;
+                int i = 0;
                 DataSnapshot locat;
                 Circle circle;
 
-                while(true){
+                while (true) {
 //                    Log.d("Tag", "Another iteration!");
-                    if(! dataSnapshot.hasChild(Integer.toString(i)))
+                    if (!dataSnapshot.hasChild(Integer.toString(i)))
                         break;
 
                     locat = dataSnapshot.child(Integer.toString(i));
@@ -455,40 +455,6 @@ public class MapPage extends FragmentActivity implements OnMapReadyCallback,
         StorageReference lighthouseRef = imagesRef.child("lighthouse.png");
         //setDBPictureOnImageView(lighthouseRef, R.id.campaignpic);
         //setDBPictureOnImageView(lighthouseRef, R.id.userpic);
-
-        final CampsDBInteractor testReader = new CampsDBInteractor();
-
-        listcampaignsref.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                Campaign campaign = testReader.read("testCamp1", dataSnapshot);
-                Log.d("Tag", campaign.campaign_name);
-                Log.d("Tag", campaign.accumulated_donation);
-                Log.d("Tag", campaign.campaign_pic);
-                Log.d("Tag", campaign.charity);
-                Log.d("Tag", campaign.goal_amount);
-                Log.d("Tag", campaign.description);
-                campaign.goal_amount = "9999";
-
-                //test update
-                testReader.update(campaign, listcampaignsref);
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-
-          //testing code for read
-//        Campaign campaign = testReader.read("testCamp1", listcampaignsref.child("testCamp1"));
-//        Log.d("Tag", "MapPage " + campaign.campaign_name);
-//        Log.d("Tag", "MapPage " + campaign.accumulated_donation);
-//        Log.d("Tag", "MapPage " + campaign.campaign_pic);
-//        Log.d("Tag", "MapPage " + campaign.charity);
-//        Log.d("Tag", "MapPage " + campaign.goal_amount);
-//        Log.d("Tag", "MapPage " + campaign.description);
-
     }
 
     /**
