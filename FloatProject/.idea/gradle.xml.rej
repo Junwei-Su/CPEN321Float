@@ -1,9 +1,0 @@
-diff a/FloatProject/.idea/gradle.xml b/FloatProject/.idea/gradle.xml	(rejected hunks)
-@@ -12,7 +12,6 @@
-             <option value="$PROJECT_DIR$/app" />
-           </set>
-         </option>
--        <option name="resolveModulePerSourceSet" value="false" />
-       </GradleProjectSettings>
-     </option>
-   </component>

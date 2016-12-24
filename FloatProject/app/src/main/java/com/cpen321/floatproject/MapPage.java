@@ -18,6 +18,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.cpen321.floatproject.campaigns.Campaign;
 import com.cpen321.floatproject.database.CampsDBInteractor;
 import com.facebook.Profile;
 import com.google.android.gms.appindexing.Action;
@@ -77,9 +78,12 @@ public class MapPage extends FragmentActivity implements OnMapReadyCallback,
     //listeners for realtime database
     private ValueEventListener listlocationslistener;
     private ChildEventListener listcampaignslistener;
-    private ValueEventListener campaignlistener;
+    private ValueEventListener campaignslistener;
     private ValueEventListener charitylistener;
     private ValueEventListener launchuserlistener;
+
+    //database interactors
+    private CampsDBInteractor campsDBInteractor;
 
     private GoogleMap map;
 
@@ -116,6 +120,7 @@ public class MapPage extends FragmentActivity implements OnMapReadyCallback,
 
     private String charityname;
     private String owner_account_id; //username of person who launched campaign
+    private String campaignname;
 
     //filenames of pictures
     private String campaignpic;
@@ -148,6 +153,7 @@ public class MapPage extends FragmentActivity implements OnMapReadyCallback,
         super.onCreate(savedInstanceState);
         setContentView(R.layout.map);
 
+        campsDBInteractor = new CampsDBInteractor();
         infowindow = (RelativeLayout) findViewById(R.id.infowindow);
 
         //listen to infowindow once to obtain height in pixels
@@ -374,24 +380,27 @@ public class MapPage extends FragmentActivity implements OnMapReadyCallback,
         };
 
         //listener to update username, campaign_name and charity name on infowindow
-        campaignlistener = new ValueEventListener() {
+        campaignslistener = new ValueEventListener() {
+
+
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+
+                Campaign campaign = campsDBInteractor.read(campaignname,dataSnapshot);
+
                 //update campaign image
-                campaignpic = dataSnapshot.child("campaign_pic").getValue(String.class);
+                campaignpic = campaign.getCampaign_pic();
                 StorageReference imageref = imagesRef.child(campaignpic);
                 setDBPictureOnImageView(imageref, R.id.campaignpic);
 
                 //attach listener to launch user profile pic
-                owner_account_id = dataSnapshot.child("owner_account").getValue(String.class);
+                owner_account_id = campaign.getOwner_account();
                 Log.d("Tag", "owner_account_id = " + owner_account_id);
                 launchuserref = usersref.child(owner_account_id);
                 launchuserref.addListenerForSingleValueEvent(launchuserlistener);
 
-                String title = dataSnapshot.child("campaign_name").getValue(String.class);
-
                 //attach listener to charity
-                charityname = dataSnapshot.child("charity").getValue(String.class);
+                charityname = campaign.getCharity();
                 Log.d("Tag", "charityname = " + charityname);
                 charityref = listcharitiesref.child(charityname);
                 charityref.addListenerForSingleValueEvent(charitylistener);
@@ -400,7 +409,7 @@ public class MapPage extends FragmentActivity implements OnMapReadyCallback,
                 //tv.setText(owner_account_id);
 
                 TextView tv = (TextView) findViewById(R.id.campaigntitle);
-                tv.setText(title);
+                tv.setText(campaignname);
 
                 tv = (TextView) findViewById(R.id.charityname);
                 tv.setText(charityname);
@@ -510,7 +519,7 @@ public class MapPage extends FragmentActivity implements OnMapReadyCallback,
     @Override
     public boolean onMarkerClick(final Marker marker) {
         // Get name of campaign
-        String campaignname = (String) marker.getTag();
+        campaignname = (String) marker.getTag();
 
         //make campaign preview pop-up window appear
         LinearLayout campinfo = (LinearLayout) findViewById(R.id.spacerparent);
@@ -518,7 +527,7 @@ public class MapPage extends FragmentActivity implements OnMapReadyCallback,
 
         //remove database listeners from database
         databaseref.removeEventListener(listlocationslistener);
-        databaseref.removeEventListener(campaignlistener);
+        databaseref.removeEventListener(campaignslistener);
 
         //Log.d("Tag", "Started removing circles.");
         //remove old circles
@@ -530,11 +539,10 @@ public class MapPage extends FragmentActivity implements OnMapReadyCallback,
             //Log.d("Tag", "remove circle: " + listCircles);
         }
 
-        //update campaign reference to new campaign
-        Log.d("Tag", "campaignname = " + campaignname);
-        campaignref = listcampaignsref.child(campaignname);
         //add listener to new campaign
-        campaignref.addValueEventListener(campaignlistener);
+        listcampaignsref.addValueEventListener(campaignslistener);
+
+        campaignref = listcampaignsref.child(campaignname);
 
         //get database reference to list of locations of different campaign
         listlocationsref = campaignref.child("list_locations");
