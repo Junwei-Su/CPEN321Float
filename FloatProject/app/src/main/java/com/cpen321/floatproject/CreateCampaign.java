@@ -211,11 +211,9 @@ public class CreateCampaign extends AppCompatActivity {
             }
         });
 
-        //get pro
         Query queryRef =  databaseref.child("users").child(userid);
         Log.d("Tag", "userid = " + userid);
         if(queryRef != null) {
-            String user_name = queryRef.orderByKey().equalTo("name").toString();
             Campaign myCampaign = new Campaign("0", title, charity, description,
                     goal, pledge, init_location, dest_location, userid,
                     Integer.toString(R.integer.defaulttimeremaining));
