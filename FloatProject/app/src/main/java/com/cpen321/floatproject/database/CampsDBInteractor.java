@@ -42,12 +42,12 @@ public class CampsDBInteractor implements Readable, Writable {
 //        }
 
         //retrive the camp information
-        String accumulated_donation = (String)camp_snap.child("accumulated_donation").getValue();
+        String accumulated_donation = camp_snap.child("accumulated_donation").getValue().toString();
         String campaign_name = (String)camp_snap.child("campaign_name").getValue();
         String charity = (String)camp_snap.child("charity").getValue();
         String description = (String)camp_snap.child("description").getValue();
         String destination = (String)camp_snap.child("destination").getValue();
-        String goal_amount = (String)camp_snap.child("goal_amount").getValue();
+        String goal_amount = camp_snap.child("goal_amount").getValue().toString();
 
         LatLng initial_location =  dataSnapshotToLatLng(camp_snap.child("initial_location"));
         LatLng dest_location = dataSnapshotToLatLng(camp_snap.child("dest_location"));
