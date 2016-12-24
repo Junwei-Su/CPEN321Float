@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.cpen321.floatproject.campaigns.Campaign;
 import com.cpen321.floatproject.database.CampsDBInteractor;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -78,20 +79,20 @@ public class CampDetails extends Activity {
                 Campaign campaign = dbInteractor.read(theCampaign, dataSnapshot);
 
                 //update campaign image
-                StorageReference imageref = imagesref.child(campaign.campaign_pic);
+                StorageReference imageref = imagesref.child(campaign.getCampaign_pic());
                 setDBPictureOnImageView(imageref, R.id.campaignpicdeets);
 
-                launchuserref = usersref.child(campaign.owner_account);
+                launchuserref = usersref.child(campaign.getOwner_account());
                 launchuserref.addListenerForSingleValueEvent(launchuserlistener);
 
-                String charity = campaign.charity;
+                String charity = campaign.getCharity();
                 TextView tv = (TextView) findViewById(R.id.charitydeets);
                 tv.setText(charity);
                 charityref = charitiesref.child(charity);
                 charityref.addListenerForSingleValueEvent(charitylistener);
 
                 tv = (TextView) findViewById(R.id.descriptiondeets);
-                tv.setText(campaign.description);
+                tv.setText(campaign.getDescription());
 
             }
 

@@ -16,6 +16,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.cpen321.floatproject.campaigns.Campaign;
+import com.cpen321.floatproject.campaigns.DestinationCampaign;
 import com.facebook.Profile;
 import com.firebase.client.utilities.Base64;
 import com.google.android.gms.maps.model.LatLng;
@@ -214,9 +216,13 @@ public class CreateCampaign extends AppCompatActivity {
         Query queryRef =  databaseref.child("users").child(userid);
         Log.d("Tag", "userid = " + userid);
         if(queryRef != null) {
-            Campaign myCampaign = new Campaign("0", title, charity, description,
-                    goal, pledge, init_location, dest_location, userid,
-                    Integer.toString(R.integer.defaulttimeremaining));
+
+            String user_name = queryRef.orderByKey().equalTo("name").toString();
+
+
+            Campaign myCampaign = new DestinationCampaign(title, 0, charity, description,
+                    Integer.valueOf(goal), init_location,userid, 10, "2016-12-24", "home", dest_location);
+
             databaseref.child("campaigns").child(title).setValue(myCampaign);
         }else{
             Log.d("Tag", "Error creating campaign. Need to create account first.");

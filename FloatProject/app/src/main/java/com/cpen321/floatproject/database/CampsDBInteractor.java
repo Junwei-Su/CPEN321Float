@@ -3,18 +3,19 @@ package com.cpen321.floatproject.database;
 import android.util.Log;
 
 import com.cpen321.floatproject.algorithm.Algorithms;
-import com.cpen321.floatproject.Campaign;
+import com.cpen321.floatproject.campaigns.Campaign;
+import com.cpen321.floatproject.campaigns.DestinationCampaign;
 import com.google.firebase.database.DataSnapshot;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.ValueEventListener;
 
 import java.lang.*;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Created by clarence on 2016-11-24.
@@ -37,57 +38,79 @@ public class CampsDBInteractor implements Readable, Writable {
         DataSnapshot camp_snap =  dataSnapshot.child(ID);
 
         //if campaign no exist;
-//        if(){
-//
-//        }
+        if(camp_snap==null){
+            return null;
+        }
 
         //retrive the camp information
-        String accumulated_donation = camp_snap.child("accumulated_donation").getValue().toString();
+
+        long accumulated_donation = (Long)camp_snap.child("accumulated_donation").getValue();
         String campaign_name = (String)camp_snap.child("campaign_name").getValue();
+
         String charity = (String)camp_snap.child("charity").getValue();
         String description = (String)camp_snap.child("description").getValue();
         String destination = (String)camp_snap.child("destination").getValue();
-        String goal_amount = camp_snap.child("goal_amount").getValue().toString();
+        long goal_amount = (long)camp_snap.child("goal_amount").getValue();
+        long time_length = (long)camp_snap.child("time_length").getValue();
+        String initial_date= (String) camp_snap.child("initial_date").getValue();
 
         LatLng initial_location =  dataSnapshotToLatLng(camp_snap.child("initial_location"));
         LatLng dest_location = dataSnapshotToLatLng(camp_snap.child("dest_location"));
         List<LatLng> list_locations = dataSnapshotToLatLngList(camp_snap.child("list_locations"));
 
-        String owner_account = (String)camp_snap.child("owner_account").getValue();
-        String time_left = (String)camp_snap.child("time_left").getValue();
 
-        Campaign to_return = new Campaign(
-                accumulated_donation, campaign_name, charity, description,
-                destination, goal_amount, initial_location,  dest_location,
-                owner_account, time_left, list_locations
+
+        String owner_account = (String)camp_snap.child("owner_account").getValue();
+
+        DestinationCampaign to_return = new DestinationCampaign(
+                campaign_name, accumulated_donation, charity, description,
+                goal_amount, initial_location, owner_account,
+                time_length, initial_date, destination, dest_location, list_locations
         );
 
         return to_return;
     }
 
+
+    /*
+   *   This method updates a Campaign object in database with a campaign object
+   *   @param:
+   *       object: campaign
+   *       DatabaseReference: databasereference to campaign root
+    */
     @Override
     public void update(Object o, DatabaseReference databaseReference) {
-        Campaign campaign_update = (Campaign) o;
-        DatabaseReference camp_update_ref = databaseReference.child(campaign_update.campaign_name);
+        DestinationCampaign campaign_update = (DestinationCampaign) o;
+        DatabaseReference camp_update_ref = databaseReference.child(campaign_update.getCampaign_name());
+        //update infomation
+        camp_update_ref.child("accumulated_donation").setValue(campaign_update.getAccumulated_donation());
+        camp_update_ref.child("charity").setValue(campaign_update.getCharity());
+        camp_update_ref.child("description").setValue(campaign_update.getDescription());
+        camp_update_ref.child("destination").setValue(campaign_update.getDestination());
+        camp_update_ref.child("goal_amount").setValue(campaign_update.getGoal_amount());
+        camp_update_ref.child("dest_location").setValue(campaign_update.getDest_location());
+        camp_update_ref.child("list_locations").setValue(campaign_update.getList_locations());
+        camp_update_ref.child("time_length").setValue(campaign_update.getTime_length());
+        camp_update_ref.child("initial_date").setValue(campaign_update.getInitial_date());
 
-        camp_update_ref.child("accumulated_donation").setValue(campaign_update.accumulated_donation);
-        camp_update_ref.child("campaign_name").setValue(campaign_update.campaign_name);
-        camp_update_ref.child("charity").setValue(campaign_update.charity);
-        camp_update_ref.child("description").setValue(campaign_update.description);
-        camp_update_ref.child("destination").setValue(campaign_update.destination);
-        camp_update_ref.child("goal_amount").setValue(campaign_update.goal_amount);
-
-        camp_update_ref.child("initial_location").setValue(campaign_update.initial_location);
-        camp_update_ref.child("dest_location").setValue(campaign_update.destination);
-        camp_update_ref.child("list_locations").setValue(campaign_update.list_locations);
-
-        camp_update_ref.child("owner_account").setValue(campaign_update.owner_account);
-        camp_update_ref.child("time_left").setValue(campaign_update.time_left);
     }
 
+    /*
+    * Put the corresponding object into the database
+    * @param:
+    * o: campgain to be put to database
+    * databaseReference: reference to database root
+     */
     @Override
     public void put(Object o, DatabaseReference databaseReference) {
 
+        DestinationCampaign to_push = (DestinationCampaign) o;
+        String key = to_push.getCampaign_name();
+
+        Map<String, Object> campValue = to_push.toMap();
+        Map<String, Object> childUpdates = new HashMap<>();
+        childUpdates.put("/campaigns/" + key, campValue);
+        databaseReference.updateChildren(childUpdates);
     }
 
     /*
@@ -97,21 +120,27 @@ public class CampsDBInteractor implements Readable, Writable {
     *   radius : radius to search within
      *  dataSnapshot: a datasnapshot of all campaigns object in firebase
     */
-    public List<Campaign> searchNearbyCamps(LatLng currentLoc, int radius, DataSnapshot dataSnapshot){
+    public List<Campaign> searchNearbyCamps(LatLng currentLoc, int radius, DataSnapshot campListSnap){
         List<Campaign> nearbyCamp_list = new LinkedList<>();
-        for(DataSnapshot camps : dataSnapshot.getChildren()){
-
-            List<LatLng> list_location = dataSnapshotToLatLngList(camps);
-            //List<LatLng> list_location = (List<LatLng>) camps.child("list_locations");
+        Set<String> addedCamp = new HashSet<String>(); //visited flag
+        for(DataSnapshot camps : campListSnap.getChildren()){
+            String camps_name = (String) camps.child("campaign_name").getValue();
+            List<LatLng> list_location = dataSnapshotToLatLngList(camps.child("list_locations"));
 
             //iterate through the location and check if there exist one within radius
             for(LatLng location: list_location){
-                if(Algorithms.calculateDistance(currentLoc, location) <= radius ){
-                    Campaign camp_within_radius = read((String) camps.child("campaign_name").getValue(),
-                            dataSnapshot);
-                    nearbyCamp_list.add(camp_within_radius);
+                if (addedCamp.contains(camps_name)!=true) {
+                    if (Algorithms.calculateDistance(currentLoc, location) <= radius) {
+                        //add to visisted list
+                        addedCamp.add(camps_name);
+                        //read the camp object
+                        Campaign camp_within_radius = read(camps_name, campListSnap);
+                        //add to return list
+                        nearbyCamp_list.add(camp_within_radius);
+                    }
+                }else{
+                    break;
                 }
-
             }
         }
 
@@ -124,6 +153,7 @@ public class CampsDBInteractor implements Readable, Writable {
      * @return a LatLng object with the coordinates in datasnapshot
      */
     private LatLng dataSnapshotToLatLng (DataSnapshot datasnapshot){
+
         //get coordinates of campaign launch location
         Map<String, Double> mapcoords = (HashMap<String,Double>) datasnapshot.getValue();
 

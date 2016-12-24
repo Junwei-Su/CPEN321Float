@@ -1,28 +1,30 @@
 package com.cpen321.floatproject;
 
+import com.cpen321.floatproject.campaigns.Campaign;
+import com.google.firebase.database.Exclude;
+
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 public class User {
 
     //field in database
     String name;
     String account_name;
-    String date;
+    String date_join;
     String blurb;
     boolean is_charity;
-    int amount_gain;
-    int amount_raised;
-    int amount_donated;
-    String city;
-    String province;
-    String country;
+    long amount_gain;
+    long amount_raised;
+    long amount_donated;
+    String address;
     String metadata_id;
     String refresh_token;
-
-    //extra fields
-    List<Campaign> list_of_campaign_followed = new LinkedList<Campaign>();
-    List<Campaign> list_of_campaign_initialize = new LinkedList<Campaign>();
+    String profile_pic;
+    List<String> list_of_campaign_followed = new LinkedList<String>();
+    List<String> list_of_campaign_initialize = new LinkedList<String>();
 
 
     public User(){}
@@ -32,46 +34,100 @@ public class User {
         this.account_name = account;
     }
 
-    public User(String name, String account_name,String date, String blurb, boolean is_charity, int amount_gain,
-                int amount_raised, int amount_donated, String city, String province, String country){
+    public User(String name, String account_name,String date, String blurb, boolean is_charity, long amount_gain,
+                long amount_raised, long amount_donated, String address){
         this.name = name;
         this.account_name = account_name;
-        this.date = date;
+        this.date_join = date;
         this.blurb = blurb;
         this.is_charity=is_charity;
         this.amount_gain = amount_gain;
         this.amount_raised = amount_raised;
         this.amount_donated = amount_donated;
-        this.city = city;
-        this.province = province;
-        this.country = country;
+        this.address = address;
     }
 
-    public String returnName(){
+    public User(String name, String account_name,String date, String blurb, boolean is_charity, long amount_gain,
+                long amount_raised, long amount_donated, String address,
+                List<String> list_of_campaign_initialize, List<String> list_of_campaign_followed){
+        this.name = name;
+        this.account_name = account_name;
+        this.date_join = date;
+        this.blurb = blurb;
+        this.is_charity=is_charity;
+        this.amount_gain = amount_gain;
+        this.amount_raised = amount_raised;
+        this.amount_donated = amount_donated;
+        this.address = address;
+        this.list_of_campaign_followed = list_of_campaign_followed;
+        this.list_of_campaign_initialize = list_of_campaign_initialize;
+    }
+
+    public String getName(){
         return this.name;
     }
 
-    public String returnAccount_name(){
+    public void setName(String new_name){ this.name = new_name; }
+
+    public String getAccount_name(){
         return this.account_name;
     }
 
-    public String returnDate(){
-        return this.date;
+    public String getBlurb(){ return this.blurb; }
+
+    public void setBlurb(String newBlurb){ this.blurb = newBlurb; }
+
+    public boolean getIs_charity(){ return this.is_charity;}
+
+    public long getAmount_gain(){ return this.amount_gain;}
+
+    public void addAmount_gain(int incre){ this.amount_gain += incre; }
+
+    public long getAmount_raised(){ return this.amount_raised; }
+
+    public void addAmount_raised(int incre){ this.amount_raised+=incre;}
+
+    public long getAmount_donated(){return this.amount_donated;}
+
+    public void addAmount_donated(int incre){this.amount_donated+= incre;}
+
+    public List<String> getList_of_campaign_followed(){ return this.list_of_campaign_followed;}
+
+    public List<String> getList_of_campaign_initialize(){ return this.list_of_campaign_initialize;}
+
+    public void addInitCamp(String newInit){ this.list_of_campaign_initialize.add(newInit);}
+
+    public void addFollowedCamp(String newFollow){this.list_of_campaign_followed.add(newFollow);}
+
+    public String getDate(){
+        return this.date_join;
     }
 
-    public String returnBlurb(){
-        return this.blurb;
+    public String getProfile_pic(){return this.profile_pic;}
+
+    public void setProfile_pic(String newPic){this.profile_pic = newPic;}
+
+    public String getAddress(){return this.address;}
+
+    public void setAddress(String newAdd){this.address = newAdd;}
+
+    @Exclude
+    public Map<String, Object> toMap() {
+        HashMap<String, Object> result = new HashMap<>();
+
+        result.put("account_name", this.getAccount_name());
+        result.put("address", this.getAddress());
+        result.put("amount_donated", this.getAmount_donated());
+        result.put("amount_raised", this.getAmount_raised());
+        result.put("blurb", this.getBlurb());
+        result.put("date_join", this.getDate());
+        result.put("is_charity", this.getIs_charity());
+        result.put("list_camp_init", this.getList_of_campaign_initialize());
+        result.put("list_camp_join", this.getList_of_campaign_followed());
+        result.put("name", this.getName());
+        result.put("profile_pic", this.getProfile_pic());
+
+        return result;
     }
 
-    public boolean returnIs_charity(){
-        return this.is_charity;
-    }
-
-    public int returnAmount_gain(){
-        return amount_gain;
-    }
-
-    public int returnAmount_raised(){
-        return amount_raised;
-    }
 }
