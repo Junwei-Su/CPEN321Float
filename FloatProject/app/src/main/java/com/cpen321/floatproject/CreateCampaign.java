@@ -16,16 +16,22 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.cpen321.floatproject.algorithm.Algorithms;
 import com.cpen321.floatproject.campaigns.Campaign;
 import com.cpen321.floatproject.campaigns.DestinationCampaign;
+import com.cpen321.floatproject.database.CampsDBInteractor;
+import com.cpen321.floatproject.database.UsersDBInteractor;
 import com.facebook.Profile;
 import com.firebase.client.utilities.Base64;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -33,6 +39,7 @@ import com.google.firebase.storage.UploadTask;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.util.Date;
 
 /**
  * Created by sfarinas on 10/17/2016.
@@ -50,6 +57,12 @@ public class CreateCampaign extends AppCompatActivity {
     private double destlocatlongitude;
     private LatLng init_location;
     private LatLng dest_location;
+
+    //clarence added for destination field
+    private String destination;
+    long time_length = 10;
+    private DatabaseReference userRef = FirebaseDatabase.getInstance().getReference().child("users");
+    private CampsDBInteractor campsDBInteractor = new CampsDBInteractor();
 
     private DatabaseReference databaseref = FirebaseDatabase.getInstance().getReference();
 
@@ -170,13 +183,22 @@ public class CreateCampaign extends AppCompatActivity {
 
         TextView myTextView = (TextView) findViewById(R.id.initlocatlatitude);
         initlocatlatitude = Double.parseDouble(myTextView.getText().toString());
+        //clarence hardcode for testing
+//        initlocatlatitude = 1.0;
         Log.d("Tag", "initlocatlatitude: " + initlocatlatitude);
 
         myTextView = (TextView) findViewById(R.id.initlocatlongitude);
         initlocatlongitude = Double.parseDouble(myTextView.getText().toString());
+//        clarence hardcode for testing
+//        initlocatlongitude = 1.0;
         Log.d("Tag", "initlocatlongitude: " + initlocatlongitude);
 
         init_location = new LatLng(initlocatlatitude, initlocatlongitude);
+
+        //clarence added for destination field
+        myText = (EditText) findViewById(R.id.destination);
+        destination = myText.getText().toString();
+        Log.d("Tag",destination);
 
         myText = (EditText) findViewById(R.id.destlocatlatitude);
         destlocatlatitude = Double.parseDouble(myText.getText().toString());
@@ -186,7 +208,9 @@ public class CreateCampaign extends AppCompatActivity {
         destlocatlongitude = Double.parseDouble(myText.getText().toString());
         Log.d("Tag", "destlocatlongitude: " + destlocatlongitude);
 
-        dest_location = new LatLng(destlocatlatitude, destlocatlongitude);
+//        dest_location = new LatLng(destlocatlatitude, destlocatlongitude);
+        //clarence hardcoded for testing
+        dest_location = new LatLng(1.0, 2.9);
 
         myText = (EditText) findViewById(R.id.descriptionin);
         description = myText.getText().toString();
@@ -196,37 +220,47 @@ public class CreateCampaign extends AppCompatActivity {
         Profile profile = Profile.getCurrentProfile();
         userid = profile.getId();
 
-        StorageReference riversRef = imagesRef.child(title + "_pic.jpg");
-        UploadTask uploadTask = riversRef.putFile(selectedImageURI);
+        //clarence commented for for testing
+//        StorageReference riversRef = imagesRef.child(title + "_pic.jpg");
+//        UploadTask uploadTask = riversRef.putFile(selectedImageURI);
+//
+//        // Register observers to listen for when the download is done or if it fails
+//        uploadTask.addOnFailureListener(new OnFailureListener() {
+//            @Override
+//            public void onFailure(@NonNull Exception exception) {
+//                // Handle unsuccessful uploads
+//            }
+//        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+//            @Override
+//            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+//                // taskSnapshot.getMetadata() contains file metadata such as size, content-type, and download URL.
+//                Uri downloadUrl = taskSnapshot.getDownloadUrl();
+//            }
+//        });
 
-        // Register observers to listen for when the download is done or if it fails
-        uploadTask.addOnFailureListener(new OnFailureListener() {
+
+        userRef.addValueEventListener(new ValueEventListener() {
             @Override
-            public void onFailure(@NonNull Exception exception) {
-                // Handle unsuccessful uploads
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                String user_name = (String) dataSnapshot.child(userid).child("name").getValue();
+                Log.d("create camp", userid);
+                Date currentDate = new Date();
+                String dateString = Algorithms.date_to_string(currentDate);
+                Log.d("create camp", dateString);
+
+                //hardcoded goal
+                Campaign myCampaign = new DestinationCampaign(title, 0, charity, description,
+                        1000, init_location,userid, time_length, dateString, destination, dest_location, "lighthouse.png");
+
+                campsDBInteractor.put(myCampaign,databaseref);
             }
-        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+
             @Override
-            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                // taskSnapshot.getMetadata() contains file metadata such as size, content-type, and download URL.
-                Uri downloadUrl = taskSnapshot.getDownloadUrl();
+            public void onCancelled(DatabaseError databaseError) {
+
             }
         });
 
-        Query queryRef =  databaseref.child("users").child(userid);
-        Log.d("Tag", "userid = " + userid);
-        if(queryRef != null) {
-
-            String user_name = queryRef.orderByKey().equalTo("name").toString();
-
-
-            Campaign myCampaign = new DestinationCampaign(title, 0, charity, description,
-                    Integer.valueOf(goal), init_location,userid, 10, "2016-12-24", "home", dest_location);
-
-            databaseref.child("campaigns").child(title).setValue(myCampaign);
-        }else{
-            Log.d("Tag", "Error creating campaign. Need to create account first.");
-        }
     }
 
     //launch campaign

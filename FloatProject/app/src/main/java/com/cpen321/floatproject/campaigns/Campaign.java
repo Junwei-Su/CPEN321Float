@@ -29,7 +29,7 @@ public class Campaign {
      */
     public Campaign(long accumulated_donation, String campaign_name, String charity, String description,
                     long goal_amount, LatLng initial_location, String owner_account,
-                    long time_length,String initial_date) {
+                    long time_length,String initial_date,String campaign_pic) {
         this.accumulated_donation = accumulated_donation;
         this.campaign_name = campaign_name;
         this.charity = charity;
@@ -41,11 +41,12 @@ public class Campaign {
         list_locations = new ArrayList<LatLng>();
         list_locations.add(initial_location);
         this.initial_date = initial_date;
+        this.campaign_pic = campaign_pic;
     }
 
     public Campaign(long accumulated_donation, String campaign_name, String charity, String description,
                     long goal_amount, LatLng initial_location, String owner_account,
-                    long time_length,String initial_date, List<LatLng> list_of_location ) {
+                    long time_length,String initial_date, List<LatLng> list_of_location,String campaign_pic ) {
         this.accumulated_donation = accumulated_donation;
         this.campaign_name = campaign_name;
         this.charity = charity;
@@ -57,6 +58,7 @@ public class Campaign {
         list_locations = list_of_location;
         list_locations.add(initial_location);
         this.initial_date = initial_date;
+        this.campaign_pic = campaign_pic;
     }
 
     public long getAccumulated_donation(){
