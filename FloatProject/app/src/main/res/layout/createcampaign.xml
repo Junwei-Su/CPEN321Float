@@ -101,6 +101,7 @@
         android:layout_marginLeft="@dimen/activity_horizontal_margin"
         android:layout_marginRight="@dimen/activity_horizontal_margin"
         android:layout_centerHorizontal="true"
+        android:layout_marginBottom="15dp"
         android:orientation="horizontal"
         android:layout_below="@+id/initiallocationtext">
         <TextView
@@ -128,7 +129,28 @@
             android:layout_weight="1"
             android:text="Get My Coords"/>
     </LinearLayout>
-
+        //destination address
+        <TextView
+            android:id="@+id/destinationAddress"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:layout_marginRight="@dimen/activity_horizontal_margin"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@+id/initiallocationin"
+            android:textColor="@android:color/black"
+            android:hint="destination address"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <EditText
+                android:id="@+id/destination"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginBottom="15dp"
+                android:hint="   Address"/>
+        </LinearLayout>
     <TextView
         android:id="@+id/destinationlocationtext"
         android:layout_width="match_parent"
