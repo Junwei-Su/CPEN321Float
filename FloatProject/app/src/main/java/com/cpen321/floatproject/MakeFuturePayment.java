@@ -82,7 +82,7 @@ public class MakeFuturePayment extends AppCompatActivity {
                 Gson gson = new Gson();
                 User u = gson.fromJson(user, User.class);
 
-                makePayment(amount, u.refresh_token, u.metadata_id);
+                makePayment(amount, u.getRefreshToken(), u.getMetadataid());
             }
             @Override
             public void onCancelled(DatabaseError databaseError) {}

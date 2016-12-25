@@ -11,20 +11,20 @@ import java.util.Map;
 public class User {
 
     //field in database
-    String name;
-    String account_name;
-    String date_join;
-    String blurb;
-    boolean is_charity;
-    long amount_gain;
-    long amount_raised;
-    long amount_donated;
-    String address;
-    String metadata_id;
-    String refresh_token;
-    String profile_pic;
-    List<String> list_of_campaign_followed = new LinkedList<String>();
-    List<String> list_of_campaign_initialize = new LinkedList<String>();
+    private String name;
+    private String account_name;
+    private String date_join;
+    private String blurb;
+    private boolean is_charity;
+    private long amount_gain;
+    private long amount_raised;
+    private long amount_donated;
+    private String address;
+    private String metadata_id;
+    private String refresh_token;
+    private String profile_pic;
+    private List<String> list_of_campaign_followed = new LinkedList<String>();
+    private List<String> list_of_campaign_initialize = new LinkedList<String>();
 
 
     public User(){}
@@ -49,7 +49,7 @@ public class User {
 
     public User(String name, String account_name,String date, String blurb, boolean is_charity, long amount_gain,
                 long amount_raised, long amount_donated, String address,
-                List<String> list_of_campaign_initialize, List<String> list_of_campaign_followed){
+                List<String> list_of_campaign_initialize, List<String> list_of_campaign_followed, String profile_pic){
         this.name = name;
         this.account_name = account_name;
         this.date_join = date;
@@ -61,6 +61,7 @@ public class User {
         this.address = address;
         this.list_of_campaign_followed = list_of_campaign_followed;
         this.list_of_campaign_initialize = list_of_campaign_initialize;
+        this.profile_pic = profile_pic;
     }
 
     public String getName(){
@@ -110,6 +111,14 @@ public class User {
     public String getAddress(){return this.address;}
 
     public void setAddress(String newAdd){this.address = newAdd;}
+
+    public void setMetadataid(String metadata_id){this.metadata_id = metadata_id;}
+
+    public void setRefreshToken(String refresh_token){this.refresh_token = refresh_token;}
+
+    public String getMetadataid(){return metadata_id;}
+
+    public String getRefreshToken(){return refresh_token;}
 
     @Exclude
     public Map<String, Object> toMap() {

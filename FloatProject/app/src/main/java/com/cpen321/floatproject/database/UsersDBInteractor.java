@@ -44,7 +44,7 @@ public class UsersDBInteractor implements Readable, Writable {
 
         User to_return = new User(name, account_name, date_join, blurb, is_charity, amount_gained,
                 amount_raised, amount_donated, address,
-                list_camp_init, list_camp_join);
+                list_camp_init, list_camp_join, profile_pic);
 
         return to_return;
     }

@@ -19,7 +19,10 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.cpen321.floatproject.campaigns.Campaign;
+import com.cpen321.floatproject.charities.Charity;
 import com.cpen321.floatproject.database.CampsDBInteractor;
+import com.cpen321.floatproject.database.CharityDBinteractor;
+import com.cpen321.floatproject.database.UsersDBInteractor;
 import com.facebook.Profile;
 import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
@@ -67,9 +70,9 @@ public class MapPage extends FragmentActivity implements OnMapReadyCallback,
     private DatabaseReference listcampaignsref;
     private DatabaseReference listlocationsref;
     private DatabaseReference listcharitiesref;
-    private DatabaseReference charityref;
+    private DatabaseReference charitiesref;
     private DatabaseReference campaignref;
-    private DatabaseReference launchuserref;
+    private DatabaseReference launchusersref;
 
     //references to points in Firebase storage
     private FirebaseStorage storage;
@@ -79,11 +82,13 @@ public class MapPage extends FragmentActivity implements OnMapReadyCallback,
     private ValueEventListener listlocationslistener;
     private ChildEventListener listcampaignslistener;
     private ValueEventListener campaignslistener;
-    private ValueEventListener charitylistener;
-    private ValueEventListener launchuserlistener;
+    private ValueEventListener charitieslistener;
+    private ValueEventListener launchuserslistener;
 
     //database interactors
     private CampsDBInteractor campsDBInteractor;
+    private CharityDBinteractor charityDBinteractor;
+    private UsersDBInteractor usersDBInteractor;
 
     private GoogleMap map;
 
@@ -119,7 +124,8 @@ public class MapPage extends FragmentActivity implements OnMapReadyCallback,
             .build();                   // Creates a CameraPosition from the builder
 
     private String charityname;
-    private String owner_account_id; //username of person who launched campaign
+    private String launchusername; //facebook numerical id of person who launched campaign
+    private String launchusernamestr;
     private String campaignname;
 
     //filenames of pictures
@@ -154,6 +160,9 @@ public class MapPage extends FragmentActivity implements OnMapReadyCallback,
         setContentView(R.layout.map);
 
         campsDBInteractor = new CampsDBInteractor();
+        charityDBinteractor = new CharityDBinteractor();
+        usersDBInteractor = new UsersDBInteractor();
+
         infowindow = (RelativeLayout) findViewById(R.id.infowindow);
 
         //listen to infowindow once to obtain height in pixels
@@ -280,7 +289,7 @@ public class MapPage extends FragmentActivity implements OnMapReadyCallback,
             String userid = profile.getId();
             //Log.d("Tag", "My userid is: " + userid);
 
-            //update Facebook username on top right of screen
+            //update Facebook launchusername on top right of screen
             DatabaseReference thisuserref = usersref.child(userid);
             thisuserref.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
@@ -379,7 +388,7 @@ public class MapPage extends FragmentActivity implements OnMapReadyCallback,
             }
         };
 
-        //listener to update username, campaign_name and charity name on infowindow
+        //listener to update launchusername, campaign_name and charity name on infowindow
         campaignslistener = new ValueEventListener() {
 
 
@@ -394,19 +403,21 @@ public class MapPage extends FragmentActivity implements OnMapReadyCallback,
                 setDBPictureOnImageView(imageref, R.id.campaignpic);
 
                 //attach listener to launch user profile pic
-                owner_account_id = campaign.getOwner_account();
-                Log.d("Tag", "owner_account_id = " + owner_account_id);
-                launchuserref = usersref.child(owner_account_id);
-                launchuserref.addListenerForSingleValueEvent(launchuserlistener);
+                launchusername = campaign.getOwner_account();
+                Log.d("Tag", "launchusername = " + launchusername);
+
+                launchusersref = databaseref.child("users");
+                launchusersref.addListenerForSingleValueEvent(launchuserslistener);
 
                 //attach listener to charity
                 charityname = campaign.getCharity();
                 Log.d("Tag", "charityname = " + charityname);
-                charityref = listcharitiesref.child(charityname);
-                charityref.addListenerForSingleValueEvent(charitylistener);
 
-                //TextView tv = (TextView) findViewById(R.id.username);
-                //tv.setText(owner_account_id);
+                charitiesref = databaseref.child("charities");
+                charitiesref.addListenerForSingleValueEvent(charitieslistener);
+
+                //TextView tv = (TextView) findViewById(R.id.launchusername);
+                //tv.setText(launchusername);
 
                 TextView tv = (TextView) findViewById(R.id.campaigntitle);
                 tv.setText(campaignname);
@@ -422,19 +433,20 @@ public class MapPage extends FragmentActivity implements OnMapReadyCallback,
             }
         };
 
-        launchuserlistener = new ValueEventListener() {
+        launchuserslistener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+                User user = usersDBInteractor.read(launchusername, dataSnapshot);
+
                 //update profile pic of launcher of campaign
-                launchuserpic = dataSnapshot.child("profile_pic").getValue(String.class);
+                launchuserpic = user.getProfile_pic();
                 Log.d("Tag", "launchuserpic = " + launchuserpic);
                 StorageReference launchuserpicref = imagesRef.child(launchuserpic);
                 setDBPictureOnImageView(launchuserpicref, R.id.userpic);
 
-                //update username of launcher of campaign
-                String launchusername = dataSnapshot.child("name").getValue(String.class);
+                launchusernamestr = user.getName();
                 TextView tv = (TextView) findViewById(R.id.username);
-                tv.setText(launchusername);
+                tv.setText(launchusernamestr);
             }
 
             @Override
@@ -443,10 +455,12 @@ public class MapPage extends FragmentActivity implements OnMapReadyCallback,
             }
         };
 
-        charitylistener = new ValueEventListener() {
+        charitieslistener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                charitypic = dataSnapshot.child("logo").getValue(String.class);
+                Charity charity = charityDBinteractor.read(charityname, dataSnapshot);
+
+                charitypic = charity.getLogo();
                 Log.d("Tag", "charitypic = " + charitypic);
                 StorageReference logoRef = imagesRef.child(charitypic);
                 setDBPictureOnImageView(logoRef, R.id.charitypic);

@@ -9,17 +9,17 @@ import java.util.ArrayList;
 public class Campaign {
 
     //campaign field
-    public long accumulated_donation;
-    public String campaign_name;
-    public String charity;
-    public String description;
-    public long goal_amount;
-    public String initial_date;
-    public LatLng initial_location;
-    public List<LatLng> list_locations;
-    public String owner_account;
-    public long time_length;
-    public String campaign_pic = "lighthouse.png"; //TODO remove hardcoded default value
+    private long accumulated_donation;
+    private String campaign_name;
+    private String charity;
+    private String description;
+    private long goal_amount;
+    private String initial_date;
+    private LatLng initial_location;
+    private List<LatLng> list_locations;
+    private String owner_account;
+    private long time_length;
+    private String campaign_pic = "lighthouse.png"; //TODO remove hardcoded default value
 
     public Campaign() {
     }

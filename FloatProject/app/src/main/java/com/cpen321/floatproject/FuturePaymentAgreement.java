@@ -103,8 +103,8 @@ public class FuturePaymentAgreement extends AppCompatActivity {
                         String refresh_token = response;
 
                         User u = new User();
-                        u.refresh_token = refresh_token;
-                        u.metadata_id = metadata_id;
+                        u.setRefreshToken(refresh_token);
+                        u.setMetadataid(metadata_id);
 
                         Gson g = new Gson();
                         String child = g.toJson(u);
