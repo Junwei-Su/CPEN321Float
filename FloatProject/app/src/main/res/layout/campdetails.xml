@@ -2,7 +2,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@color/background"
+                android:background="#E0E0E0"
+                android:textColor="@android:color/black"
                 android:id="@+id/camp_details" >
         <LinearLayout
             android:layout_width="match_parent"
@@ -19,6 +20,7 @@
                 android:ellipsize="end"
                 android:maxLines="1"
                 android:textSize="15pt"
+                android:textColor="@android:color/black"
                 android:text="aaron is great aaa a a  bbbbb"/>
             <ImageView
                 android:id="@+id/campaignpicdeets"
@@ -31,8 +33,41 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:paddingTop="@dimen/activity_horizontal_margin"
-                android:paddingBottom="@dimen/activity_horizontal_margin"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:layout_weight="1.1"
+                android:orientation="horizontal">
+                //user name
+                <TextView
+                    android:id="@+id/userdeets"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="3pt"
+                    android:textSize="8pt"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:layout_marginRight="40dp"
+                    android:textColor="@android:color/black"
+                    android:text="the great aaron"/>
+                //campaign name
+                <TextView
+                    android:id="@+id/charitydeets"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="3pt"
+                    android:textSize="8pt"
+                    android:layout_marginLeft="40dp"
+                    android:layout_gravity="center_vertical"
+                    android:textColor="@android:color/black"
+                    android:text="aarons lunch money"
+                    android:layout_weight="1"/>
+
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingTop="10dp"
+                android:paddingBottom="20dp"
                 android:layout_weight="1"
                 android:orientation="horizontal">
                 <ImageView
@@ -42,46 +77,38 @@
                     android:layout_gravity="center_vertical"
                     android:scaleType="centerCrop"
                     android:src="@drawable/sampcamp"
+                    android:layout_marginRight="10dp"
                     android:layout_weight="1"/>
-                <TextView
-                    android:id="@+id/userdeets"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingLeft="3pt"
-                    android:textSize="8pt"
-                    android:layout_gravity="center_vertical"
-                    android:layout_weight="1"
-                    android:text="the great aaron"/>
                 <ImageView
                     android:id="@+id/charitypicdeets"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="10dp"
                     android:scaleType="centerCrop"
                     android:src="@drawable/sampcamp"
                     android:layout_weight="1"/>
-                <TextView
-                    android:id="@+id/charitydeets"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingLeft="3pt"
-                    android:textSize="8pt"
-                    android:layout_gravity="center_vertical"
-                    android:text="aarons lunch money"
-                    android:layout_weight="1"/>
             </LinearLayout>
             <LinearLayout
+                android:paddingBottom="10dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
                 <Button
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:text="FLOAT"
+                    android:background="#00838F"
+                    android:layout_marginRight="10dp"
+                    android:textColor="@android:color/white"
                     android:layout_weight="1"/>
+
                 <Button
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:text="DONATE"
+                    android:background="#00838F"
+                    android:textColor="@android:color/white"
+                    android:layout_marginLeft="10dp"
                     android:layout_weight="1"
                     android:id="@+id/donate_button" />
 
@@ -91,6 +118,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
+                android:textColor="@android:color/black"
                 android:text="description"/>
         </LinearLayout>
 </RelativeLayout>
