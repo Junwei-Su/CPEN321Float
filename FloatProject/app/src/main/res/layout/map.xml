@@ -56,8 +56,9 @@
                         android:id="@+id/campaigntitle"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
+                        android:layout_marginBottom="1dp"
                         android:text="aaron is great"
-                        android:textSize="10pt"
+                        android:textSize="8pt"
                         android:layout_gravity="left"
                         android:layout_weight="1"/>
                     <LinearLayout
@@ -66,6 +67,7 @@
                         android:layout_height="match_parent"
                         android:layout_weight="1"
                         android:gravity="start"
+                        android:layout_marginTop="1dp"
                         android:orientation="horizontal">
 
                         <ImageView
@@ -92,8 +94,6 @@
                         android:layout_height="match_parent"
                         android:layout_weight="1"
                         android:orientation="horizontal">
-
-
                         <ImageView
                             android:id="@+id/charitypic"
                             android:layout_width="match_parent"
@@ -116,12 +116,12 @@
             </LinearLayout>
             <ImageButton
                 android:id="@+id/closewindow"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
+                android:layout_width="55dp"
+                android:layout_height="55dp"
                 android:layout_alignParentRight="true"
                 android:layout_alignParentTop="true"
-                android:layout_margin="5dp"
-                android:background="@drawable/xbutton" />
+                android:layout_marginTop="5dp"
+                android:background="@drawable/cross_button" />
             <Button
                 android:id="@+id/details"
                 android:layout_width="wrap_content"
