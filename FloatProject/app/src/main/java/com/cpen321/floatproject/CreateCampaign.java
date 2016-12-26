@@ -49,7 +49,6 @@ public class CreateCampaign extends AppCompatActivity {
     private String title;
     private String charity;
     private String description;
-    private String goal; //destination
     private long pledge;
     private String userid;
     private double initlocatlatitude;
@@ -62,6 +61,7 @@ public class CreateCampaign extends AppCompatActivity {
     //clarence added for destination field
     private String destination;
     long time_length = 10;
+    private String campPic_url;
     private DatabaseReference userRef = FirebaseDatabase.getInstance().getReference().child("users");
     private CampsDBInteractor campsDBInteractor = new CampsDBInteractor();
 
@@ -179,14 +179,10 @@ public class CreateCampaign extends AppCompatActivity {
 
         TextView myTextView = (TextView) findViewById(R.id.initlocatlatitude);
         initlocatlatitude = Double.parseDouble(myTextView.getText().toString());
-        //clarence hardcode for testing
-//        initlocatlatitude = 1.0;
         Log.d("Tag", "initlocatlatitude: " + initlocatlatitude);
 
         myTextView = (TextView) findViewById(R.id.initlocatlongitude);
         initlocatlongitude = Double.parseDouble(myTextView.getText().toString());
-//        clarence hardcode for testing
-//        initlocatlongitude = 1.0;
         Log.d("Tag", "initlocatlongitude: " + initlocatlongitude);
 
         init_location = new LatLng(initlocatlatitude, initlocatlongitude);
@@ -197,16 +193,16 @@ public class CreateCampaign extends AppCompatActivity {
         Log.d("Tag",destination);
 
         myText = (EditText) findViewById(R.id.destlocatlatitude);
-        destlocatlatitude = Double.parseDouble(myText.getText().toString());
+        destlocatlatitude = UtilityMethod.text_to_double(myText);
         Log.d("Tag", "destlocatlatitude: " + destlocatlatitude);
 
         myText = (EditText) findViewById(R.id.destlocatlongitude);
-        destlocatlongitude = Double.parseDouble(myText.getText().toString());
+        destlocatlongitude = UtilityMethod.text_to_double(myText);
         Log.d("Tag", "destlocatlongitude: " + destlocatlongitude);
 
-//        dest_location = new LatLng(destlocatlatitude, destlocatlongitude);
+        dest_location = new LatLng(destlocatlatitude, destlocatlongitude);
         //clarence hardcoded for testing
-        dest_location = new LatLng(1.0, 2.9);
+//        dest_location = new LatLng(1.0, 2.9);
 
         myText = (EditText) findViewById(R.id.descriptionin);
         description = myText.getText().toString();
@@ -216,23 +212,24 @@ public class CreateCampaign extends AppCompatActivity {
         Profile profile = Profile.getCurrentProfile();
         userid = profile.getId();
 
-        //clarence commented for for testing
-//        StorageReference riversRef = imagesRef.child(title + "_pic.jpg");
-//        UploadTask uploadTask = riversRef.putFile(selectedImageURI);
-//
-//        // Register observers to listen for when the download is done or if it fails
-//        uploadTask.addOnFailureListener(new OnFailureListener() {
-//            @Override
-//            public void onFailure(@NonNull Exception exception) {
-//                // Handle unsuccessful uploads
-//            }
-//        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-//            @Override
-//            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-//                // taskSnapshot.getMetadata() contains file metadata such as size, content-type, and download URL.
-//                Uri downloadUrl = taskSnapshot.getDownloadUrl();
-//            }
-//        });
+        campPic_url = title + "_pic.jpg";
+
+        StorageReference riversRef = imagesRef.child(campPic_url);
+        UploadTask uploadTask = riversRef.putFile(selectedImageURI);
+
+        // Register observers to listen for when the download is done or if it fails
+        uploadTask.addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                // Handle unsuccessful uploads
+            }
+        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                // taskSnapshot.getMetadata() contains file metadata such as size, content-type, and download URL.
+                Uri downloadUrl = taskSnapshot.getDownloadUrl();
+            }
+        });
 
 
         userRef.addValueEventListener(new ValueEventListener() {
@@ -246,7 +243,7 @@ public class CreateCampaign extends AppCompatActivity {
 
                 //hardcoded goal
                 Campaign myCampaign = new DestinationCampaign(title, 0, charity, description,
-                        pledge, init_location,userid, time_length, dateString, destination, dest_location, "lighthouse.png");
+                        pledge, init_location,userid, time_length, dateString, destination, dest_location, campPic_url);
 
                 campsDBInteractor.put(myCampaign,databaseref);
             }
