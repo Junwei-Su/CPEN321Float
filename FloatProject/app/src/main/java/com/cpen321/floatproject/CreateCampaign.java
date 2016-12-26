@@ -201,8 +201,6 @@ public class CreateCampaign extends AppCompatActivity {
         Log.d("Tag", "destlocatlongitude: " + destlocatlongitude);
 
         dest_location = new LatLng(destlocatlatitude, destlocatlongitude);
-        //clarence hardcoded for testing
-//        dest_location = new LatLng(1.0, 2.9);
 
         myText = (EditText) findViewById(R.id.descriptionin);
         description = myText.getText().toString();
@@ -241,7 +239,6 @@ public class CreateCampaign extends AppCompatActivity {
                 String dateString = Algorithms.date_to_string(currentDate);
                 Log.d("create camp", dateString);
 
-                //hardcoded goal
                 Campaign myCampaign = new DestinationCampaign(title, 0, charity, description,
                         pledge, init_location,userid, time_length, dateString, destination, dest_location, campPic_url);
 

@@ -29,13 +29,13 @@
                 android:layout_marginTop="@dimen/activity_horizontal_margin"
                 android:scaleType="centerCrop"
                 android:src="@drawable/sampcamp"
-                android:layout_weight="1"/>
+                android:layout_weight="0.6"/>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:paddingTop="10dp"
                 android:paddingBottom="10dp"
-                android:layout_weight="1.1"
+                android:layout_weight="1"
                 android:orientation="horizontal">
                 //user name
                 <TextView

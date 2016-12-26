@@ -55,6 +55,8 @@ public class CampsDBInteractor implements Readable, Writable {
         String initial_date= (String) camp_snap.child("initial_date").getValue();
 
         LatLng initial_location =  dataSnapshotToLatLng(camp_snap.child("initial_location"));
+        //clarence debug
+        Log.d("testCamp1",camp_snap.child("dest_location").getValue().toString());
         LatLng dest_location = dataSnapshotToLatLng(camp_snap.child("dest_location"));
         List<LatLng> list_locations = dataSnapshotToLatLngList(camp_snap.child("list_locations"));
 
@@ -158,7 +160,6 @@ public class CampsDBInteractor implements Readable, Writable {
 
         //get coordinates of campaign launch location
         Map<String, Double> mapcoords = (HashMap<String,Double>) datasnapshot.getValue();
-
         //create LatLng object out of coordinates
         return new LatLng(mapcoords.get("latitude"), mapcoords.get("longitude"));
     };
