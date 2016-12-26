@@ -21,6 +21,7 @@ import com.cpen321.floatproject.campaigns.Campaign;
 import com.cpen321.floatproject.campaigns.DestinationCampaign;
 import com.cpen321.floatproject.database.CampsDBInteractor;
 import com.cpen321.floatproject.database.UsersDBInteractor;
+import com.cpen321.floatproject.utilities.UtilityMethod;
 import com.facebook.Profile;
 import com.firebase.client.utilities.Base64;
 import com.google.android.gms.maps.model.LatLng;
@@ -48,8 +49,8 @@ public class CreateCampaign extends AppCompatActivity {
     private String title;
     private String charity;
     private String description;
-    private String goal;
-    private String pledge;
+    private String goal; //destination
+    private long pledge;
     private String userid;
     private double initlocatlatitude;
     private double initlocatlongitude;
@@ -173,13 +174,8 @@ public class CreateCampaign extends AppCompatActivity {
         charity = myText.getText().toString();
         Log.d("Tag", charity);
 
-        myText = (EditText) findViewById(R.id.goalin);
-        goal = myText.getText().toString();
-        Log.d("Tag",goal);
-
         myText = (EditText) findViewById(R.id.pledgein);
-        pledge = myText.getText().toString();
-        Log.d("Tag", pledge);
+        pledge = UtilityMethod.text_to_long(myText);
 
         TextView myTextView = (TextView) findViewById(R.id.initlocatlatitude);
         initlocatlatitude = Double.parseDouble(myTextView.getText().toString());
@@ -250,7 +246,7 @@ public class CreateCampaign extends AppCompatActivity {
 
                 //hardcoded goal
                 Campaign myCampaign = new DestinationCampaign(title, 0, charity, description,
-                        1000, init_location,userid, time_length, dateString, destination, dest_location, "lighthouse.png");
+                        pledge, init_location,userid, time_length, dateString, destination, dest_location, "lighthouse.png");
 
                 campsDBInteractor.put(myCampaign,databaseref);
             }
