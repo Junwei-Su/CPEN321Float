@@ -17,12 +17,14 @@ import com.android.volley.RetryPolicy;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.cpen321.floatproject.campaigns.Campaign;
+import com.cpen321.floatproject.database.CampsDBInteractor;
+import com.cpen321.floatproject.database.UsersDBInteractor;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.google.gson.Gson;
 import com.paypal.base.rest.PayPalRESTException;
 
 import java.io.IOException;
@@ -31,8 +33,8 @@ import java.util.Map;
 
 public class MakeFuturePayment extends AppCompatActivity {
 
-    String title;
-    String userid;
+    private String title;
+    private String userid;
 
     private static final String CLIENT_ID =
             "AfwKVfqhDY263y2WMId3yTpSlalnyNCP47ebWaVH0q0d20sXeO8je9-kM2zWHuV2zKXmxIkbf9UMggdF";
@@ -42,6 +44,8 @@ public class MakeFuturePayment extends AppCompatActivity {
             "http://ec2-54-213-91-175.us-west-2.compute.amazonaws.com/paypal-sdk/future_payment.php";
 
     private DatabaseReference databaseref = FirebaseDatabase.getInstance().getReference();
+    private UsersDBInteractor usersDBInteractor = new UsersDBInteractor();
+    private CampsDBInteractor campsDBInteractor = new CampsDBInteractor();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,9 +68,6 @@ public class MakeFuturePayment extends AppCompatActivity {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-        //listener for returning to map page
-
     }
 
     private void makePayment() throws PayPalRESTException, IOException {
@@ -74,15 +75,10 @@ public class MakeFuturePayment extends AppCompatActivity {
         databaseref.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                String user = dataSnapshot.child("users").child(userid).getValue(String.class);
-
-                String amount = "10";
-                // String amount = dataSnapshot.child("campaigns").child(title).child(amount).getValue(String.class); *****
-
-                Gson gson = new Gson();
-                User u = gson.fromJson(user, User.class);
-
-                makePayment(amount, u.getRefreshToken(), u.getMetadataid());
+                User user = usersDBInteractor.read(userid, dataSnapshot);
+                Campaign campaign = campsDBInteractor.read(title, dataSnapshot);
+                String amount = String.valueOf(campaign.getGoal_amount());
+                makePayment(amount, user.getRefreshToken(), user.getMetadataid());
             }
             @Override
             public void onCancelled(DatabaseError databaseError) {}
@@ -97,7 +93,6 @@ public class MakeFuturePayment extends AppCompatActivity {
                 {
                     @Override
                     public void onResponse(String response) {
-                        // response
                         // The server should return a refresh token
                         Log.d("Payment ID", response);
                         setContentView(R.layout.future_payment_status);
@@ -119,16 +114,12 @@ public class MakeFuturePayment extends AppCompatActivity {
             {
                 Map<String, String>  params = new HashMap<String, String> ();
 
-                // Hardcoded....add the actual values in
                 params.put("payment_amount", payment_amount);
                 params.put("metadata_id", metadata_id);
-                params.put("client_secret",
-                        CLIENT_SECRET);
-                params.put("client_id",
-                        CLIENT_ID);
+                params.put("client_secret", CLIENT_SECRET);
+                params.put("client_id", CLIENT_ID);
                 params.put("refresh_token", refresh_token);
-                params.put("payment_description",
-                        "test payment");
+                params.put("payment_description", "payment");
                 return params;
             }
             @Override
