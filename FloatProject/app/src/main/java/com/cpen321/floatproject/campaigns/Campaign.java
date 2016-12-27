@@ -19,14 +19,11 @@ public class Campaign {
     private List<LatLng> list_locations;
     private String owner_account;
     private long time_length;
-    private String campaign_pic = "lighthouse.png"; //TODO remove hardcoded default value
+    private String campaign_pic = "default_camp_pic.jpg"; //default campaign picture
 
     public Campaign() {
     }
 
-    /*
-    *
-     */
     public Campaign(long accumulated_donation, String campaign_name, String charity, String description,
                     long goal_amount, LatLng initial_location, String owner_account,
                     long time_length,String initial_date,String campaign_pic) {

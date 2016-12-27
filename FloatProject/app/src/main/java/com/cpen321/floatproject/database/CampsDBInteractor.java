@@ -151,6 +151,8 @@ public class CampsDBInteractor implements Readable, Writable {
         return nearbyCamp_list;
     }
 
+
+    //clarence todo: refactor this to utility class
     /**
      * Takes in a datashapshot and returns a LatLng object with the coordinates
      * @param datasnapshot

@@ -250,6 +250,20 @@ public class MapPage extends FragmentActivity implements OnMapReadyCallback,
             }
         });
 
+        //clarence code for camp list viewer
+        ImageButton listButton = (ImageButton) findViewById(R.id.listCamp);
+        listButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //user click the list button
+                //UI go to list page
+                Intent jumpToListView = new Intent(v.getContext(), CampListView.class);
+                //need to pass the current location of the user
+                startActivity(jumpToListView);
+
+            }
+        });
+
         //wire details button to CampDetails activity
         Button button = (Button) findViewById(R.id.details);
         button.setOnClickListener(new View.OnClickListener() {
