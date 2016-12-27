@@ -36,7 +36,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:layout_marginLeft="10dp"
-                android:text="Launching User: "
+                android:text="Launching User:"
                 android:textSize="7pt" />
             <TextView
                 android:id="@+id/campListUser"
@@ -57,7 +57,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:layout_marginLeft="10dp"
-                android:text="Destination: "
+                android:text="Destination:"
                 android:textSize="7pt" />
             <TextView
                 android:id="@+id/campListDest"
