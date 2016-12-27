@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.cpen321.floatproject.campaigns.Campaign;
 import com.cpen321.floatproject.database.CampsDBInteractor;
+import com.facebook.Profile;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
@@ -48,6 +49,8 @@ public class CampDetails extends Activity {
 
     private CampsDBInteractor dbInteractor;
 
+    private Campaign campaign;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -76,7 +79,7 @@ public class CampDetails extends Activity {
         campaignsref.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                Campaign campaign = dbInteractor.read(theCampaign, dataSnapshot);
+                campaign = dbInteractor.read(theCampaign, dataSnapshot);
 
                 //update campaign image
                 StorageReference imageref = imagesref.child(campaign.getCampaign_pic());
@@ -108,7 +111,10 @@ public class CampDetails extends Activity {
             @Override
             public void onClick(View v) {
                 //start paypal
-                Intent intent = new Intent(v.getContext(), InstantPayment.class);
+                Intent intent = new Intent(v.getContext(), InstantPayment.class)
+                        .putExtra("Title", campaign.getCampaign_name())
+                        .putExtra("Owner_id", campaign.getOwner_account())
+                        .putExtra("Current User_id", Profile.getCurrentProfile().getId());
                 startActivity(intent);
             }
         });
