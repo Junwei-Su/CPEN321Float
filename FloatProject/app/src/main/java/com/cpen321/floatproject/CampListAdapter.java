@@ -14,7 +14,11 @@ import android.widget.TextView;
 
 import com.cpen321.floatproject.campaigns.DestinationCampaign;
 import com.cpen321.floatproject.database.DB;
+import com.cpen321.floatproject.database.UsersDBInteractor;
 import com.cpen321.floatproject.utilities.ActivityUtility;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
@@ -49,7 +53,7 @@ public class CampListAdapter extends BaseAdapter{
 
 
     public View getView(int position, View convertView, ViewGroup parent) {
-        ViewHolder holder;
+        final ViewHolder holder;
         if (convertView == null) {
             convertView = mInflater.inflate(R.layout.camp_list_layout, null);
             holder = new ViewHolder();
@@ -62,11 +66,24 @@ public class CampListAdapter extends BaseAdapter{
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
-        DestinationCampaign campaign = campArrayList.get(position);
+        final DestinationCampaign campaign = campArrayList.get(position);
         StorageReference imageRef = DB.images_ref.child(campaign.getCampaign_pic());
         activityUtility.setPictureOnImageView(imageRef,(ImageView) convertView.findViewById(R.id.campListPic));
         holder.campName.setText(campaign.getCampaign_name());
-        holder.userName.setText(campaign.getOwner_account());
+
+        DB.user_ref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                String user_name =(String) dataSnapshot.child(campaign.getOwner_account()).child("name").getValue();
+                holder.userName.setText(user_name);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
         holder.destination.setText(campaign.getDestination());
 
         return convertView;

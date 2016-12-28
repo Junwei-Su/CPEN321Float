@@ -536,23 +536,7 @@ public class MapPage extends FragmentActivity implements OnMapReadyCallback,
 
         map.animateCamera(CameraUpdateFactory.newCameraPosition(defaultcamerapos));
 
-        //map.setPadding(0, 0, 0, buttonpanelheight);
         layoutreadylistener("map");
-
-        //Log.d("Tag", "buttonpanelheight in onMapReady() = " + Integer.toString(buttonpanelheight));
-
-
-        //clarence manual testing
-//        UsersDBInteractor test = new UsersDBInteractor();
-//        DatabaseReference db = FirebaseDatabase.getInstance().getReference();
-//        User testU = test.getUser("float1",db);
-//        Log.d("test user",testU.getName());
-//        Log.d("test user",testU.getList_of_campaign_followed().toString());
-//        Log.d("test user",testU.getList_of_campaign_initialize().toString());
-
-//        Query queryRef =  databaseref.child("users").child("float1");
-//        String user_name = queryRef.orderByKey().equalTo("name").toString();
-//            Log.d("user name", user_name);
 
     }
 
