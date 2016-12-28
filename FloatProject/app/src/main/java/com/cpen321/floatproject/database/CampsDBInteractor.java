@@ -32,7 +32,7 @@ public class CampsDBInteractor implements Readable, Writable {
     *       Campaign object search for
      */
     @Override
-    public Campaign read(String ID, DataSnapshot dataSnapshot) {
+    public DestinationCampaign read(String ID, DataSnapshot dataSnapshot) {
 
         //get the dataSnapshot of the campaign object with this ID
         DataSnapshot camp_snap =  dataSnapshot.child(ID);

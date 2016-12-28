@@ -647,6 +647,9 @@ public class MapPage extends FragmentActivity implements OnMapReadyCallback,
         client.disconnect();
     }
 
+
+    //todo Refactor this later
+
     /**
      * Takes in a datashapshot and returns a LatLng object with the coordinates
      * @param datasnapshot
