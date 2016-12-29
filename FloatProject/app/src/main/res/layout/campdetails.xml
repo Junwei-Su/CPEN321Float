@@ -1,178 +1,223 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent">
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="#E0E0E0"
-                android:textColor="@android:color/black"
-                android:id="@+id/camp_details" >
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/camp_details"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#F4F4F4"
+        android:textColor="@android:color/black">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:orientation="vertical"
             android:paddingLeft="@dimen/activity_horizontal_margin"
-            android:paddingRight="@dimen/activity_horizontal_margin"
-            android:orientation="vertical">
+            android:paddingRight="@dimen/activity_horizontal_margin">
+
             <TextView
-                android:fontFamily="sans-serif-light"
                 android:id="@+id/camptitledeets"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center_horizontal"
-                android:paddingRight="@dimen/activity_horizontal_margin"
-                android:paddingTop = "15dp"
                 android:ellipsize="end"
+                android:fontFamily="sans-serif-light"
+                android:gravity="center_horizontal"
                 android:maxLines="1"
-                android:textSize="12pt"
-                android:textColor="@android:color/black"
-                android:text="Title"/>
-            <ImageView
-                android:id="@+id/campaignpicdeets"
+                android:paddingRight="@dimen/activity_horizontal_margin"
+                android:paddingTop="15dp"
+                android:paddingBottom = "15dp"
+                android:text="Title"
+                android:textColor="#373737"
+                android:textSize="12pt" />
+
+            <FrameLayout
                 android:layout_width="300dp"
                 android:layout_height="300dp"
-                android:layout_gravity="center"
-                android:layout_marginTop="@dimen/activity_horizontal_margin"
-                android:scaleType="centerCrop"
-                android:src="@drawable/sampcamp" />
+                android:layout_gravity="center">
+
+                <ImageView
+                    android:id="@+id/campaignpicdeets"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="10dp"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/loading" />
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/rounded_frame" />
+            </FrameLayout>
+
             <TextView
-                android:layout_marginTop="13dp"
-                android:fontFamily="sans-serif-light"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:textColor="@android:color/white"
-                android:paddingTop = "5dp"
-                android:paddingLeft = "5dp"
-                android:paddingRight = "5dp"
+                android:layout_marginTop="13dp"
                 android:background="@drawable/rounded_corners_top"
-                android:text="Description:" />
-            <TextView
                 android:fontFamily="sans-serif-light"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                android:paddingTop="5dp"
+                android:text="Description:"
+                android:textColor="#373737" />
+
+            <TextView
                 android:id="@+id/descriptiondeets"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:paddingLeft = "5dp"
-                android:paddingRight = "5dp"
+                android:layout_height="wrap_content"
                 android:background="@drawable/rounded_corners_bottom"
-                android:textColor="@android:color/black"
+                android:fontFamily="sans-serif-light"
+                android:paddingBottom="5dp"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
                 android:text="Sample description blah blah blah"
-                android:paddingBottom = "5dp"/>
+                android:textColor="#373737" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:paddingTop="30dp"
-                android:paddingBottom="20dp"
                 android:layout_weight="1"
-                android:orientation="horizontal">
+                android:gravity = "center"
+                android:orientation="horizontal"
+                android:paddingBottom="20dp"
+                android:paddingTop="30dp">
+
                 <TextView
-                    android:fontFamily="sans-serif-light"
                     android:layout_width="150dp"
                     android:layout_height="wrap_content"
-                    android:textColor="@android:color/black"
-                    android:textSize = "7pt"
-                    android:paddingTop = "5dp"
-                    android:paddingLeft = "5dp"
-                    android:paddingRight = "5dp"
                     android:layout_gravity="center_vertical"
-                    android:text="Charity information:"/>
-                <ImageView
-                    android:id="@+id/charitypicdeets"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginLeft="40dp"
-                    android:scaleType="centerCrop"
-                    android:src="@drawable/sampcamp" />
-                <TextView
                     android:fontFamily="sans-serif-light"
+                    android:paddingLeft="5dp"
+                    android:paddingRight="5dp"
+                    android:paddingTop="5dp"
+                    android:text="Charity information:"
+                    android:textColor="#373737"
+                    android:textSize="7pt" />
+
+                <TextView
                     android:id="@+id/charitydeets"
                     android:layout_width="100dp"
                     android:layout_height="wrap_content"
-                    android:paddingLeft="3pt"
-                    android:textSize="7pt"
+                    android:layout_gravity="center"
+                    android:layout_marginRight="10dp"
                     android:background="@drawable/rounded_corners"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight = "10dp"
-                    android:layout_gravity="center_vertical"
-                    android:textColor="@android:color/black"
-                    android:text="charity details" />
+                    android:fontFamily="sans-serif-light"
+                    android:paddingLeft="3pt"
+                    android:text="charity details"
+                    android:textColor="#373737"
+                    android:textSize="7pt" />
+
+                <FrameLayout
+                    android:layout_width="70dp"
+                    android:layout_height="70dp"
+                    android:layout_gravity="center">
+
+                    <ImageView
+                        android:id="@+id/charitypicdeets"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center_vertical"
+                        android:layout_margin="5dp"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/loading" />
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/thin_rounded_frame" />
+                </FrameLayout>
+
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:paddingTop="10dp"
-                android:paddingBottom="20dp"
+                android:gravity = "center"
                 android:layout_weight="1"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:paddingBottom="20dp"
+                android:paddingTop="10dp">
+
                 <TextView
-                    android:fontFamily="sans-serif-light"
                     android:layout_width="150dp"
                     android:layout_height="wrap_content"
-                    android:textColor="@android:color/black"
-                    android:textSize = "7pt"
-                    android:paddingTop = "5dp"
-                    android:paddingLeft = "5dp"
-                    android:paddingRight = "5dp"
                     android:layout_gravity="center_vertical"
-                    android:text="Launching user information:"/>
-                <ImageView
-                    android:id="@+id/userpicdeets"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:scaleType="centerCrop"
-                    android:background="@drawable/rounded_corners_left"
-                    android:layout_gravity="center_vertical"
-                    android:src="@drawable/user_details_button"
-                    android:layout_marginLeft="40dp"/>
-                //user name
-                <TextView
                     android:fontFamily="sans-serif-light"
+                    android:paddingLeft="5dp"
+                    android:paddingRight="5dp"
+                    android:paddingTop="5dp"
+                    android:text="Launching user information:"
+                    android:textColor="#373737"
+                    android:textSize="7pt" />
+
+                <TextView
                     android:id="@+id/userdeets"
                     android:layout_width="100dp"
                     android:layout_height="wrap_content"
-                    android:paddingLeft="3pt"
-                    android:textSize="7pt"
+                    android:layout_gravity = "center"
+                    android:layout_marginRight="10dp"
                     android:background="@drawable/rounded_corners"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight = "10dp"
-                    android:layout_gravity="center_vertical"
-                    android:textColor="@android:color/black"
-                    android:text="user details"/>
+                    android:fontFamily="sans-serif-light"
+                    android:paddingLeft="3pt"
+                    android:text="user details"
+                    android:textColor="#373737"
+                    android:textSize="7pt" />
+
+                <FrameLayout
+                    android:layout_width="70dp"
+                    android:layout_height="70dp"
+                    android:layout_gravity="center">
+
+                    <ImageView
+                        android:id="@+id/userpicdeets"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center_vertical"
+                        android:layout_margin="5dp"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/loading" />
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/thin_rounded_frame" />
+                </FrameLayout>
+
             </LinearLayout>
 
             <LinearLayout
-                android:paddingBottom="10dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:baselineAligned="false">
-                <Button
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:fontFamily="sans-serif-light"
-                    android:textSize = "8pt"
-                    android:text="FLOAT"
-                    android:layout_marginRight="10dp"
-                    android:background="@drawable/mybutton"
-                    android:textColor="@android:color/white"
-                    android:layout_weight="1"/>
+                android:baselineAligned="false"
+                android:paddingBottom="10dp">
 
                 <Button
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:fontFamily="sans-serif-light"
-                    android:textSize = "8pt"
-                    android:text="DONATE"
+                    android:layout_marginRight="10dp"
+                    android:layout_weight="1"
                     android:background="@drawable/mybutton"
-                    android:textColor="@android:color/white"
+                    android:fontFamily="sans-serif-light"
+                    android:text="FLOAT"
+                    android:textColor="#373737"
+                    android:textSize="8pt" />
+
+                <Button
+                    android:id="@+id/donate_button"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
                     android:layout_marginLeft="10dp"
                     android:layout_weight="1"
-                    android:id="@+id/donate_button" />
+                    android:background="@drawable/mybutton"
+                    android:fontFamily="sans-serif-light"
+                    android:text="DONATE"
+                    android:textColor="#373737"
+                    android:textSize="8pt" />
             </LinearLayout>
 
 
         </LinearLayout>
-</RelativeLayout>
+    </RelativeLayout>
 </ScrollView>
