@@ -1,5 +1,7 @@
 package com.cpen321.floatproject.database;
 
+import android.util.Log;
+
 import com.cpen321.floatproject.User;
 import com.cpen321.floatproject.campaigns.Campaign;
 import com.cpen321.floatproject.campaigns.DestinationCampaign;
@@ -47,13 +49,14 @@ public class UsersDBInteractor implements Readable, Writable {
                 amount_raised, amount_donated, address,
                 list_camp_init, list_camp_join, profile_pic);
 
+
         return to_return;
     }
 
     @Override
     public void update(Object o, DatabaseReference databaseReference) {
         User user_update = (User) o;
-        DatabaseReference user_update_ref = databaseReference.child(user_update.getAccount_name());
+        DatabaseReference user_update_ref = DB.user_ref.child(user_update.getAccount_name());
         //update infomation
         user_update_ref.child("amount_donated").setValue(user_update.getAmount_donated());
         user_update_ref.child("amount_raised").setValue(user_update.getAmount_raised());
@@ -91,32 +94,4 @@ public class UsersDBInteractor implements Readable, Writable {
         return to_return;
     }
 
-    /*
-    * return a User object from database
-     */
-//    public User getUser(String user_id, DatabaseReference db_ref){
-//
-//        Query queryRef =  db_ref.child("users").child(user_id);
-//
-//        long amount_donated = Integer.valueOf(queryRef.orderByKey().equalTo("amount_donated").toString());
-//        long amount_raised = Integer.valueOf(queryRef.orderByKey().equalTo("amount_raised").toString());
-//        long amount_gained = Integer.valueOf(queryRef.orderByKey().equalTo("amount_gained").toString());
-//        String account_name = queryRef.orderByKey().equalTo("account_name").toString();
-//        String address = queryRef.orderByKey().equalTo("address").toString();
-//        String name = queryRef.orderByKey().equalTo("name").toString();
-//        String blurb = queryRef.orderByKey().equalTo("blurb").toString();
-//        String date_join = queryRef.orderByKey().equalTo("date_join").toString();
-//        Boolean is_charity = Boolean.valueOf(queryRef.orderByKey().equalTo("is_charity").toString());
-//        String profile_pic = queryRef.orderByKey().equalTo("profile_pic").toString();
-//
-//        List<String> list_camp_init = (List<String>)queryRef.orderByKey().equalTo("list_camp_init");
-//        List<String> list_camp_join = (List<String>)queryRef.orderByKey().equalTo("list_camp_join");
-//
-//
-//        User to_return = new User(name, account_name, date_join, blurb, is_charity, amount_gained,
-//                amount_raised, amount_donated, address,
-//                list_camp_init, list_camp_join, profile_pic);
-//
-//        return to_return;
-//    }
 }

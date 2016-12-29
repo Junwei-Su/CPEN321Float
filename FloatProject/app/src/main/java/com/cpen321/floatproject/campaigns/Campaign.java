@@ -99,7 +99,7 @@ public class Campaign {
     }
 
     public void add_location(LatLng newLoc){
-        this.list_locations.add(newLoc);
+        if (this.list_locations.contains(newLoc)!=true) this.list_locations.add(newLoc);
     }
 
     public String getOwner_account(){
