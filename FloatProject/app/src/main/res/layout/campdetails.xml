@@ -35,7 +35,7 @@
                 android:layout_gravity="center"
                 android:layout_marginTop="@dimen/activity_horizontal_margin"
                 android:scaleType="centerCrop"
-                android:src="@drawable/sample_pic" />
+                android:src="@drawable/sampcamp" />
             <TextView
                 android:layout_marginTop="13dp"
                 android:fontFamily="sans-serif-light"
@@ -84,7 +84,7 @@
                     android:layout_gravity="center_vertical"
                     android:layout_marginLeft="40dp"
                     android:scaleType="centerCrop"
-                    android:src="@drawable/charity_pic" />
+                    android:src="@drawable/sampcamp" />
                 <TextView
                     android:fontFamily="sans-serif-light"
                     android:id="@+id/charitydeets"
@@ -125,7 +125,7 @@
                     android:scaleType="centerCrop"
                     android:background="@drawable/rounded_corners_left"
                     android:layout_gravity="center_vertical"
-                    android:src="@drawable/user_avatar"
+                    android:src="@drawable/user_details_button"
                     android:layout_marginLeft="40dp"/>
                 //user name
                 <TextView
