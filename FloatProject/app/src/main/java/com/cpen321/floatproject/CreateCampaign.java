@@ -16,16 +16,23 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.cpen321.floatproject.algorithm.Algorithms;
 import com.cpen321.floatproject.campaigns.Campaign;
 import com.cpen321.floatproject.campaigns.DestinationCampaign;
+import com.cpen321.floatproject.database.CampsDBInteractor;
+import com.cpen321.floatproject.database.UsersDBInteractor;
+import com.cpen321.floatproject.utilities.UtilityMethod;
 import com.facebook.Profile;
 import com.firebase.client.utilities.Base64;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -33,6 +40,7 @@ import com.google.firebase.storage.UploadTask;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.util.Date;
 
 /**
  * Created by sfarinas on 10/17/2016.
@@ -41,8 +49,7 @@ public class CreateCampaign extends AppCompatActivity {
     private String title;
     private String charity;
     private String description;
-    private String goal;
-    private String pledge;
+    private long pledge;
     private String userid;
     private double initlocatlatitude;
     private double initlocatlongitude;
@@ -50,6 +57,13 @@ public class CreateCampaign extends AppCompatActivity {
     private double destlocatlongitude;
     private LatLng init_location;
     private LatLng dest_location;
+
+    //clarence added for destination field
+    private String destination;
+    long time_length = 10;
+    private String campPic_url;
+    private DatabaseReference userRef = FirebaseDatabase.getInstance().getReference().child("users");
+    private CampsDBInteractor campsDBInteractor = new CampsDBInteractor();
 
     private DatabaseReference databaseref = FirebaseDatabase.getInstance().getReference();
 
@@ -160,13 +174,8 @@ public class CreateCampaign extends AppCompatActivity {
         charity = myText.getText().toString();
         Log.d("Tag", charity);
 
-        myText = (EditText) findViewById(R.id.goalin);
-        goal = myText.getText().toString();
-        Log.d("Tag",goal);
-
         myText = (EditText) findViewById(R.id.pledgein);
-        pledge = myText.getText().toString();
-        Log.d("Tag", pledge);
+        pledge = UtilityMethod.text_to_long(myText);
 
         TextView myTextView = (TextView) findViewById(R.id.initlocatlatitude);
         initlocatlatitude = Double.parseDouble(myTextView.getText().toString());
@@ -178,12 +187,17 @@ public class CreateCampaign extends AppCompatActivity {
 
         init_location = new LatLng(initlocatlatitude, initlocatlongitude);
 
+        //clarence added for destination field
+        myText = (EditText) findViewById(R.id.destination);
+        destination = myText.getText().toString();
+        Log.d("Tag",destination);
+
         myText = (EditText) findViewById(R.id.destlocatlatitude);
-        destlocatlatitude = Double.parseDouble(myText.getText().toString());
+        destlocatlatitude = UtilityMethod.text_to_double(myText);
         Log.d("Tag", "destlocatlatitude: " + destlocatlatitude);
 
         myText = (EditText) findViewById(R.id.destlocatlongitude);
-        destlocatlongitude = Double.parseDouble(myText.getText().toString());
+        destlocatlongitude = UtilityMethod.text_to_double(myText);
         Log.d("Tag", "destlocatlongitude: " + destlocatlongitude);
 
         dest_location = new LatLng(destlocatlatitude, destlocatlongitude);
@@ -196,7 +210,9 @@ public class CreateCampaign extends AppCompatActivity {
         Profile profile = Profile.getCurrentProfile();
         userid = profile.getId();
 
-        StorageReference riversRef = imagesRef.child(title + "_pic.jpg");
+        campPic_url = title + "_pic.jpg";
+
+        StorageReference riversRef = imagesRef.child(campPic_url);
         UploadTask uploadTask = riversRef.putFile(selectedImageURI);
 
         // Register observers to listen for when the download is done or if it fails
@@ -213,20 +229,28 @@ public class CreateCampaign extends AppCompatActivity {
             }
         });
 
-        Query queryRef =  databaseref.child("users").child(userid);
-        Log.d("Tag", "userid = " + userid);
-        if(queryRef != null) {
 
-            String user_name = queryRef.orderByKey().equalTo("name").toString();
+        userRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                String user_name = (String) dataSnapshot.child(userid).child("name").getValue();
+                Log.d("create camp", userid);
+                Date currentDate = new Date();
+                String dateString = Algorithms.date_to_string(currentDate);
+                Log.d("create camp", dateString);
 
+                Campaign myCampaign = new DestinationCampaign(title, 0, charity, description,
+                        pledge, init_location,userid, time_length, dateString, destination, dest_location, campPic_url);
 
-            Campaign myCampaign = new DestinationCampaign(title, 0, charity, description,
-                    Integer.valueOf(goal), init_location,userid, 10, "2016-12-24", "home", dest_location);
+                campsDBInteractor.put(myCampaign,databaseref);
+            }
 
-            databaseref.child("campaigns").child(title).setValue(myCampaign);
-        }else{
-            Log.d("Tag", "Error creating campaign. Need to create account first.");
-        }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
     }
 
     //launch campaign

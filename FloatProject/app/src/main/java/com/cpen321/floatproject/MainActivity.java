@@ -7,6 +7,7 @@ import android.util.Log;
 
 import com.cpen321.floatproject.charities.Charity;
 import com.cpen321.floatproject.database.CharityDBinteractor;
+import com.cpen321.floatproject.database.UsersDBInteractor;
 import com.facebook.Profile;
 import com.firebase.client.Firebase;
 import com.google.firebase.database.DataSnapshot;

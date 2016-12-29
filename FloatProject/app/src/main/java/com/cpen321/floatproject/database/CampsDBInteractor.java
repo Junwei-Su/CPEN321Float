@@ -55,17 +55,20 @@ public class CampsDBInteractor implements Readable, Writable {
         String initial_date= (String) camp_snap.child("initial_date").getValue();
 
         LatLng initial_location =  dataSnapshotToLatLng(camp_snap.child("initial_location"));
+        //clarence debug
+        Log.d("testCamp1",camp_snap.child("dest_location").getValue().toString());
         LatLng dest_location = dataSnapshotToLatLng(camp_snap.child("dest_location"));
         List<LatLng> list_locations = dataSnapshotToLatLngList(camp_snap.child("list_locations"));
 
 
 
         String owner_account = (String)camp_snap.child("owner_account").getValue();
+        String campaign_pic = (String) camp_snap.child("campaign_pic").getValue();
 
         DestinationCampaign to_return = new DestinationCampaign(
                 campaign_name, accumulated_donation, charity, description,
                 goal_amount, initial_location, owner_account,
-                time_length, initial_date, destination, dest_location, list_locations
+                time_length, initial_date, destination, dest_location, list_locations,campaign_pic
         );
 
         return to_return;
@@ -92,6 +95,7 @@ public class CampsDBInteractor implements Readable, Writable {
         camp_update_ref.child("list_locations").setValue(campaign_update.getList_locations());
         camp_update_ref.child("time_length").setValue(campaign_update.getTime_length());
         camp_update_ref.child("initial_date").setValue(campaign_update.getInitial_date());
+        camp_update_ref.child("campaign_pic").setValue(campaign_update.getCampaign_pic());
 
     }
 
@@ -156,7 +160,6 @@ public class CampsDBInteractor implements Readable, Writable {
 
         //get coordinates of campaign launch location
         Map<String, Double> mapcoords = (HashMap<String,Double>) datasnapshot.getValue();
-
         //create LatLng object out of coordinates
         return new LatLng(mapcoords.get("latitude"), mapcoords.get("longitude"));
     };

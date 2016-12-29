@@ -8,6 +8,14 @@ import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 
+import com.cpen321.floatproject.campaigns.Campaign;
+import com.cpen321.floatproject.database.CampsDBInteractor;
+import com.cpen321.floatproject.database.UsersDBInteractor;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.paypal.android.sdk.payments.PayPalConfiguration;
 import com.paypal.android.sdk.payments.PayPalPayment;
 import com.paypal.android.sdk.payments.PayPalService;
@@ -20,11 +28,18 @@ import java.math.BigDecimal;
 
 public class InstantPayment extends AppCompatActivity {
 
+    private DatabaseReference databaseref = FirebaseDatabase.getInstance().getReference();
+    private UsersDBInteractor usersDBInteractor = new UsersDBInteractor();
+    private CampsDBInteractor campsDBInteractor = new CampsDBInteractor();
+
     //set environment as the testing sandbox (can also be set to do actual transactions)
     private static final String CONFIG_ENVIRONMENT = PayPalConfiguration.ENVIRONMENT_SANDBOX;
     private static final String CLIENT_ID = "AfwKVfqhDY263y2WMId3yTpSlalnyNCP47ebWaVH0q0d20sXeO8je9-kM2zWHuV2zKXmxIkbf9UMggdF";
 
     private String payment_amount;
+    private String title;
+    private String campaign_owner_id;
+    private String current_user_id;
 
     //configure PayPal with the environment and client ID
     private static PayPalConfiguration paypal_configuration = new PayPalConfiguration()
@@ -37,6 +52,13 @@ public class InstantPayment extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.instant_payment);
+
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+            title = extras.getString("Title");
+            campaign_owner_id = extras.getString("Owner_id");
+            current_user_id= extras.getString("Current User_id");
+        }
 
         Intent paypal_service = new Intent(this, PayPalService.class);
         paypal_service.putExtra(PayPalService.EXTRA_PAYPAL_CONFIGURATION, paypal_configuration);
@@ -59,6 +81,25 @@ public class InstantPayment extends AppCompatActivity {
             cents_amount = ".".concat(cents_amount);
 
         payment_amount = dollar_amount.concat(cents_amount);
+
+        databaseref.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                User current_user = usersDBInteractor.read(current_user_id, dataSnapshot);
+                User campaign_owner = usersDBInteractor.read(campaign_owner_id, dataSnapshot);
+                Campaign campaign = campsDBInteractor.read(title, dataSnapshot);
+
+                current_user.addAmount_donated(Integer.valueOf(payment_amount));
+                campaign_owner.addAmount_raised(Integer.valueOf(payment_amount));
+                campaign.add_donation(Integer.valueOf(payment_amount));
+
+                usersDBInteractor.update(current_user, databaseref);
+                usersDBInteractor.update(campaign_owner, databaseref);
+                campsDBInteractor.update(campaign, databaseref);
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {}
+        });
 
         PayPalPayment payment =
                 new PayPalPayment(new BigDecimal(String.valueOf(payment_amount)), "USD", "Test Payment", PayPalPayment.PAYMENT_INTENT_SALE);

@@ -23,11 +23,12 @@ public class  DestinationCampaign extends Campaign {
     //without existing location list
     public DestinationCampaign(String campaign_name, long accumulated_donation, String charity, String description,
                                long goal_amount, LatLng initial_location, String owner_account,
-                               long time_length, String initial_date, String destination, LatLng dest_location){
+                               long time_length, String initial_date, String destination, LatLng dest_location,
+                                String campaign_pic){
 
         //call constructor from super class
         super(accumulated_donation, campaign_name, charity, description, goal_amount,
-                initial_location, owner_account, time_length, initial_date);
+                initial_location, owner_account, time_length, initial_date, campaign_pic);
 
         //add new field
         this.destination = destination;
@@ -38,11 +39,12 @@ public class  DestinationCampaign extends Campaign {
     ////with existing location list
     public DestinationCampaign(String campaign_name, long accumulated_donation, String charity, String description,
                                long goal_amount, LatLng initial_location, String owner_account,
-                               long time_length, String initial_date, String destination, LatLng dest_location, List<LatLng> list_of_location){
+                               long time_length, String initial_date, String destination, LatLng dest_location, List<LatLng> list_of_location
+                                ,String campaign_pic){
 
         //call constructor from super class
         super(accumulated_donation, campaign_name, charity, description, goal_amount,
-                initial_location, owner_account, time_length, initial_date, list_of_location);
+                initial_location, owner_account, time_length, initial_date, list_of_location, campaign_pic);
 
         //add new field
         this.destination = destination;

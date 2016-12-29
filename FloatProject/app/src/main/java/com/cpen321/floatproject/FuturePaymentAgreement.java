@@ -19,9 +19,12 @@ import com.android.volley.RetryPolicy;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.cpen321.floatproject.database.UsersDBInteractor;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.gson.Gson;
+import com.google.firebase.database.ValueEventListener;
 import com.paypal.android.sdk.payments.PayPalAuthorization;
 import com.paypal.android.sdk.payments.PayPalConfiguration;
 import com.paypal.android.sdk.payments.PayPalFuturePaymentActivity;
@@ -34,9 +37,12 @@ import java.util.Map;
 public class FuturePaymentAgreement extends AppCompatActivity {
 
     private DatabaseReference databaseref = FirebaseDatabase.getInstance().getReference();
-    String pledge_amount;
-    String title;
-    String userid;
+    private UsersDBInteractor usersDBInteractor = new UsersDBInteractor();
+
+    private String pledge_amount;
+    private String title;
+    private String userid;
+
     //set environment as the testing sandbox (can also be set to do actual transactions)
     private static final String CONFIG_ENVIRONMENT = PayPalConfiguration.ENVIRONMENT_SANDBOX;
     private static final String CLIENT_ID =
@@ -100,15 +106,19 @@ public class FuturePaymentAgreement extends AppCompatActivity {
                     @Override
                     public void onResponse(String response) {
                         Log.d("Refresh Token Response", response);
-                        String refresh_token = response;
+                        final String refresh_token = response;
 
-                        User u = new User();
-                        u.setRefreshToken(refresh_token);
-                        u.setMetadataid(metadata_id);
-
-                        Gson g = new Gson();
-                        String child = g.toJson(u);
-                        databaseref.child("users").child(userid).setValue(child);
+                        databaseref.addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                User user = usersDBInteractor.read(userid, dataSnapshot);
+                                user.setRefreshToken(refresh_token);
+                                user.setMetadataid(metadata_id);
+                                usersDBInteractor.update(user, databaseref);
+                            }
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {}
+                        });
                     }
                 },
                 new Response.ErrorListener() {

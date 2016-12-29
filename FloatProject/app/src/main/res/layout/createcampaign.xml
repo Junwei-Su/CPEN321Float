@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@color/background">
+                android:background="#E0E0E0">
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -21,7 +21,15 @@
         android:layout_centerHorizontal="true"
         android:layout_alignParentTop="true"
         android:hint="@string/titlein"/>
-
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="65dp"
+            android:layout_marginRight="@dimen/activity_horizontal_margin"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@+id/pledgein"
+            android:textColor="@android:color/black"
+            android:hint="campaign picture"/>
     <LinearLayout
         android:id="@+id/photopanel"
         android:layout_width="match_parent"
@@ -33,11 +41,14 @@
             android:id="@+id/photo"
             android:layout_width="200dp"
             android:layout_height="200dp"
-            android:background="@drawable/xbutton"/>
+            android:background="@drawable/default_camp_pic"/>
         <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="100dp"
+            android:layout_height="80dp"
             android:layout_gravity="center_vertical"
+            android:background="#00838F"
+            android:layout_marginLeft="30dp"
+            android:textColor="@android:color/white"
             android:text="Upload Photo"
             android:onClick="loadImagefromGallery"/>
     </LinearLayout>
@@ -51,16 +62,6 @@
         android:layout_centerHorizontal="true"
         android:layout_below="@+id/photopanel"
         android:hint="@string/charityin"/>
-
-    <EditText
-        android:id="@+id/goalin"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/activity_horizontal_margin"
-        android:layout_marginRight="@dimen/activity_horizontal_margin"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@+id/charityin"
-        android:hint="@string/goalin"/>
 
     <EditText
         android:id="@+id/pledgein"
@@ -81,6 +82,7 @@
         android:layout_marginRight="@dimen/activity_horizontal_margin"
         android:layout_centerHorizontal="true"
         android:layout_below="@+id/pledgein"
+        android:textColor="@android:color/black"
         android:hint="@string/initiallocationin"/>
     <LinearLayout
         android:id="@+id/initiallocationin"
@@ -89,6 +91,7 @@
         android:layout_marginLeft="@dimen/activity_horizontal_margin"
         android:layout_marginRight="@dimen/activity_horizontal_margin"
         android:layout_centerHorizontal="true"
+        android:layout_marginBottom="15dp"
         android:orientation="horizontal"
         android:layout_below="@+id/initiallocationtext">
         <TextView
@@ -110,11 +113,34 @@
         <Button
             android:id="@+id/getCoords"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="60dp"
+            android:background="#00838F"
+            android:textColor="@android:color/white"
             android:layout_weight="1"
             android:text="Get My Coords"/>
     </LinearLayout>
-
+        //destination address
+        <TextView
+            android:id="@+id/destinationAddress"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:layout_marginRight="@dimen/activity_horizontal_margin"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@+id/initiallocationin"
+            android:textColor="@android:color/black"
+            android:hint="destination address"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <EditText
+                android:id="@+id/destination"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginBottom="15dp"
+                android:hint="   Address"/>
+        </LinearLayout>
     <TextView
         android:id="@+id/destinationlocationtext"
         android:layout_width="match_parent"
@@ -123,6 +149,7 @@
         android:layout_marginRight="@dimen/activity_horizontal_margin"
         android:layout_centerHorizontal="true"
         android:layout_below="@+id/initiallocationin"
+        android:textColor="@android:color/black"
         android:hint="@string/destinationlocationin"/>
     <LinearLayout
         android:id="@+id/destinationlocationin"
@@ -148,7 +175,9 @@
         <Button
             android:id="@+id/findCoords"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="60dp"
+            android:background="#00838F"
+            android:textColor="@android:color/white"
             android:layout_weight="1"
             android:text="Search Coords"/>
     </LinearLayout>
