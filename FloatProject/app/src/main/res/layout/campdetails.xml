@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent">
 
@@ -15,22 +16,26 @@
             android:layout_height="match_parent"
             android:orientation="vertical"
             android:paddingLeft="@dimen/activity_horizontal_margin"
-            android:paddingRight="@dimen/activity_horizontal_margin">
+            android:paddingRight="@dimen/activity_horizontal_margin"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true">
 
             <TextView
                 android:id="@+id/camptitledeets"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="10dp"
                 android:ellipsize="end"
                 android:fontFamily="sans-serif-light"
                 android:gravity="center_horizontal"
                 android:maxLines="1"
                 android:paddingRight="@dimen/activity_horizontal_margin"
-                android:paddingTop="15dp"
-                android:paddingBottom = "15dp"
                 android:text="Title"
                 android:textColor="#373737"
-                android:textSize="12pt" />
+                android:textSize="12pt"
+                android:layout_weight="0.16" />
 
             <FrameLayout
                 android:layout_width="300dp"
@@ -48,20 +53,20 @@
                 <ImageView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="@drawable/rounded_frame" />
+                    android:background="@drawable/thin_rounded_frame"
+                    android:adjustViewBounds="true" />
             </FrameLayout>
 
             <TextView
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="33dp"
                 android:layout_marginTop="13dp"
                 android:background="@drawable/rounded_corners_top"
-                android:fontFamily="sans-serif-light"
                 android:paddingLeft="5dp"
                 android:paddingRight="5dp"
                 android:paddingTop="5dp"
                 android:text="Description:"
-                android:textColor="#F4F4F4"/>
+                android:textColor="#F4F4F4" />
 
             <TextView
                 android:id="@+id/descriptiondeets"
@@ -73,7 +78,8 @@
                 android:paddingLeft="5dp"
                 android:paddingRight="5dp"
                 android:text="Sample description blah blah blah"
-                android:textColor="#373737" />
+                android:textColor="#373737"
+                android:textAlignment="textStart" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -82,32 +88,37 @@
                 android:gravity = "center"
                 android:orientation="horizontal"
                 android:paddingBottom="20dp"
-                android:paddingTop="30dp">
+                android:paddingTop="30dp"
+                android:weightSum="1">
 
                 <TextView
                     android:layout_width="150dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="34dp"
                     android:layout_gravity="center_vertical"
                     android:fontFamily="sans-serif-light"
-                    android:paddingLeft="5dp"
-                    android:paddingRight="5dp"
-                    android:paddingTop="5dp"
-                    android:text="Charity information:"
-                    android:textColor="#373737"
-                    android:textSize="7pt" />
+                    android:paddingLeft="0dp"
+                    android:paddingRight="0dp"
+                    android:paddingTop="0dp"
+                    android:text="  Charity information:"
+                    android:textColor="#464646"
+                    android:gravity="center_vertical"
+                    android:background="@drawable/information_bg"
+                    android:layout_weight="0.15"
+                    android:textAlignment="viewStart" />
 
                 <TextView
                     android:id="@+id/charitydeets"
                     android:layout_width="100dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="35dp"
                     android:layout_gravity="center"
                     android:layout_marginRight="10dp"
-                    android:background="@drawable/rounded_corners"
+                    android:background="@drawable/rounded_right"
                     android:fontFamily="sans-serif-light"
-                    android:paddingLeft="3pt"
                     android:text="charity details"
                     android:textColor="#373737"
-                    android:textSize="7pt" />
+                    android:textSize="7pt"
+                    android:paddingLeft="3dp"
+                    android:paddingTop="7dp" />
 
                 <FrameLayout
                     android:layout_width="70dp"
@@ -138,7 +149,8 @@
                 android:layout_weight="1"
                 android:orientation="horizontal"
                 android:paddingBottom="20dp"
-                android:paddingTop="10dp">
+                android:paddingTop="10dp"
+                android:weightSum="1">
 
                 <TextView
                     android:layout_width="150dp"
@@ -150,20 +162,23 @@
                     android:paddingTop="5dp"
                     android:text="Launching user information:"
                     android:textColor="#373737"
-                    android:textSize="7pt" />
+                    android:textSize="7pt"
+                    android:background="@drawable/information_bg" />
 
                 <TextView
                     android:id="@+id/userdeets"
                     android:layout_width="100dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="39dp"
                     android:layout_gravity = "center"
                     android:layout_marginRight="10dp"
-                    android:background="@drawable/rounded_corners"
+                    android:background="@drawable/rounded_right"
                     android:fontFamily="sans-serif-light"
                     android:paddingLeft="3pt"
                     android:text="user details"
                     android:textColor="#373737"
-                    android:textSize="7pt" />
+                    android:textSize="7pt"
+                    android:layout_weight="0.15"
+                    android:paddingTop="10dp" />
 
                 <FrameLayout
                     android:layout_width="70dp"
@@ -191,7 +206,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:baselineAligned="false"
-                android:paddingBottom="10dp">
+                android:paddingBottom="10dp"
+                android:padding="30dp">
 
                 <Button
                     android:layout_width="match_parent"
