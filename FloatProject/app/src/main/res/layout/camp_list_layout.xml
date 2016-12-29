@@ -4,12 +4,27 @@
     android:layout_height="match_parent"
     android:orientation="horizontal">
 
+    <FrameLayout
+        android:id="@+id/frame_listPic"
+        android:layout_marginTop = "25dp"
+        android:layout_width="110dp"
+        android:layout_height="110dp"
+        android:layout_marginRight = "20dp"
+        android:layout_marginLeft = "10dp"
+        android:layout_gravity="center">
     <ImageView
         android:id="@+id/campListPic"
-        android:layout_width="134dp"
-        android:layout_height="178dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop"
+        android:layout_margin="5dp"
         android:layout_weight="0.04"
-        android:src="@mipmap/ic_launcher" />
+        android:src="@drawable/loading" />
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/color_thin_rounded_frame" />
+    </FrameLayout>
 
     <TextView
         android:id="@+id/campListName"
@@ -18,7 +33,7 @@
         android:layout_alignParentTop="true"
         android:layout_marginTop="15dp"
         android:layout_marginLeft="15dp"
-        android:layout_toRightOf="@+id/campListPic"
+        android:layout_toRightOf="@+id/frame_listPic"
         android:layout_weight="0.63"
         android:text="Campaign name"
         android:textColor="#424242"
@@ -29,7 +44,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:layout_marginLeft="10dp"
-        android:layout_toRightOf="@+id/campListPic"
+        android:layout_toRightOf="@+id/frame_listPic"
         android:layout_below="@+id/campListName"
         android:text="Launching User: "
         android:textColor="#424242"
@@ -52,7 +67,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:layout_marginLeft="10dp"
-        android:layout_toRightOf="@+id/campListPic"
+        android:layout_toRightOf="@+id/frame_listPic"
         android:layout_below="@+id/campListUser"
         android:id="@+id/campListDestPre"
         android:text="Destination: "
@@ -78,6 +93,6 @@
         android:layout_below="@+id/campListDest"
         android:layout_alignParentRight="true"
         android:text="@string/deets"
-        android:textColor="@color/darkestbackground" />
+        android:textColor="#8a579c" />
 
 </RelativeLayout>

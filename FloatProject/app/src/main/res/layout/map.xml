@@ -34,15 +34,28 @@
                 android:layout_height="match_parent"
                 android:orientation="horizontal"
                 android:padding="@dimen/activity_horizontal_margin"
-                android:background="@color/white">
+                android:background="@drawable/layout_rd">
+                <FrameLayout
+                    android:layout_width="100dp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center">
                 <ImageView
                     android:id="@+id/campaignpic"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:src="@drawable/sampcamp"
+                    android:src="@drawable/loading"
+                    android:layout_marginTop ="4dp"
+                    android:layout_marginBottom ="4dp"
+                    android:layout_marginLeft ="7dp"
+                    android:layout_marginRight="7dp"
                     android:scaleType="centerCrop"
                     android:layout_gravity="top"
                     android:layout_weight="1"/>
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/color_rounded_frame" />
+            </FrameLayout>
                 <Space
                     android:layout_width="@dimen/activity_horizontal_margin"
                     android:layout_height="match_parent"/>
@@ -57,8 +70,11 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_marginBottom="1dp"
-                        android:text="aaron is great"
+                        android:textColor = "#373737"
+                        android:fontFamily="sans-serif-light"
+                        android:text=""
                         android:textSize="8pt"
+                        android:textStyle = "bold"
                         android:layout_gravity="left"
                         android:layout_weight="1"/>
                     <LinearLayout
@@ -69,21 +85,32 @@
                         android:gravity="start"
                         android:layout_marginTop="1dp"
                         android:orientation="horizontal">
-
+                        <FrameLayout
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:layout_gravity="center">
                         <ImageView
                             android:id="@+id/userpic"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
+                            android:layout_margin = "5dp"
                             android:layout_weight="8"
-                            android:src="@drawable/sampcamp"
+                            android:src="@drawable/loading"
                             android:scaleType="centerCrop"
                             android:layout_gravity="center_vertical"/>
+                            <ImageView
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:background="@drawable/color_thin_rounded_frame" />
+                        </FrameLayout>
                         <TextView
                             android:id="@+id/username"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_weight="2"
-                            android:text="the great aaron"
+                            android:textColor = "#373737"
+                            android:fontFamily="sans-serif-light"
+                            android:text=""
                             android:layout_gravity="center_vertical"
                             android:gravity="center_vertical"
                             android:layout_marginLeft="@dimen/activity_horizontal_margin"/>
@@ -94,20 +121,32 @@
                         android:layout_height="match_parent"
                         android:layout_weight="1"
                         android:orientation="horizontal">
+                        <FrameLayout
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:layout_gravity="center">
                         <ImageView
                             android:id="@+id/charitypic"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:src="@drawable/sampcamp"
+                            android:layout_margin = "5dp"
+                            android:src="@drawable/loading"
                             android:scaleType="centerCrop"
                             android:layout_weight="8"
                             android:layout_gravity="center_vertical"/>
+                            <ImageView
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:background="@drawable/color_thin_rounded_frame" />
+                        </FrameLayout>
                         <TextView
                             android:id="@+id/charityname"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_weight="2"
-                            android:text="aarons lunch money"
+                            android:textColor = "#373737"
+                            android:fontFamily="sans-serif-light"
+                            android:text=""
                             android:layout_gravity="center_vertical"
                             android:gravity="center_vertical"
                             android:layout_marginLeft="@dimen/activity_horizontal_margin"/>
@@ -116,20 +155,24 @@
             </LinearLayout>
             <ImageButton
                 android:id="@+id/closewindow"
-                android:layout_width="55dp"
-                android:layout_height="55dp"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_marginRight = "5dp"
                 android:layout_alignParentRight="true"
                 android:layout_alignParentTop="true"
                 android:layout_marginTop="5dp"
-                android:background="@drawable/cross_button" />
+                android:background="@drawable/cross" />
             <Button
                 android:id="@+id/details"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
+                android:fontFamily="sans-serif-light"
                 android:layout_alignParentBottom="true"
+                android:layout_marginTop="5dp"
                 android:text="@string/deets"
-                android:textColor="@color/darkestbackground"
+                android:textStyle = "bold"
+                android:textColor="#8a579c"
                 style="?android:attr/buttonBarButtonStyle"
                 />
 

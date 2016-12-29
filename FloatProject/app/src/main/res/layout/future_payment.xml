@@ -11,36 +11,45 @@
         android:layout_height="match_parent">
 
         <TextView
+
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text = "Your campaign:  "
-            android:textSize = "15sp"
-            android:paddingTop = "50sp" />
+            android:fontFamily="sans-serif-light"
+            android:paddingTop="50sp"
+            android:text="Your campaign:  "
+            android:textColor="#373737"
+            android:textSize="15sp" />
 
         <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/campaign_title1"
-        android:text = "Title"
-        android:textStyle="bold"
-        android:gravity="center"
-        android:textSize = "15sp" />
-
-        <TextView
+            android:id="@+id/campaign_title1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text = "  has succeeded!"
+            android:fontFamily="sans-serif-light"
             android:gravity="center"
-            android:textSize = "15sp" />
+            android:text="Title"
+            android:textColor="#373737"
+            android:textSize="15sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:fontFamily="sans-serif-light"
+            android:textColor = "#373737"
+            android:text="  has succeeded!"
+            android:textSize="15sp" />
 
     </LinearLayout>
 
-        <TextView
-            android:layout_marginTop="120sp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text = "Please stand by while your payment is processed"
-            android:gravity="center"
-            android:textSize = "15sp" />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="120sp"
+        android:gravity="center"
+        android:fontFamily="sans-serif-light"
+        android:textColor = "#373737"
+        android:text="Please stand by while your payment is processed"
+        android:textSize="15sp" />
 
 </RelativeLayout>

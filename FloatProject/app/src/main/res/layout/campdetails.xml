@@ -61,7 +61,7 @@
                 android:paddingRight="5dp"
                 android:paddingTop="5dp"
                 android:text="Description:"
-                android:textColor="#373737" />
+                android:textColor="#F4F4F4"/>
 
             <TextView
                 android:id="@+id/descriptiondeets"
@@ -201,7 +201,7 @@
                     android:background="@drawable/mybutton"
                     android:fontFamily="sans-serif-light"
                     android:text="FLOAT"
-                    android:textColor="#373737"
+                    android:textColor="#F4F4F4"
                     android:textSize="8pt" />
 
                 <Button
@@ -213,7 +213,7 @@
                     android:background="@drawable/mybutton"
                     android:fontFamily="sans-serif-light"
                     android:text="DONATE"
-                    android:textColor="#373737"
+                    android:textColor="#F4F4F4"
                     android:textSize="8pt" />
             </LinearLayout>
 

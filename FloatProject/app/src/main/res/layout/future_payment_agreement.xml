@@ -10,13 +10,15 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation= "horizontal"
-        >
+        android:background = "#F4F4F4">
     </LinearLayout>
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text = "Payment Consent"
+        android:fontFamily="sans-serif-light"
+        android:textColor = "#373737"
         android:gravity="center"
         android:textSize = "20sp"
         android:paddingTop = "20sp"/>
@@ -26,6 +28,8 @@
                 android:paddingTop="120sp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:fontFamily="sans-serif-light"
+                android:textColor = "#373737"
                 android:text="By clicking 'agree' I consent to being charged the" />
 
 
@@ -33,6 +37,8 @@
             android:paddingTop = "140sp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-light"
+            android:textColor = "#373737"
             android:text="specified amount of: " />
 
 
@@ -41,7 +47,9 @@
                 android:layout_marginLeft = "140sp"
                 android:id="@+id/pledge_amount"
                 android:layout_width="wrap_content"
+                android:fontFamily="sans-serif-light"
                 android:textStyle="bold"
+                android:textColor = "#373737"
                 android:layout_height="wrap_content" />
 
 
@@ -49,14 +57,19 @@
                 android:paddingTop = "160sp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:fontFamily="sans-serif-light"
+                android:textColor = "#373737"
                 android:text="should my campaign suceed." />
 
             <Button
                 android:layout_marginTop="210dp"
                 android:layout_marginLeft = "35sp"
                 android:onClick = "agreePayment"
+                android:background = "@drawable/mybutton"
+                android:textColor="#F4F4F4"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:fontFamily="sans-serif-light"
                 android:text="Agree"
                 android:layout_weight="1"/>
 
@@ -64,6 +77,9 @@
                 android:layout_marginTop="210dp"
                 android:layout_marginLeft = "150sp"
                 android:id = "@+id/return_from_consent"
+                android:background = "@drawable/mybutton"
+                android:textColor="#F4F4F4"
+                android:fontFamily="sans-serif-light"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Return to map page"

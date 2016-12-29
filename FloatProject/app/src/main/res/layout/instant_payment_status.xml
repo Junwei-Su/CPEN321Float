@@ -17,6 +17,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text = "Thank you for your donation!"
+            android:fontFamily="sans-serif-light"
+            android:textColor = "#373737"
             android:gravity="center"
             android:textSize = "20sp"
             android:paddingTop = "20sp"/>
@@ -34,11 +36,15 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:fontFamily="sans-serif-light"
+                android:textColor = "#373737"
                 android:text="Payment Amount : " />
 
             <TextView
                 android:id="@+id/payment_amount"
                 android:layout_width="wrap_content"
+                android:fontFamily="sans-serif-light"
+                android:textColor = "#373737"
                 android:textStyle="bold"
                 android:layout_height="wrap_content" />
         </TableRow>
@@ -47,12 +53,16 @@
 
             <TextView
                 android:layout_width="wrap_content"
+                android:fontFamily="sans-serif-light"
+                android:textColor = "#373737"
                 android:layout_height="wrap_content"
                 android:text="Status : " />
 
             <TextView
                 android:id="@+id/payment_status"
                 android:layout_width="wrap_content"
+                android:fontFamily="sans-serif-light"
+                android:textColor = "#373737"
                 android:textStyle="bold"
                 android:layout_height="wrap_content" />
         </TableRow>
@@ -66,6 +76,8 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:fontFamily="sans-serif-light"
+                android:textColor = "#373737"
                 android:text="Payment Id : " />
 
         </TableRow>
@@ -75,6 +87,8 @@
             <TextView
                 android:id="@+id/payment_id"
                 android:textStyle="bold"
+                android:fontFamily="sans-serif-light"
+                android:textColor = "#373737"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
 
@@ -86,6 +100,9 @@
                 android:id="@+id/return_map"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:fontFamily="sans-serif-light"
+                android:textColor = "#F4F4F4"
+                android:background = "@drawable/mybutton"
                 android:text="Return to Map Page"
                 android:layout_weight="1"/>
 
@@ -95,7 +112,11 @@
              <Button
                  android:id="@+id/donate_again"
                  android:layout_width="wrap_content"
+                 android:layout_marginTop="10dp"
                  android:layout_height="wrap_content"
+                 android:fontFamily="sans-serif-light"
+                 android:background = "@drawable/mybutton"
+                 android:textColor = "#F4F4F4"
                  android:text="Donate again"
                  android:layout_weight="1"/>
 
