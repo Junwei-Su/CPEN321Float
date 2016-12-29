@@ -182,11 +182,6 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"/>
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="User Details"
-        android:onClick="toUser"/>
     <fragment
         android:id="@+id/userdeets_map"
         android:name="com.cpen321.floatproject.UserDetailsFragment"
