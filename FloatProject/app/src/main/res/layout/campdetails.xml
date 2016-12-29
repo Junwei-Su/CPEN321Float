@@ -1,4 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -12,57 +16,90 @@
             android:paddingRight="@dimen/activity_horizontal_margin"
             android:orientation="vertical">
             <TextView
+                android:fontFamily="sans-serif-light"
                 android:id="@+id/camptitledeets"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal"
                 android:paddingRight="@dimen/activity_horizontal_margin"
+                android:paddingTop = "15dp"
                 android:ellipsize="end"
                 android:maxLines="1"
-                android:textSize="15pt"
+                android:textSize="12pt"
                 android:textColor="@android:color/black"
-                android:text="aaron is great aaa a a  bbbbb"/>
+                android:text="Title"/>
             <ImageView
                 android:id="@+id/campaignpicdeets"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_width="300dp"
+                android:layout_height="300dp"
+                android:layout_gravity="center"
                 android:layout_marginTop="@dimen/activity_horizontal_margin"
                 android:scaleType="centerCrop"
-                android:src="@drawable/sampcamp"
-                android:layout_weight="0.6"/>
+                android:src="@drawable/sample_pic" />
+            <TextView
+                android:layout_marginTop="13dp"
+                android:fontFamily="sans-serif-light"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:textColor="@android:color/white"
+                android:paddingTop = "5dp"
+                android:paddingLeft = "5dp"
+                android:paddingRight = "5dp"
+                android:background="@drawable/rounded_corners_top"
+                android:text="Description:" />
+            <TextView
+                android:fontFamily="sans-serif-light"
+                android:id="@+id/descriptiondeets"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingLeft = "5dp"
+                android:paddingRight = "5dp"
+                android:background="@drawable/rounded_corners_bottom"
+                android:textColor="@android:color/black"
+                android:text="Sample description blah blah blah"
+                android:paddingBottom = "5dp"/>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:paddingTop="10dp"
-                android:paddingBottom="10dp"
+                android:paddingTop="30dp"
+                android:paddingBottom="20dp"
                 android:layout_weight="1"
                 android:orientation="horizontal">
-                //user name
                 <TextView
-                    android:id="@+id/userdeets"
-                    android:layout_width="match_parent"
+                    android:fontFamily="sans-serif-light"
+                    android:layout_width="150dp"
                     android:layout_height="wrap_content"
-                    android:paddingLeft="3pt"
-                    android:textSize="8pt"
-                    android:layout_gravity="center_vertical"
-                    android:layout_weight="1"
-                    android:layout_marginRight="40dp"
                     android:textColor="@android:color/black"
-                    android:text="the great aaron"/>
-                //campaign name
-                <TextView
-                    android:id="@+id/charitydeets"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingLeft="3pt"
-                    android:textSize="8pt"
+                    android:textSize = "7pt"
+                    android:paddingTop = "5dp"
+                    android:paddingLeft = "5dp"
+                    android:paddingRight = "5dp"
+                    android:layout_gravity="center_vertical"
+                    android:text="Charity information:"/>
+                <ImageView
+                    android:id="@+id/charitypicdeets"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_gravity="center_vertical"
                     android:layout_marginLeft="40dp"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/charity_pic" />
+                <TextView
+                    android:fontFamily="sans-serif-light"
+                    android:id="@+id/charitydeets"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="3pt"
+                    android:textSize="7pt"
+                    android:background="@drawable/rounded_corners"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight = "10dp"
                     android:layout_gravity="center_vertical"
                     android:textColor="@android:color/black"
-                    android:text="aarons lunch money"
-                    android:layout_weight="1"/>
-
+                    android:text="charity details" />
             </LinearLayout>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -70,55 +107,72 @@
                 android:paddingBottom="20dp"
                 android:layout_weight="1"
                 android:orientation="horizontal">
+                <TextView
+                    android:fontFamily="sans-serif-light"
+                    android:layout_width="150dp"
+                    android:layout_height="wrap_content"
+                    android:textColor="@android:color/black"
+                    android:textSize = "7pt"
+                    android:paddingTop = "5dp"
+                    android:paddingLeft = "5dp"
+                    android:paddingRight = "5dp"
+                    android:layout_gravity="center_vertical"
+                    android:text="Launching user information:"/>
                 <ImageView
                     android:id="@+id/userpicdeets"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
                     android:scaleType="centerCrop"
-                    android:src="@drawable/sampcamp"
-                    android:layout_marginRight="10dp"
-                    android:layout_weight="1"/>
-                <ImageView
-                    android:id="@+id/charitypicdeets"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:background="@drawable/rounded_corners_left"
                     android:layout_gravity="center_vertical"
+                    android:src="@drawable/user_avatar"
+                    android:layout_marginLeft="40dp"/>
+                //user name
+                <TextView
+                    android:fontFamily="sans-serif-light"
+                    android:id="@+id/userdeets"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="3pt"
+                    android:textSize="7pt"
+                    android:background="@drawable/rounded_corners"
                     android:layout_marginLeft="10dp"
-                    android:scaleType="centerCrop"
-                    android:src="@drawable/sampcamp"
-                    android:layout_weight="1"/>
+                    android:layout_marginRight = "10dp"
+                    android:layout_gravity="center_vertical"
+                    android:textColor="@android:color/black"
+                    android:text="user details"/>
             </LinearLayout>
+
             <LinearLayout
                 android:paddingBottom="10dp"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:baselineAligned="false">
                 <Button
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:fontFamily="sans-serif-light"
+                    android:textSize = "8pt"
                     android:text="FLOAT"
-                    android:background="#00838F"
                     android:layout_marginRight="10dp"
+                    android:background="@drawable/mybutton"
                     android:textColor="@android:color/white"
                     android:layout_weight="1"/>
 
                 <Button
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:fontFamily="sans-serif-light"
+                    android:textSize = "8pt"
                     android:text="DONATE"
-                    android:background="#00838F"
+                    android:background="@drawable/mybutton"
                     android:textColor="@android:color/white"
                     android:layout_marginLeft="10dp"
                     android:layout_weight="1"
                     android:id="@+id/donate_button" />
-
             </LinearLayout>
-            <TextView
-                android:id="@+id/descriptiondeets"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:textColor="@android:color/black"
-                android:text="description"/>
+
+
         </LinearLayout>
 </RelativeLayout>
+</ScrollView>
