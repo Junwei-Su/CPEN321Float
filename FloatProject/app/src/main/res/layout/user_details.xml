@@ -12,8 +12,8 @@
     <ImageView
         android:id="@+id/profile_pic"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/pencil"
+        android:layout_height="match_parent"
+        android:background="@drawable/default_user_pic"
         android:layout_weight="1"/>
     <Space
         android:layout_width="@dimen/activity_horizontal_margin"
@@ -21,7 +21,7 @@
     <TextView
         android:id="@+id/blurb"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:textColor="@color/black"
         android:text="@string/filler"
         android:layout_weight="1"/>

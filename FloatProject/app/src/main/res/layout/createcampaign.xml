@@ -41,7 +41,7 @@
             android:id="@+id/photo"
             android:layout_width="200dp"
             android:layout_height="200dp"
-            android:background="@drawable/default_camp_pic"/>
+            android:src="@drawable/default_camp_pic"/>
         <Button
             android:layout_width="100dp"
             android:layout_height="80dp"

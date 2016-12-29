@@ -250,6 +250,20 @@ public class MapPage extends FragmentActivity implements OnMapReadyCallback,
             }
         });
 
+        //clarence code for camp list viewer
+        ImageButton listButton = (ImageButton) findViewById(R.id.listCamp);
+        listButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //user click the list button
+                //UI go to list page
+                Intent jumpToListView = new Intent(v.getContext(), CampListView.class);
+                //need to pass the current location of the user
+                startActivity(jumpToListView);
+
+            }
+        });
+
         //wire details button to CampDetails activity
         Button button = (Button) findViewById(R.id.details);
         button.setOnClickListener(new View.OnClickListener() {
@@ -522,23 +536,7 @@ public class MapPage extends FragmentActivity implements OnMapReadyCallback,
 
         map.animateCamera(CameraUpdateFactory.newCameraPosition(defaultcamerapos));
 
-        //map.setPadding(0, 0, 0, buttonpanelheight);
         layoutreadylistener("map");
-
-        //Log.d("Tag", "buttonpanelheight in onMapReady() = " + Integer.toString(buttonpanelheight));
-
-
-        //clarence manual testing
-//        UsersDBInteractor test = new UsersDBInteractor();
-//        DatabaseReference db = FirebaseDatabase.getInstance().getReference();
-//        User testU = test.getUser("float1",db);
-//        Log.d("test user",testU.getName());
-//        Log.d("test user",testU.getList_of_campaign_followed().toString());
-//        Log.d("test user",testU.getList_of_campaign_initialize().toString());
-
-//        Query queryRef =  databaseref.child("users").child("float1");
-//        String user_name = queryRef.orderByKey().equalTo("name").toString();
-//            Log.d("user name", user_name);
 
     }
 
@@ -632,6 +630,9 @@ public class MapPage extends FragmentActivity implements OnMapReadyCallback,
         AppIndex.AppIndexApi.end(client, viewAction);
         client.disconnect();
     }
+
+
+    //todo Refactor this later
 
     /**
      * Takes in a datashapshot and returns a LatLng object with the coordinates
