@@ -55,6 +55,7 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".FuturePaymentAgreement" />
         <activity android:name=".MakeFuturePayment"></activity>
+        <activity android:name=".UserDetails"></activity>
     </application>
 
 </manifest>
