@@ -1,10 +1,7 @@
 package com.cpen321.floatproject.database;
 
-import com.cpen321.floatproject.User;
 import com.cpen321.floatproject.charities.Charity;
 import com.google.firebase.database.DataSnapshot;
-
-import java.util.List;
 
 /**
  * Created by Little_town on 12/24/2016.

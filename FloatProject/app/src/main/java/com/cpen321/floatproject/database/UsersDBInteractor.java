@@ -1,15 +1,7 @@
 package com.cpen321.floatproject.database;
 
-import android.util.Log;
-
-import com.cpen321.floatproject.User;
-import com.cpen321.floatproject.campaigns.Campaign;
-import com.cpen321.floatproject.campaigns.DestinationCampaign;
-import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
 
 import java.util.HashMap;
 import java.util.LinkedList;

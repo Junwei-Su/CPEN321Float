@@ -22,6 +22,7 @@ import com.cpen321.floatproject.campaigns.Campaign;
 import com.cpen321.floatproject.charities.Charity;
 import com.cpen321.floatproject.database.CampsDBInteractor;
 import com.cpen321.floatproject.database.CharityDBinteractor;
+import com.cpen321.floatproject.database.User;
 import com.cpen321.floatproject.database.UsersDBInteractor;
 import com.facebook.Profile;
 import com.google.android.gms.appindexing.Action;
