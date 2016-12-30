@@ -1,5 +1,6 @@
 package com.cpen321.floatproject.database;
 
+import com.cpen321.floatproject.users.User;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 

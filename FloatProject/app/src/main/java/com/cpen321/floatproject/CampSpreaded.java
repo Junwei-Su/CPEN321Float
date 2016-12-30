@@ -8,7 +8,7 @@ import android.widget.Button;
 
 import com.cpen321.floatproject.campaigns.DestinationCampaign;
 import com.cpen321.floatproject.database.DB;
-import com.cpen321.floatproject.database.User;
+import com.cpen321.floatproject.users.User;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;

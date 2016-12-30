@@ -1,4 +1,4 @@
-package com.cpen321.floatproject.database;
+package com.cpen321.floatproject.users;
 
 import com.cpen321.floatproject.campaigns.Campaign;
 import com.google.firebase.database.Exclude;
