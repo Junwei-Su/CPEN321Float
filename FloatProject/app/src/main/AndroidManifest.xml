@@ -24,7 +24,7 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
 
-        <activity android:name=".MainActivity" >
+        <activity android:name=".activities.MainActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -36,11 +36,11 @@
             android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
             android:label="@string/app_name"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
-        <activity android:name=".MapPage" />
-        <activity android:name=".CreateCampaign" />
-        <activity android:name=".CampDetails" />
-        <activity android:name=".CampListView" />
-        <activity android:name=".CampSpreaded" />
+        <activity android:name=".activities.MapPage" />
+        <activity android:name=".activities.CreateCampaign" />
+        <activity android:name=".activities.CampDetails" />
+        <activity android:name=".activities.CampListView" />
+        <activity android:name=".activities.CampSpreaded" />
         <!--
  ATTENTION: This was auto-generated to add Google Play services to your project for
      App Indexing.  See https://g.co/AppIndexing/AndroidStudio for more information.
@@ -49,14 +49,14 @@
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
 
-        <activity android:name=".InstantPayment" />
+        <activity android:name=".activities.InstantPayment" />
         <activity
-            android:name=".InstantPaymentStatus"
+            android:name=".activities.InstantPaymentStatus"
             android:label="@string/title_activity_payment_status"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".FuturePaymentAgreement" />
-        <activity android:name=".MakeFuturePayment"></activity>
-        <activity android:name=".UserDetails"></activity>
+        <activity android:name=".activities.FuturePaymentAgreement" />
+        <activity android:name=".activities.MakeFuturePayment"></activity>
+        <activity android:name=".activities.UserDetails"></activity>
     </application>
 
 </manifest>

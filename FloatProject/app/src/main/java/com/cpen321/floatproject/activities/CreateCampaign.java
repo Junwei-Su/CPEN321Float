@@ -1,11 +1,8 @@
-package com.cpen321.floatproject;
+package com.cpen321.floatproject.activities;
 
-import android.app.Activity;
 import android.content.Intent;
-import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -16,14 +13,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.cpen321.floatproject.algorithm.Algorithms;
+import com.cpen321.floatproject.GPS.GetGPSLocation;
+import com.cpen321.floatproject.R;
+import com.cpen321.floatproject.utilities.Algorithms;
 import com.cpen321.floatproject.campaigns.Campaign;
 import com.cpen321.floatproject.campaigns.DestinationCampaign;
 import com.cpen321.floatproject.database.CampsDBInteractor;
-import com.cpen321.floatproject.database.UsersDBInteractor;
 import com.cpen321.floatproject.utilities.UtilityMethod;
 import com.facebook.Profile;
-import com.firebase.client.utilities.Base64;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -31,15 +28,11 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.util.Date;
 
 /**

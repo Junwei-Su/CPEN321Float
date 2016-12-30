@@ -2,7 +2,7 @@ package com.cpen321.floatproject.database;
 
 import android.util.Log;
 
-import com.cpen321.floatproject.algorithm.Algorithms;
+import com.cpen321.floatproject.utilities.Algorithms;
 import com.cpen321.floatproject.campaigns.Campaign;
 import com.cpen321.floatproject.campaigns.DestinationCampaign;
 import com.google.firebase.database.DataSnapshot;

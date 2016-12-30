@@ -1,4 +1,4 @@
-package com.cpen321.floatproject;
+package com.cpen321.floatproject.activities;
 
 import android.app.Fragment;
 import android.content.Intent;
@@ -7,6 +7,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+
+import com.cpen321.floatproject.R;
 
 /**
  * Created by sfarinas on 12/28/2016.

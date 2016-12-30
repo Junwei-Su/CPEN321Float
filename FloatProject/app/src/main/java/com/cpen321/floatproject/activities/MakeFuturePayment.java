@@ -1,4 +1,4 @@
-package com.cpen321.floatproject;
+package com.cpen321.floatproject.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -17,6 +17,7 @@ import com.android.volley.RetryPolicy;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.cpen321.floatproject.R;
 import com.cpen321.floatproject.campaigns.Campaign;
 import com.cpen321.floatproject.database.CampsDBInteractor;
 import com.cpen321.floatproject.users.User;

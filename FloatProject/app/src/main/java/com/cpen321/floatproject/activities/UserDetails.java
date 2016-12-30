@@ -1,7 +1,9 @@
-package com.cpen321.floatproject;
+package com.cpen321.floatproject.activities;
 
 import android.app.Activity;
 import android.os.Bundle;
+
+import com.cpen321.floatproject.R;
 
 /**
  * Created by sfarinas on 12/28/2016.

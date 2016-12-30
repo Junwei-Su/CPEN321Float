@@ -1,14 +1,13 @@
-package com.cpen321.floatproject;
+package com.cpen321.floatproject.activities;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ListView;
 
-import com.cpen321.floatproject.campaigns.Campaign;
+import com.cpen321.floatproject.R;
 import com.cpen321.floatproject.campaigns.DestinationCampaign;
 import com.cpen321.floatproject.database.DB;
 import com.google.firebase.database.DataSnapshot;
@@ -49,11 +48,8 @@ public class CampListView extends Activity {
             }
         });
 
-        //clarence manual debug
-        Log.d("CampList", "camp_list_layout = " + String.valueOf(R.layout.camp_list_layout));
-        Log.d("CampList", "applicationContext = " + getApplicationContext().toString());
 
-//        CampListAdapter campListAdapter = new CampListAdapter(getApplicationContext(), R.layout.camp_list_layout, R.id.campListName, campaigns);
+
         CampListAdapter campListAdapter = new CampListAdapter(getApplicationContext(),  campaigns);
 
         listView.setAdapter(campListAdapter);

@@ -1,4 +1,4 @@
-package com.cpen321.floatproject;
+package com.cpen321.floatproject.activities;
 
 import android.app.Activity;
 import android.content.Context;
@@ -12,6 +12,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.cpen321.floatproject.R;
 import com.cpen321.floatproject.campaigns.DestinationCampaign;
 import com.cpen321.floatproject.database.DB;
 import com.cpen321.floatproject.database.UsersDBInteractor;

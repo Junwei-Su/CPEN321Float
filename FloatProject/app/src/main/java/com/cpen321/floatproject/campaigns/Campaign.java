@@ -1,11 +1,8 @@
 package com.cpen321.floatproject.campaigns;
 
-import android.util.Log;
-
-import com.cpen321.floatproject.algorithm.Algorithms;
+import com.cpen321.floatproject.utilities.Algorithms;
 import com.google.android.gms.maps.model.LatLng;
 
-import java.util.Date;
 import java.util.List;
 import java.util.ArrayList;
 

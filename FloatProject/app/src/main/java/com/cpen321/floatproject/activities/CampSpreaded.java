@@ -1,4 +1,4 @@
-package com.cpen321.floatproject;
+package com.cpen321.floatproject.activities;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
+import com.cpen321.floatproject.GPS.GetGPSLocation;
+import com.cpen321.floatproject.R;
 import com.cpen321.floatproject.campaigns.DestinationCampaign;
 import com.cpen321.floatproject.database.DB;
 import com.cpen321.floatproject.users.User;
@@ -29,6 +31,7 @@ public class CampSpreaded extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.camp_spreaded);
         Intent intent = getIntent();
+        //get current location
         currentLoc = new GetGPSLocation(CampSpreaded.this, CampSpreaded.this);
         final LatLng currentLocation = new LatLng(currentLoc.getLatitude(),currentLoc.getLongitude());
 

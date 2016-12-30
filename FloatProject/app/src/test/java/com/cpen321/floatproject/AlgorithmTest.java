@@ -1,6 +1,6 @@
 package com.cpen321.floatproject;
 
-import com.cpen321.floatproject.algorithm.Algorithms;
+import com.cpen321.floatproject.utilities.Algorithms;
 import com.google.android.gms.maps.model.LatLng;
 
 import junit.framework.Assert;

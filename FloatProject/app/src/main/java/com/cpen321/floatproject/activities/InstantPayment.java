@@ -1,4 +1,4 @@
-package com.cpen321.floatproject;
+package com.cpen321.floatproject.activities;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 
+import com.cpen321.floatproject.R;
 import com.cpen321.floatproject.campaigns.Campaign;
 import com.cpen321.floatproject.database.CampsDBInteractor;
 import com.cpen321.floatproject.users.User;

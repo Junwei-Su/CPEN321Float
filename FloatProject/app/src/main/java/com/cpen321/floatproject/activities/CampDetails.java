@@ -1,4 +1,4 @@
-package com.cpen321.floatproject;
+package com.cpen321.floatproject.activities;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.cpen321.floatproject.R;
 import com.cpen321.floatproject.campaigns.Campaign;
 import com.cpen321.floatproject.database.CampsDBInteractor;
 import com.facebook.Profile;

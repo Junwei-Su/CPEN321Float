@@ -1,4 +1,4 @@
-package com.cpen321.floatproject;
+package com.cpen321.floatproject.GPS;
 
 import android.Manifest;
 import android.app.Activity;
