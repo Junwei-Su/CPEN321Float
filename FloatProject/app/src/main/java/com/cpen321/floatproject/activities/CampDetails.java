@@ -154,33 +154,4 @@ public class CampDetails extends Activity {
         };
     }
 
-    //TODO copied method from MapPage. Look for possible refactor later.
-    /**
-     * Updates an ImageView object with file in Firebase database at storageReference
-     * @param storageReference
-     * @param imageViewID
-     */
-//    public void setDBPictureOnImageView(StorageReference storageReference, final int imageViewID){
-//        final File localFile;
-//        try {
-//            localFile = File.createTempFile("images", "png");
-//            storageReference.getFile(localFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
-//                @Override
-//                public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
-//                    // Local temp file has been created
-//                    ImageView testPic = (ImageView) findViewById(imageViewID);
-//                    Uri uri = Uri.fromFile(localFile);
-//                    testPic.setImageURI(uri);
-//                }
-//            }).addOnFailureListener(new OnFailureListener() {
-//                @Override
-//                public void onFailure(@NonNull Exception exception) {
-//                    // Handle any errors
-//                }
-//            });
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//    }
-
 }

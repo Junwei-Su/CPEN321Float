@@ -5,6 +5,7 @@ import android.util.Log;
 import com.cpen321.floatproject.utilities.Algorithms;
 import com.cpen321.floatproject.campaigns.Campaign;
 import com.cpen321.floatproject.campaigns.DestinationCampaign;
+import com.cpen321.floatproject.utilities.UtilityMethod;
 import com.google.firebase.database.DataSnapshot;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.database.DatabaseReference;
@@ -54,11 +55,11 @@ public class CampsDBInteractor implements Readable, Writable {
         long time_length = (long)camp_snap.child("time_length").getValue();
         String initial_date= (String) camp_snap.child("initial_date").getValue();
 
-        LatLng initial_location =  dataSnapshotToLatLng(camp_snap.child("initial_location"));
+        LatLng initial_location =  UtilityMethod.dataSnapshotToLatLng(camp_snap.child("initial_location"));
         //clarence debug
         Log.d("testCamp1",camp_snap.child("dest_location").getValue().toString());
-        LatLng dest_location = dataSnapshotToLatLng(camp_snap.child("dest_location"));
-        List<LatLng> list_locations = dataSnapshotToLatLngList(camp_snap.child("list_locations"));
+        LatLng dest_location = UtilityMethod.dataSnapshotToLatLng(camp_snap.child("dest_location"));
+        List<LatLng> list_locations = UtilityMethod.dataSnapshotToLatLngList(camp_snap.child("list_locations"));
 
 
 
@@ -129,7 +130,7 @@ public class CampsDBInteractor implements Readable, Writable {
         Set<String> addedCamp = new HashSet<String>(); //visited flag
         for(DataSnapshot camps : campListSnap.getChildren()){
             String camps_name = (String) camps.child("campaign_name").getValue();
-            List<LatLng> list_location = dataSnapshotToLatLngList(camps.child("list_locations"));
+            List<LatLng> list_location = UtilityMethod.dataSnapshotToLatLngList(camps.child("list_locations"));
 
             //iterate through the location and check if there exist one within radius
             for(LatLng location: list_location){
@@ -150,38 +151,5 @@ public class CampsDBInteractor implements Readable, Writable {
 
         return nearbyCamp_list;
     }
-
-
-    //clarence todo: refactor this to utility class
-    /**
-     * Takes in a datashapshot and returns a LatLng object with the coordinates
-     * @param datasnapshot
-     * @return a LatLng object with the coordinates in datasnapshot
-     */
-    private LatLng dataSnapshotToLatLng (DataSnapshot datasnapshot){
-
-        //get coordinates of campaign launch location
-        Map<String, Double> mapcoords = (HashMap<String,Double>) datasnapshot.getValue();
-        //create LatLng object out of coordinates
-        return new LatLng(mapcoords.get("latitude"), mapcoords.get("longitude"));
-    };
-
-    /**
-     * Takes in a datashapshot and returns a list of LatLng object with the coordinates
-     * @param datasnapshot
-     * @return a list of LatLng object with the coordinates in datasnapshot
-     */
-    private List<LatLng> dataSnapshotToLatLngList (DataSnapshot datasnapshot){
-        //get coordinates of location
-        List<LatLng> to_return = new LinkedList<LatLng>();
-        for(DataSnapshot loc : datasnapshot.getChildren()){
-            LatLng location_to_add = dataSnapshotToLatLng(loc);
-            to_return.add(location_to_add);
-        }
-
-        return to_return;
-    };
-
-
 
 }
