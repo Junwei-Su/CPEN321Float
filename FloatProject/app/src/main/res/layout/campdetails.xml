@@ -218,6 +218,7 @@
                 android:padding="30dp">
 
                 <Button
+                    android:id="@+id/float_button"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginRight="10dp"
