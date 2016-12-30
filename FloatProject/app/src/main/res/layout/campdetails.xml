@@ -93,8 +93,8 @@
 
                 <TextView
                     android:layout_width="150dp"
-                    android:layout_height="34dp"
                     android:layout_gravity="center_vertical"
+                    android:layout_height="wrap_content"
                     android:fontFamily="sans-serif-light"
                     android:paddingLeft="0dp"
                     android:paddingRight="0dp"
@@ -103,13 +103,13 @@
                     android:textColor="#464646"
                     android:gravity="center_vertical"
                     android:background="@drawable/information_bg"
-                    android:layout_weight="0.15"
+                    android:layout_weight="0.12"
                     android:textAlignment="viewStart" />
 
                 <TextView
                     android:id="@+id/charitydeets"
-                    android:layout_width="100dp"
-                    android:layout_height="35dp"
+                    android:layout_width="150dp"
+                    android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginRight="10dp"
                     android:background="@drawable/rounded_right"
@@ -120,7 +120,9 @@
                     android:paddingLeft="3dp"
                     android:paddingTop="7dp"
                     android:layout_weight="0.27"
-                    android:paddingRight="2dp" />
+                    android:paddingRight="2dp"
+                    android:paddingBottom="3dp"
+                    android:textAlignment="center" />
 
                 <FrameLayout
                     android:layout_width="70dp"
@@ -139,7 +141,7 @@
                     <ImageView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:background="@drawable/square_frame" />
+                        android:background="@drawable/thin_rounded_frame" />
                 </FrameLayout>
 
             </LinearLayout>
@@ -169,8 +171,8 @@
 
                 <TextView
                     android:id="@+id/userdeets"
-                    android:layout_width="100dp"
-                    android:layout_height="39dp"
+                    android:layout_width="150dp"
+                    android:layout_height="wrap_content"
                     android:layout_gravity = "center"
                     android:layout_marginRight="10dp"
                     android:background="@drawable/rounded_right"
@@ -181,7 +183,9 @@
                     android:textSize="7pt"
                     android:layout_weight="0.37"
                     android:paddingTop="10dp"
-                    android:paddingRight="2dp" />
+                    android:paddingRight="2dp"
+                    android:paddingBottom="3dp"
+                    android:textAlignment="center" />
 
                 <FrameLayout
                     android:layout_width="70dp"
@@ -200,10 +204,11 @@
                     <ImageView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:background="@drawable/square_frame" />
+                        android:background="@drawable/thin_rounded_frame" />
                 </FrameLayout>
 
             </LinearLayout>
+
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -234,6 +239,7 @@
                     android:text="DONATE"
                     android:textColor="#F4F4F4"
                     android:textSize="8pt" />
+
             </LinearLayout>
 
 
