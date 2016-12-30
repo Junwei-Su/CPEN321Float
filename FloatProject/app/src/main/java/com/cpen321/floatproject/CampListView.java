@@ -1,8 +1,11 @@
 package com.cpen321.floatproject;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.ImageButton;
 import android.widget.ListView;
 
 import com.cpen321.floatproject.campaigns.Campaign;
@@ -54,5 +57,31 @@ public class CampListView extends Activity {
         CampListAdapter campListAdapter = new CampListAdapter(getApplicationContext(),  campaigns);
 
         listView.setAdapter(campListAdapter);
+
+        //wire createcamp button to CreateCampaign activity
+        ImageButton imageButton = (ImageButton) findViewById(R.id.createcamp);
+        imageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //start _Submenu activity
+                Intent intent = new Intent(v.getContext(), CreateCampaign.class);
+                startActivity(intent);
+
+            }
+        });
+
+        ImageButton listButton = (ImageButton) findViewById(R.id.mapCamp);
+        listButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //user click the list button
+                //UI go to list page
+                Intent jumpToMapView = new Intent(v.getContext(), MapPage.class);
+                //need to pass the current location of the user
+                startActivity(jumpToMapView);
+
+            }
+        });
+
     }
 }

@@ -198,13 +198,13 @@
             android:adjustViewBounds="true"
             android:src="@drawable/pencil"
             style="?android:attr/buttonBarButtonStyle"/>
-        <ImageButton
+        <ImageView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:scaleType="fitCenter"
             android:adjustViewBounds="true"
-            android:src="@drawable/map"
+            android:src="@drawable/map_selected"
             style="?android:attr/buttonBarButtonStyle"/>
         <ImageButton
             android:id="@+id/listCamp"
