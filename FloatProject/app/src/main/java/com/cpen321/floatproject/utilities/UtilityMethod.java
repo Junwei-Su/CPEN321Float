@@ -2,6 +2,12 @@ package com.cpen321.floatproject.utilities;
 
 import android.widget.EditText;
 
+import com.google.android.gms.maps.model.LatLng;
+import com.google.firebase.database.DataSnapshot;
+
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Created by Little_town on 12/25/2016.
  */
@@ -34,4 +40,17 @@ public class UtilityMethod {
         }
         return toReturn;
     }
+
+    /**
+     * Takes in a datashapshot and returns a LatLng object with the coordinates
+     * @param datasnapshot
+     * @return a LatLng object with the coordinates in datasnapshot
+     */
+    public static LatLng dataSnapshotToLatLng (DataSnapshot datasnapshot){
+        //get coordinates of campaign launch location
+        Map<String, Double> mapcoords = (HashMap<String,Double>) datasnapshot.getValue();
+
+        //create LatLng object out of coordinates
+        return new LatLng(mapcoords.get("latitude"), mapcoords.get("longitude"));
+    };
 }

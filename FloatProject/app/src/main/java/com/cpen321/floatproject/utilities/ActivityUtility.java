@@ -73,4 +73,16 @@ public class ActivityUtility extends Activity {
             e.printStackTrace();
         }
     }
+
+    public static double degreestoradians(double degrees){
+        double radiansperdegree = Math.PI/180.0;
+
+        return degrees*radiansperdegree;
+    }
+
+    public static double metrestodegrees(int metres){
+        double metresperdegree = 111111.0;
+
+        return metres/metresperdegree;
+    }
 }

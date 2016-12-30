@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 import com.cpen321.floatproject.GPS.GetGPSLocation;
 import com.cpen321.floatproject.R;
+import com.cpen321.floatproject.database.DB;
 import com.cpen321.floatproject.utilities.Algorithms;
 import com.cpen321.floatproject.campaigns.Campaign;
 import com.cpen321.floatproject.campaigns.DestinationCampaign;
@@ -55,10 +56,7 @@ public class CreateCampaign extends AppCompatActivity {
     private String destination;
     long time_length = 10;
     private String campPic_url;
-    private DatabaseReference userRef = FirebaseDatabase.getInstance().getReference().child("users");
     private CampsDBInteractor campsDBInteractor = new CampsDBInteractor();
-
-    private DatabaseReference databaseref = FirebaseDatabase.getInstance().getReference();
 
     private GetGPSLocation gps;
 
@@ -66,9 +64,6 @@ public class CreateCampaign extends AppCompatActivity {
     private TextView launchLong;
     private ImageView photo;
     private Uri selectedImageURI;
-
-    private FirebaseStorage storage;
-    private StorageReference imagesRef;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -122,9 +117,6 @@ public class CreateCampaign extends AppCompatActivity {
                 }
             }
         });
-
-        storage = FirebaseStorage.getInstance();
-        imagesRef = storage.getReferenceFromUrl("gs://float-568c7.appspot.com/images");
     }
 
     public void loadImagefromGallery(View view) {
@@ -205,7 +197,7 @@ public class CreateCampaign extends AppCompatActivity {
 
         campPic_url = title + "_pic.jpg";
 
-        StorageReference riversRef = imagesRef.child(campPic_url);
+        StorageReference riversRef = DB.images_ref.child(campPic_url);
         UploadTask uploadTask = riversRef.putFile(selectedImageURI);
 
         // Register observers to listen for when the download is done or if it fails
@@ -223,7 +215,7 @@ public class CreateCampaign extends AppCompatActivity {
         });
 
 
-        userRef.addValueEventListener(new ValueEventListener() {
+        DB.user_ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 String user_name = (String) dataSnapshot.child(userid).child("name").getValue();
@@ -233,9 +225,9 @@ public class CreateCampaign extends AppCompatActivity {
                 Log.d("create camp", dateString);
 
                 Campaign myCampaign = new DestinationCampaign(title, 0, charity, description,
-                        pledge, init_location,userid, time_length, dateString, destination, dest_location, campPic_url);
+                        pledge, init_location, userid, time_length, dateString, destination, dest_location, campPic_url);
 
-                campsDBInteractor.put(myCampaign,databaseref);
+                campsDBInteractor.put(myCampaign, DB.root_ref);
             }
 
             @Override
