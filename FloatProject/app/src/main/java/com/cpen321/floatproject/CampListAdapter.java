@@ -58,10 +58,12 @@ public class CampListAdapter extends BaseAdapter{
             convertView = mInflater.inflate(R.layout.camp_list_layout, null);
             holder = new ViewHolder();
 
-        holder.campPic = (ImageView) convertView.findViewById(R.id.campListPic);
-        holder.campName = (TextView) convertView.findViewById(R.id.campListName);
-        holder.userName = (TextView) convertView.findViewById(R.id.campListUser);
-        holder.destination = (TextView) convertView.findViewById(R.id.campListDest);
+            holder.campPic = (ImageView) convertView.findViewById(R.id.campListPic);
+            holder.campName = (TextView) convertView.findViewById(R.id.campListName);
+            holder.userName = (TextView) convertView.findViewById(R.id.campListUser);
+            holder.destination = (TextView) convertView.findViewById(R.id.campListDest);
+
+            convertView.setTag(holder);
 
         } else {
             holder = (ViewHolder) convertView.getTag();
