@@ -43,7 +43,7 @@ public class User {
         this.address = address;
     }
 
-    public User(String name, String account_name,String date, String blurb, boolean is_charity, long amount_gain,
+    public User(String name, String account_name,String date, String blurb,
                 long amount_raised, long amount_donated, String address,
                 List<String> list_of_campaign_initialize, List<String> list_of_campaign_followed, String profile_pic){
         this.name = name;
