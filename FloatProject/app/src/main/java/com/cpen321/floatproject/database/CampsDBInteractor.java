@@ -84,7 +84,7 @@ public class CampsDBInteractor implements Readable, Writable {
     @Override
     public void update(Object o, DatabaseReference databaseReference) {
         DestinationCampaign campaign_update = (DestinationCampaign) o;
-        DatabaseReference camp_update_ref = databaseReference.child(campaign_update.getCampaign_name());
+        DatabaseReference camp_update_ref = DB.camp_ref.child(campaign_update.getCampaign_name());
         //update infomation
         camp_update_ref.child("accumulated_donation").setValue(campaign_update.getAccumulated_donation());
         camp_update_ref.child("charity").setValue(campaign_update.getCharity());

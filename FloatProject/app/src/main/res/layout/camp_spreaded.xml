@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:background="#292929"
+    >
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/camp_spreaded"
+        android:id="@+id/imageView"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="137dp" />
+
+    <ImageView
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:src="@drawable/check_mark"
+        android:id="@+id/check"
+        android:scaleType="fitCenter"
+        android:layout_alignBottom="@+id/imageView"
+        android:layout_centerHorizontal="true"
+        android:visibility="visible" />
+
+    <TextView
+        android:text="Campagin has floated to your location"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/white"
+        android:textSize="9pt"
+        android:id="@+id/textView"
+        android:layout_centerInParent="true"
+        android:layout_marginTop="11dp"
+        android:layout_below="@+id/check"/>
+
+    <Button
+        android:id="@+id/check_mark_button"
+        android:layout_width="120dp"
+        android:layout_height="60dp"
+        android:background="@drawable/mybutton"
+        android:layout_below="@+id/textView"
+        android:fontFamily="sans-serif-light"
+        android:layout_centerInParent="true"
+        android:layout_marginTop="15dp"
+        android:text="MAP"
+        android:textColor="#F4F4F4"
+        android:textSize="8pt" />
+
+</RelativeLayout>

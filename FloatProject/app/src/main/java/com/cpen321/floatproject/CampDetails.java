@@ -53,6 +53,7 @@ public class CampDetails extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.campdetails);
 
@@ -115,6 +116,19 @@ public class CampDetails extends Activity {
                         .putExtra("Title", campaign.getCampaign_name())
                         .putExtra("Owner_id", campaign.getOwner_account())
                         .putExtra("Current User_id", Profile.getCurrentProfile().getId());
+                startActivity(intent);
+            }
+        });
+
+        //clarence float action
+        Button float_button = (Button) findViewById(R.id.float_button);
+
+        float_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(v.getContext(), CampSpreaded.class)
+                        .putExtra("Title", campaign.getCampaign_name())
+                        .putExtra("UserId", Profile.getCurrentProfile().getId());
                 startActivity(intent);
             }
         });

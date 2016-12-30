@@ -96,9 +96,17 @@ public class User {
 
     public List<String> getList_of_campaign_initialize(){ return this.list_of_campaign_initialize;}
 
-    public void addInitCamp(String newInit){ this.list_of_campaign_initialize.add(newInit);}
+    public void addInitCamp(String newInit){
+        if(this.list_of_campaign_initialize.contains(newInit)!=true){
+            this.list_of_campaign_initialize.add(newInit);
+        }
+    }
 
-    public void addFollowedCamp(String newFollow){this.list_of_campaign_followed.add(newFollow);}
+    public void addFollowedCamp(String newFollow){
+        if(this.list_of_campaign_followed.contains(newFollow) !=true){
+            this.list_of_campaign_followed.add(newFollow);
+        }
+    }
 
     public String getDate(){
         return this.date_join;
