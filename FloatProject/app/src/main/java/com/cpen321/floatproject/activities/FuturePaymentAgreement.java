@@ -20,12 +20,10 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.cpen321.floatproject.R;
+import com.cpen321.floatproject.database.DB;
 import com.cpen321.floatproject.users.User;
-import com.cpen321.floatproject.database.UsersDBInteractor;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.paypal.android.sdk.payments.PayPalAuthorization;
 import com.paypal.android.sdk.payments.PayPalConfiguration;
@@ -37,9 +35,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class FuturePaymentAgreement extends AppCompatActivity {
-
-    private DatabaseReference databaseref = FirebaseDatabase.getInstance().getReference();
-    private UsersDBInteractor usersDBInteractor = new UsersDBInteractor();
 
     private String pledge_amount;
     private String title;
@@ -110,13 +105,13 @@ public class FuturePaymentAgreement extends AppCompatActivity {
                         Log.d("Refresh Token Response", response);
                         final String refresh_token = response;
 
-                        databaseref.addListenerForSingleValueEvent(new ValueEventListener() {
+                        DB.root_ref.addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
                             public void onDataChange(DataSnapshot dataSnapshot) {
-                                User user = usersDBInteractor.read(userid, dataSnapshot);
+                                User user = DB.usersDBinteractor.read(userid, dataSnapshot);
                                 user.setRefreshToken(refresh_token);
                                 user.setMetadataid(metadata_id);
-                                usersDBInteractor.update(user, databaseref);
+                                DB.usersDBinteractor.update(user, DB.root_ref);
                             }
                             @Override
                             public void onCancelled(DatabaseError databaseError) {}

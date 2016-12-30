@@ -219,7 +219,7 @@
             android:layout_weight="1"
             android:adjustViewBounds="true"
             android:scaleType="fitCenter"
-            android:src="@drawable/pencil" />
+            android:src="@drawable/createnew" />
 
         <ImageView
             style="?android:attr/buttonBarButtonStyle"
