@@ -14,6 +14,8 @@ import android.widget.TextView;
 import com.cpen321.floatproject.R;
 import com.cpen321.floatproject.campaigns.Campaign;
 import com.cpen321.floatproject.database.CampsDBInteractor;
+import com.cpen321.floatproject.database.DB;
+import com.cpen321.floatproject.utilities.ActivityUtility;
 import com.facebook.Profile;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -34,23 +36,18 @@ import java.io.IOException;
  */
 public class CampDetails extends Activity {
 
-    private DatabaseReference databaseref;
-    private DatabaseReference campaignref;
-    private DatabaseReference campaignsref;
-    private DatabaseReference charitiesref;
     private DatabaseReference charityref;
     private DatabaseReference launchuserref;
-    private DatabaseReference usersref;
-
-    private FirebaseStorage storageref;
-    private StorageReference imagesref;
-
     private ValueEventListener launchuserlistener;
     private ValueEventListener charitylistener;
-
-    private CampsDBInteractor dbInteractor;
+    private Button float_button;
 
     private Campaign campaign;
+    private String theCampaign;
+    private String charity;
+    private ImageView campPic;
+    private ImageView userPic;
+    private ImageView charPic;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,41 +56,28 @@ public class CampDetails extends Activity {
         setContentView(R.layout.campdetails);
 
         Intent intent = getIntent();
-        final String theCampaign = intent.getStringExtra("key");
-        Log.d("Tag", "camptitleinfo2 = " + theCampaign);
-
+        theCampaign= intent.getStringExtra("key");
 
         TextView tv = (TextView) findViewById(R.id.camptitledeets);
         tv.setText(theCampaign);
 
-        databaseref = FirebaseDatabase.getInstance().getReference();
-        usersref = databaseref.child("users");
-        charitiesref = databaseref.child("charities");
-        campaignsref = databaseref.child("campaigns");
-        campaignref = campaignsref.child(theCampaign);
-//        Log.d("Tag", "testingreference = " + campaignref.toString());
-
-        //Getting the picture
-        storageref = FirebaseStorage.getInstance();
-        imagesref = storageref.getReferenceFromUrl("gs://float-568c7.appspot.com/images");
-
-        dbInteractor = new CampsDBInteractor();
-        campaignsref.addListenerForSingleValueEvent(new ValueEventListener() {
+        DB.camp_ref.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                campaign = dbInteractor.read(theCampaign, dataSnapshot);
+                campaign = DB.campDBinteractor.read(theCampaign, dataSnapshot);
 
                 //update campaign image
-                StorageReference imageref = imagesref.child(campaign.getCampaign_pic());
-                setDBPictureOnImageView(imageref, R.id.campaignpicdeets);
+                StorageReference imageref = DB.images_ref.child(campaign.getCampaign_pic());
+                campPic = (ImageView) findViewById(R.id.campaignpicdeets);
+                ActivityUtility.setPictureOnImageView(imageref, campPic);
 
-                launchuserref = usersref.child(campaign.getOwner_account());
+                launchuserref = DB.user_ref.child(campaign.getOwner_account());
                 launchuserref.addListenerForSingleValueEvent(launchuserlistener);
 
-                String charity = campaign.getCharity();
+                charity = campaign.getCharity();
                 TextView tv = (TextView) findViewById(R.id.charitydeets);
                 tv.setText(charity);
-                charityref = charitiesref.child(charity);
+                charityref = DB.char_ref.child(charity);
                 charityref.addListenerForSingleValueEvent(charitylistener);
 
                 tv = (TextView) findViewById(R.id.descriptiondeets);
@@ -121,8 +105,7 @@ public class CampDetails extends Activity {
             }
         });
 
-        //clarence float action
-        Button float_button = (Button) findViewById(R.id.float_button);
+        float_button = (Button) findViewById(R.id.float_button);
 
         float_button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -134,15 +117,14 @@ public class CampDetails extends Activity {
             }
         });
 
-        //TODO remove this copy from MapPage
         launchuserlistener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 //update profile pic of launcher of campaign
                 String launchuserpic = dataSnapshot.child("profile_pic").getValue(String.class);
-                Log.d("Tag", "launchuserpic = " + launchuserpic);
-                StorageReference launchuserpicref = imagesref.child(launchuserpic);
-                setDBPictureOnImageView(launchuserpicref, R.id.userpicdeets);
+                StorageReference launchuserpicref = DB.images_ref.child(launchuserpic);
+                userPic = (ImageView) findViewById(R.id.userpicdeets);
+                ActivityUtility.setPictureOnImageView(launchuserpicref,userPic);
 
                 //update username of launcher of campaign
                 String launchusername = dataSnapshot.child("name").getValue(String.class);
@@ -160,9 +142,9 @@ public class CampDetails extends Activity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 String charitypic = dataSnapshot.child("logo").getValue(String.class);
-                Log.d("Tag", "charitypic = " + charitypic);
-                StorageReference logoRef = imagesref.child(charitypic);
-                setDBPictureOnImageView(logoRef, R.id.charitypicdeets);
+                StorageReference logoRef = DB.images_ref.child(charitypic);
+                charPic = (ImageView) findViewById(R.id.charitypicdeets);
+                ActivityUtility.setPictureOnImageView(logoRef, charPic);
             }
 
             @Override
@@ -178,27 +160,27 @@ public class CampDetails extends Activity {
      * @param storageReference
      * @param imageViewID
      */
-    public void setDBPictureOnImageView(StorageReference storageReference, final int imageViewID){
-        final File localFile;
-        try {
-            localFile = File.createTempFile("images", "png");
-            storageReference.getFile(localFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
-                @Override
-                public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
-                    // Local temp file has been created
-                    ImageView testPic = (ImageView) findViewById(imageViewID);
-                    Uri uri = Uri.fromFile(localFile);
-                    testPic.setImageURI(uri);
-                }
-            }).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception exception) {
-                    // Handle any errors
-                }
-            });
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
+//    public void setDBPictureOnImageView(StorageReference storageReference, final int imageViewID){
+//        final File localFile;
+//        try {
+//            localFile = File.createTempFile("images", "png");
+//            storageReference.getFile(localFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+//                @Override
+//                public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+//                    // Local temp file has been created
+//                    ImageView testPic = (ImageView) findViewById(imageViewID);
+//                    Uri uri = Uri.fromFile(localFile);
+//                    testPic.setImageURI(uri);
+//                }
+//            }).addOnFailureListener(new OnFailureListener() {
+//                @Override
+//                public void onFailure(@NonNull Exception exception) {
+//                    // Handle any errors
+//                }
+//            });
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//    }
 
 }

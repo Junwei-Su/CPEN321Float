@@ -52,7 +52,7 @@ public class ActivityUtility extends Activity {
      * @param storageReference
      * @param imageView
      */
-    public void setPictureOnImageView(StorageReference storageReference, final ImageView imageView){
+    public static void setPictureOnImageView(StorageReference storageReference, final ImageView imageView){
         final File localFile;
         try {
             localFile = File.createTempFile("images", "png");

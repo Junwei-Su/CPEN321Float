@@ -24,6 +24,8 @@ public class CampListView extends Activity {
 
     ArrayList<DestinationCampaign> campaigns;
     ListView listView;
+    ImageButton createCamp;
+    ImageButton listButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
@@ -55,8 +57,8 @@ public class CampListView extends Activity {
         listView.setAdapter(campListAdapter);
 
         //wire createcamp button to CreateCampaign activity
-        ImageButton imageButton = (ImageButton) findViewById(R.id.createcamp);
-        imageButton.setOnClickListener(new View.OnClickListener() {
+        createCamp = (ImageButton) findViewById(R.id.createcamp);
+        createCamp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //start _Submenu activity
@@ -66,7 +68,7 @@ public class CampListView extends Activity {
             }
         });
 
-        ImageButton listButton = (ImageButton) findViewById(R.id.mapCamp);
+        listButton = (ImageButton) findViewById(R.id.mapCamp);
         listButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
