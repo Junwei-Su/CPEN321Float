@@ -14,12 +14,7 @@ import java.util.Date;
  */
 
 public class AlgorithmTest {
-    @Test
-    public void testStringDateConverter(){
-        String dateString = "2016-12-24";
-        Date result = Algorithms.string_to_date(dateString);
-        Assert.assertEquals(2016, result.getYear());
-    }
+
 
     @Test
     public void testCalculateDistance(){

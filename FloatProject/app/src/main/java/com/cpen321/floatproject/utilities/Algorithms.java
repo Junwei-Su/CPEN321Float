@@ -3,6 +3,7 @@ package com.cpen321.floatproject.utilities;
 import com.google.android.gms.maps.model.LatLng;
 
 import java.text.DateFormat;
+import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -17,24 +18,23 @@ public class Algorithms {
     /*
     *  calculate the distance between two LatLng objects in kilometers
      */
-    public static double calculateDistance(LatLng loc1, LatLng loc2){
-
-        double lat1 = loc1.latitude;
-        double lat2 = loc2.latitude;
-        double lng1 = loc1.longitude;
-        double lng2 = loc2.longitude;
-
-        double earthRadius = 6371; //in kilometers
-        double dLat = Math.toRadians(lat2-lat1);
-        double dLng = Math.toRadians(lng2-lng1);
-        double a = Math.sin(dLat/2) * Math.sin(dLat/2) +
-                Math.cos(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2)) *
-                        Math.sin(dLng/2) * Math.sin(dLng/2);
-        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
-        double dist = earthRadius * c;
-        return dist;
+    public static double calculateDistance(LatLng StartP, LatLng EndP){
+        int Radius = 6371;// radius of earth in Km
+        double lat1 = StartP.latitude;
+        double lat2 = EndP.latitude;
+        double lon1 = StartP.longitude;
+        double lon2 = EndP.longitude;
+        double dLat = Math.toRadians(lat2 - lat1);
+        double dLon = Math.toRadians(lon2 - lon1);
+        double a = Math.sin(dLat / 2) * Math.sin(dLat / 2)
+                + Math.cos(Math.toRadians(lat1))
+                * Math.cos(Math.toRadians(lat2)) * Math.sin(dLon / 2)
+                * Math.sin(dLon / 2);
+        double c = 2 * Math.asin(Math.sqrt(a));
+        double valueResult = Radius * c;
+        double km = valueResult / 1;
+        return km;
     }
-
 
     /*
     * convert yyyy-mm-dd date string to date object

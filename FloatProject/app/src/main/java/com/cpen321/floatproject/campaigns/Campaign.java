@@ -1,5 +1,7 @@
 package com.cpen321.floatproject.campaigns;
 
+import android.util.Log;
+
 import com.cpen321.floatproject.utilities.Algorithms;
 import com.google.android.gms.maps.model.LatLng;
 
@@ -99,8 +101,9 @@ public class Campaign {
     }
 
     public void add_location(LatLng newLoc){
+        Double thresHold = 1.0;
         for (LatLng loc: this.list_locations){
-            if(Algorithms.calculateDistance(loc, newLoc)<=0.1) {
+            if(Algorithms.calculateDistance(loc, newLoc)<= thresHold) {
                 return;
             }
         }
