@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="#E0E0E0">
+                android:background="#FFFFFF">
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -15,7 +15,7 @@
         android:id="@+id/titlein"
         android:maxLength = "15"
         android:fontFamily="sans-serif-light"
-        android:textColor = "#373737"
+        android:textColor = "#212121"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/activity_horizontal_margin"
@@ -63,7 +63,7 @@
             android:background="@drawable/mybutton"
             android:layout_marginLeft="30dp"
             android:text="Upload Photo"
-            android:textColor="#F4F4F4"
+            android:textColor="#FFFFFF"
             android:fontFamily="sans-serif-light"
             android:onClick="loadImagefromGallery"/>
     </LinearLayout>
@@ -75,7 +75,7 @@
         android:layout_marginLeft="@dimen/activity_horizontal_margin"
         android:layout_marginRight="@dimen/activity_horizontal_margin"
         android:fontFamily="sans-serif-light"
-        android:textColor = "#373737"
+        android:textColor = "#212121"
         android:layout_centerHorizontal="true"
         android:layout_below="@+id/photopanel"
         android:textCursorDrawable="@drawable/color_cursor"
@@ -88,7 +88,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:fontFamily="sans-serif-light"
-        android:textColor = "#373737"
+        android:textColor = "#212121"
         android:textCursorDrawable="@drawable/color_cursor"
         android:layout_marginLeft="@dimen/activity_horizontal_margin"
         android:layout_marginRight="@dimen/activity_horizontal_margin"
@@ -103,7 +103,7 @@
         android:layout_marginRight="@dimen/activity_horizontal_margin"
         android:layout_centerHorizontal="true"
         android:fontFamily="sans-serif-light"
-        android:textColor = "#373737"
+        android:textColor = "#212121"
         android:layout_below="@+id/pledgein"
         android:hint="@string/initiallocationin"/>
     <LinearLayout
@@ -122,7 +122,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:fontFamily="sans-serif-light"
-            android:textColor = "#373737"
+            android:textColor = "#212121"
             android:maxLines="1"
             android:textSize="19dp"
             android:hint="Latitude"/>
@@ -134,7 +134,7 @@
             android:maxLines="1"
             android:textSize="19dp"
             android:fontFamily="sans-serif-light"
-            android:textColor = "#373737"
+            android:textColor = "#212121"
             android:hint="Longitude"/>
         <Button
             android:id="@+id/getCoords"
@@ -142,7 +142,7 @@
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:background="@drawable/mybutton"
-            android:textColor="#F4F4F4"
+            android:textColor="#FFFFFF"
             android:layout_weight="1"
             android:text="Get My Coords"/>
     </LinearLayout>
@@ -154,7 +154,7 @@
             android:layout_marginLeft="@dimen/activity_horizontal_margin"
             android:layout_marginRight="@dimen/activity_horizontal_margin"
             android:fontFamily="sans-serif-light"
-            android:textColor = "#373737"
+            android:textColor = "#212121"
             android:layout_centerHorizontal="true"
             android:layout_below="@+id/initiallocationin"
             android:hint="destination address"/>
@@ -168,7 +168,7 @@
                 android:textCursorDrawable="@drawable/color_cursor"
                 android:layout_weight="1"
                 android:fontFamily="sans-serif-light"
-                android:textColor = "#373737"
+                android:textColor = "#212121"
                 android:layout_marginBottom="15dp"
                 android:hint="   Address"/>
         </LinearLayout>
@@ -181,7 +181,7 @@
         android:layout_centerHorizontal="true"
         android:layout_below="@+id/initiallocationin"
         android:fontFamily="sans-serif-light"
-        android:textColor = "#373737"
+        android:textColor = "#212121"
         android:hint="@string/destinationlocationin"/>
     <LinearLayout
         android:id="@+id/destinationlocationin"
@@ -199,7 +199,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:fontFamily="sans-serif-light"
-            android:textColor = "#373737"
+            android:textColor = "#212121"
             android:hint="Latitude"/>
         <EditText
             android:id="@+id/destlocatlongitude"
@@ -208,14 +208,14 @@
             android:textCursorDrawable="@drawable/color_cursor"
             android:layout_weight="1"
             android:fontFamily="sans-serif-light"
-            android:textColor = "#373737"
+            android:textColor = "#212121"
             android:hint="Longitude"/>
         <Button
             android:id="@+id/findCoords"
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:background= "@drawable/mybutton"
-            android:textColor="#F4F4F4"
+            android:textColor="#FFFFFF"
             android:layout_weight="1"
             android:fontFamily="sans-serif-light"
             android:text="Search Coords"/>
@@ -229,7 +229,7 @@
         android:layout_marginLeft="@dimen/activity_horizontal_margin"
         android:layout_marginRight="@dimen/activity_horizontal_margin"
         android:fontFamily="sans-serif-light"
-        android:textColor = "#373737"
+        android:textColor = "#212121"
         android:textCursorDrawable="@drawable/color_cursor"
         android:layout_above="@+id/campbuttonpanel"
         android:layout_centerHorizontal="true"
@@ -250,7 +250,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/savecamp"
-            android:textColor="#8a579c"
+            android:textColor="#303F9F"
+            android:textStyle = "bold"
             android:fontFamily="sans-serif-light"
             style="?android:attr/buttonBarButtonStyle" />
         <Button
@@ -258,7 +259,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/launchcamp"
-            android:textColor="#8a579c"
+            android:textStyle = "bold"
+            android:textColor="#303F9F"
             android:fontFamily="sans-serif-light"
             style="?android:attr/buttonBarButtonStyle"/>
     </LinearLayout>

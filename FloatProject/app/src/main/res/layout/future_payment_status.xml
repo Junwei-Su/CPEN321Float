@@ -4,7 +4,8 @@
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin">
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:background="@android:color/white">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -15,7 +16,7 @@
             android:layout_height="wrap_content"
             android:text = "Your campaign:  "
             android:fontFamily="sans-serif-light"
-            android:textColor="#373737"
+            android:textColor="#212121"
             android:textSize = "15sp"
             android:paddingTop = "50sp"
             android:id = "@+id/campaign_title_tag"/>
@@ -24,7 +25,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/campaign_title2"
-            android:textColor="#373737"
+            android:textColor="#212121"
             android:fontFamily="sans-serif-light"
             android:text = "Title"
             android:textStyle="bold"
@@ -35,7 +36,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/succeded_tag"
-            android:textColor="#373737"
+            android:textColor="#212121"
             android:text = "  has succeeded!"
             android:fontFamily="sans-serif-light"
             android:gravity="center"
@@ -52,7 +53,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="sans-serif-light"
-            android:textColor="#373737"
+            android:textColor="#212121"
             android:text = "The amount:  "
             android:textSize = "15sp" />
 
@@ -60,7 +61,7 @@
             android:layout_marginTop="135sp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="#373737"
+            android:textColor="#212121"
             android:fontFamily="sans-serif-light"
             android:id="@+id/amount"
             android:text = "amount"
@@ -73,7 +74,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="sans-serif-light"
-            android:textColor="#373737"
+            android:textColor="#212121"
             android:id="@+id/charged_tag"
             android:text = " has been charged to your account"
             android:gravity="center"
@@ -84,7 +85,7 @@
         android:layout_marginTop="220sp"
         android:layout_width="wrap_content"
         android:fontFamily="sans-serif-light"
-        android:textColor="#373737"
+        android:textColor="#212121"
         android:layout_height="wrap_content"
         android:text="Payment Id : " />
 
@@ -95,7 +96,7 @@
         android:layout_marginTop="240sp"
         android:layout_width="wrap_content"
         android:fontFamily="sans-serif-light"
-        android:textColor="#373737"
+        android:textColor="#212121"
         android:layout_height="wrap_content"/>
 
     <Button
@@ -104,7 +105,7 @@
         android:fontFamily="sans-serif-light"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColor="#F4F4F4"
+        android:textColor="#FFFFFF"
         android:background="@drawable/mybutton"
         android:text="Return to Map Page"
         android:layout_weight="1"/>

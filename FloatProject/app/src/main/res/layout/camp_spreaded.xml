@@ -26,11 +26,11 @@
         android:visibility="visible" />
 
     <TextView
-        android:text="Campagin has floated to your location"
+        android:text="The campagin has floated to your location"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="@color/white"
-        android:textSize="9pt"
+        android:textSize="8pt"
         android:id="@+id/textView"
         android:layout_centerInParent="true"
         android:layout_marginTop="11dp"
@@ -45,8 +45,8 @@
         android:fontFamily="sans-serif-light"
         android:layout_centerInParent="true"
         android:layout_marginTop="15dp"
-        android:text="MAP"
-        android:textColor="#F4F4F4"
+        android:text="return to map"
+        android:textColor="#FFFFFF"
         android:textSize="8pt" />
 
 </RelativeLayout>

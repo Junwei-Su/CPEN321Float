@@ -335,8 +335,7 @@ public class MapPage extends FragmentActivity implements OnMapReadyCallback,
                 //create marker at campaign launch location
                 Marker marker = map.addMarker(new MarkerOptions()
                         .position(launchcoords)
-                        .title(title)
-                        .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_VIOLET)));
+                        .title(title));
 
                 //attaches campaign name to marker
                 marker.setTag(title);

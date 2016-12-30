@@ -1,235 +1,259 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:tools="http://schemas.android.com/tools"
-                xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@color/background"
-                tools:context=".MapPage">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background"
+    tools:context=".MapPage">
 
     <fragment xmlns:android="http://schemas.android.com/apk/res/android"
-              android:name="com.google.android.gms.maps.MapFragment"
-              android:id="@+id/map"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              tools:layout="@layout/map"/>
+        android:id="@+id/map"
+        android:name="com.google.android.gms.maps.MapFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:layout="@layout/map" />
+
     <LinearLayout
         android:id="@+id/spacerparent"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
         android:layout_above="@+id/mapbuttonpanel"
+        android:orientation="vertical"
         android:visibility="invisible">
+
         <Space
             android:id="@+id/spacer"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="2"/>
+            android:layout_weight="2" />
+
         <RelativeLayout
             android:id="@+id/infowindow"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="3">
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:background="@drawable/layout_rd"
                 android:orientation="horizontal"
-                android:padding="@dimen/activity_horizontal_margin"
-                android:background="@drawable/layout_rd">
+                android:padding="@dimen/activity_horizontal_margin">
+
                 <FrameLayout
                     android:layout_width="100dp"
                     android:layout_height="match_parent"
                     android:layout_gravity="center">
-                <ImageView
-                    android:id="@+id/campaignpic"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:src="@drawable/loading"
-                    android:layout_marginTop ="4dp"
-                    android:layout_marginBottom ="4dp"
-                    android:layout_marginLeft ="7dp"
-                    android:layout_marginRight="7dp"
-                    android:scaleType="centerCrop"
-                    android:layout_gravity="top"
-                    android:layout_weight="1"/>
-                <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@drawable/color_rounded_frame" />
-            </FrameLayout>
+
+                    <ImageView
+                        android:id="@+id/campaignpic"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="top"
+                        android:layout_marginBottom="4dp"
+                        android:layout_marginLeft="7dp"
+                        android:layout_marginRight="7dp"
+                        android:layout_marginTop="4dp"
+                        android:layout_weight="1"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/loading" />
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/color_rounded_frame" />
+                </FrameLayout>
+
                 <Space
                     android:layout_width="@dimen/activity_horizontal_margin"
-                    android:layout_height="match_parent"/>
+                    android:layout_height="match_parent" />
+
                 <LinearLayout
                     android:id="@+id/campaigninfo"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:orientation="vertical"
-                    android:layout_weight="1">
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
                     <TextView
                         android:id="@+id/campaigntitle"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
+                        android:layout_gravity="left"
                         android:layout_marginBottom="1dp"
-                        android:textColor = "#373737"
+                        android:layout_weight="1"
                         android:fontFamily="sans-serif-light"
                         android:text=""
+                        android:textColor="#212121"
                         android:textSize="8pt"
-                        android:textStyle = "bold"
-                        android:layout_gravity="left"
-                        android:layout_weight="1"/>
-                    <LinearLayout
-                        android:id="@+id/user"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:gravity="start"
-                        android:layout_marginTop="1dp"
-                        android:orientation="horizontal">
-                        <FrameLayout
-                            android:layout_width="50dp"
-                            android:layout_height="50dp"
-                            android:layout_gravity="center">
-                        <ImageView
-                            android:id="@+id/userpic"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_margin = "5dp"
-                            android:layout_weight="8"
-                            android:src="@drawable/loading"
-                            android:scaleType="centerCrop"
-                            android:layout_gravity="center_vertical"/>
-                            <ImageView
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:background="@drawable/color_thin_rounded_frame" />
-                        </FrameLayout>
-                        <TextView
-                            android:id="@+id/username"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_weight="2"
-                            android:textColor = "#373737"
-                            android:fontFamily="sans-serif-light"
-                            android:text=""
-                            android:layout_gravity="center_vertical"
-                            android:gravity="center_vertical"
-                            android:layout_marginLeft="@dimen/activity_horizontal_margin"/>
-                    </LinearLayout>
+                        android:textStyle="bold" />
+
                     <LinearLayout
                         android:id="@+id/charity"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
                         android:orientation="horizontal">
+
                         <FrameLayout
                             android:layout_width="50dp"
                             android:layout_height="50dp"
                             android:layout_gravity="center">
-                        <ImageView
-                            android:id="@+id/charitypic"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_margin = "5dp"
-                            android:src="@drawable/loading"
-                            android:scaleType="centerCrop"
-                            android:layout_weight="8"
-                            android:layout_gravity="center_vertical"/>
+
+                            <ImageView
+                                android:id="@+id/charitypic"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_gravity="center_vertical"
+                                android:layout_margin="5dp"
+                                android:layout_weight="8"
+                                android:scaleType="centerCrop"
+                                android:src="@drawable/loading" />
+
                             <ImageView
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:background="@drawable/color_thin_rounded_frame" />
                         </FrameLayout>
+
                         <TextView
                             android:id="@+id/charityname"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:layout_weight="2"
-                            android:textColor = "#373737"
-                            android:fontFamily="sans-serif-light"
-                            android:text=""
                             android:layout_gravity="center_vertical"
+                            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                            android:layout_weight="2"
+                            android:fontFamily="sans-serif-light"
                             android:gravity="center_vertical"
-                            android:layout_marginLeft="@dimen/activity_horizontal_margin"/>
+                            android:text=""
+                            android:textColor="#212121" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/user"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="1dp"
+                        android:layout_weight="1"
+                        android:gravity="start"
+                        android:orientation="horizontal">
+
+                        <FrameLayout
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:layout_gravity="center">
+
+                            <ImageView
+                                android:id="@+id/userpic"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_gravity="center_vertical"
+                                android:layout_margin="5dp"
+                                android:layout_weight="8"
+                                android:scaleType="centerCrop"
+                                android:src="@drawable/loading" />
+
+                            <ImageView
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:background="@drawable/color_thin_rounded_frame" />
+                        </FrameLayout>
+
+                        <TextView
+                            android:id="@+id/username"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                            android:layout_weight="2"
+                            android:fontFamily="sans-serif-light"
+                            android:gravity="center_vertical"
+                            android:text=""
+                            android:textColor="#212121" />
                     </LinearLayout>
                 </LinearLayout>
             </LinearLayout>
+
             <ImageButton
                 android:id="@+id/closewindow"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
-                android:layout_marginRight = "5dp"
                 android:layout_alignParentRight="true"
                 android:layout_alignParentTop="true"
+                android:layout_marginRight="5dp"
                 android:layout_marginTop="5dp"
                 android:background="@drawable/cross" />
+
             <Button
                 android:id="@+id/details"
+                style="?android:attr/buttonBarButtonStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:fontFamily="sans-serif-light"
                 android:layout_alignParentBottom="true"
+                android:layout_alignParentRight="true"
                 android:layout_marginTop="5dp"
+                android:fontFamily="sans-serif-light"
                 android:text="@string/deets"
-                android:textStyle = "bold"
-                android:textColor="#8a579c"
-                style="?android:attr/buttonBarButtonStyle"
-                />
+                android:textColor="#303F9F"
+                android:textStyle="bold" />
 
 
         </RelativeLayout>
     </LinearLayout>
 
-    <LinearLayout android:id="@+id/mapbuttonpanel"
-                  android:orientation="horizontal"
-                  android:layout_width="match_parent"
-                  android:layout_height="55dp"
-                  android:layout_alignParentBottom="true"
-                  android:gravity="center"
-                  android:background="@color/white"
-                  style="?android:attr/buttonBarStyle">
+    <LinearLayout
+        android:id="@+id/mapbuttonpanel"
+        style="?android:attr/buttonBarStyle"
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:layout_alignParentBottom="true"
+        android:background="@color/white"
+        android:gravity="center"
+        android:orientation="horizontal">
 
         <ImageButton
             android:id="@+id/createcamp"
+            style="?android:attr/buttonBarButtonStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:scaleType="fitCenter"
             android:adjustViewBounds="true"
-            android:src="@drawable/pencil"
-            style="?android:attr/buttonBarButtonStyle"/>
+            android:scaleType="fitCenter"
+            android:src="@drawable/pencil" />
+
         <ImageView
+            style="?android:attr/buttonBarButtonStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:scaleType="fitCenter"
             android:adjustViewBounds="true"
-            android:src="@drawable/map_selected"
-            style="?android:attr/buttonBarButtonStyle"/>
+            android:scaleType="fitCenter"
+            android:src="@drawable/map_selected" />
+
         <ImageButton
             android:id="@+id/listCamp"
+            style="?android:attr/buttonBarButtonStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:scaleType="fitCenter"
             android:adjustViewBounds="true"
-            android:src="@drawable/list"
-            style="?android:attr/buttonBarButtonStyle"/>
+            android:scaleType="fitCenter"
+            android:src="@drawable/list" />
     </LinearLayout>
 
     <TextView
         android:id="@+id/thisusername"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"/>
+        android:layout_alignParentTop="true" />
 
     <fragment
         android:id="@+id/userdeets_map"
         android:name="com.cpen321.floatproject.UserDetailsFragment"
         android:layout_width="40dp"
         android:layout_height="40dp"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentRight="true"/>
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true" />
 </RelativeLayout>

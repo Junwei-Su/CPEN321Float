@@ -2,6 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background = "@android:color/white"
     android:orientation="horizontal">
 
     <FrameLayout
@@ -36,7 +37,7 @@
         android:layout_toRightOf="@+id/frame_listPic"
         android:layout_weight="0.63"
         android:text="Campaign name"
-        android:textColor="#424242"
+        android:textColor="#212121"
         android:textSize="11pt" />
 
     <TextView
@@ -47,7 +48,7 @@
         android:layout_toRightOf="@+id/frame_listPic"
         android:layout_below="@+id/campListName"
         android:text="Launching User: "
-        android:textColor="#424242"
+        android:textColor="#757575"
         android:id="@+id/campListUserPre"
         android:textSize="7pt" />
 
@@ -59,7 +60,7 @@
         android:layout_toRightOf="@+id/campListUserPre"
         android:layout_below="@+id/campListName"
         android:text="Default User"
-        android:textColor="#424242"
+        android:textColor="#757575"
         android:textSize="7pt" />
 
     <TextView
@@ -71,7 +72,7 @@
         android:layout_below="@+id/campListUser"
         android:id="@+id/campListDestPre"
         android:text="Destination: "
-        android:textColor="#424242"
+        android:textColor="#757575"
         android:textSize="7pt" />
 
     <TextView
@@ -82,7 +83,7 @@
         android:layout_toRightOf="@+id/campListDestPre"
         android:layout_below="@+id/campListUser"
         android:text="Default Destination"
-        android:textColor="#424242"
+        android:textColor="#757575"
         android:textSize="7pt" />
 
     <Button
@@ -93,6 +94,6 @@
         android:layout_below="@+id/campListDest"
         android:layout_alignParentRight="true"
         android:text="@string/deets"
-        android:textColor="#8a579c" />
+        android:textColor="#303F9F" />
 
 </RelativeLayout>

@@ -8,8 +8,7 @@
         android:id="@+id/camp_details"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#E0E0E0"
-        android:textColor="@android:color/black">
+        android:background="@android:color/white">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -34,7 +33,7 @@
                 android:maxLines="1"
                 android:paddingRight="@dimen/activity_horizontal_margin"
                 android:text="Title"
-                android:textColor="#373737"
+                android:textColor="#212121"
                 android:textSize="12pt" />
 
             <FrameLayout
@@ -66,7 +65,7 @@
                 android:paddingRight="5dp"
                 android:paddingTop="5dp"
                 android:text="Description:"
-                android:textColor="#F4F4F4" />
+                android:textColor="#FFFFFF" />
 
             <TextView
                 android:id="@+id/descriptiondeets"
@@ -78,8 +77,7 @@
                 android:paddingLeft="5dp"
                 android:paddingRight="5dp"
                 android:text="Sample description blah blah blah"
-                android:textAlignment="textStart"
-                android:textColor="#373737" />
+                android:textColor="#212121" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -100,7 +98,7 @@
                     android:paddingRight="5dp"
                     android:paddingTop="5dp"
                     android:text="Charity information:"
-                    android:textColor="#373737"
+                    android:textColor="#212121"
                     android:textSize="7pt" />
 
                 <TextView
@@ -112,7 +110,7 @@
                     android:background="@drawable/rounded_corners"
                     android:fontFamily="sans-serif-light"
                     android:paddingLeft="3pt"
-                    android:textColor="#373737"
+                    android:textColor="#212121"
                     android:text="charity details"
                     android:textSize="7pt" />
 
@@ -133,7 +131,7 @@
                     <ImageView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:background="@drawable/thin_rounded_frame" />
+                        android:background="@drawable/color_thin_rounded_frame" />
                 </FrameLayout>
 
             </LinearLayout>
@@ -157,7 +155,7 @@
                     android:paddingRight="5dp"
                     android:paddingTop="5dp"
                     android:text="Launching user information:"
-                    android:textColor="#373737"
+                    android:textColor="#212121"
                     android:textSize="7pt" />
 
                 <TextView
@@ -170,7 +168,7 @@
                     android:fontFamily="sans-serif-light"
                     android:paddingLeft="3pt"
                     android:text="user details"
-                    android:textColor="#373737"
+                    android:textColor="#212121"
                     android:textSize="7pt" />
 
                 <FrameLayout
@@ -190,7 +188,7 @@
                     <ImageView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:background="@drawable/thin_rounded_frame" />
+                        android:background="@drawable/color_thin_rounded_frame" />
                 </FrameLayout>
 
             </LinearLayout>
@@ -209,10 +207,10 @@
                     android:layout_height="match_parent"
                     android:layout_marginRight="10dp"
                     android:layout_weight="1"
-                    android:background="@drawable/mybutton"
+                    android:background="@drawable/mybutton_dark"
                     android:fontFamily="sans-serif-light"
                     android:text="FLOAT"
-                    android:textColor="#F4F4F4"
+                    android:textColor="#FFFFFF"
                     android:textSize="8pt" />
 
                 <Button
@@ -221,10 +219,10 @@
                     android:layout_height="match_parent"
                     android:layout_marginLeft="10dp"
                     android:layout_weight="1"
-                    android:background="@drawable/mybutton"
+                    android:background="@drawable/mybutton_accent"
                     android:fontFamily="sans-serif-light"
                     android:text="DONATE"
-                    android:textColor="#F4F4F4"
+                    android:textColor="#212121"
                     android:textSize="8pt" />
 
             </LinearLayout>
