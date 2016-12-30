@@ -19,9 +19,11 @@
         android:layout_width="60dp"
         android:layout_height="60dp"
         android:src="@drawable/check_mark"
-        android:id="@+id/imageView2"
+        android:id="@+id/check"
+        android:scaleType="fitCenter"
         android:layout_alignBottom="@+id/imageView"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:visibility="visible" />
 
     <TextView
         android:text="Campagin has floated to your location"
@@ -32,5 +34,19 @@
         android:id="@+id/textView"
         android:layout_centerInParent="true"
         android:layout_marginTop="11dp"
-        android:layout_below="@+id/imageView2"/>
+        android:layout_below="@+id/check"/>
+
+    <Button
+        android:id="@+id/check_mark_button"
+        android:layout_width="120dp"
+        android:layout_height="60dp"
+        android:background="@drawable/mybutton"
+        android:layout_below="@+id/textView"
+        android:fontFamily="sans-serif-light"
+        android:layout_centerInParent="true"
+        android:layout_marginTop="15dp"
+        android:text="MAP"
+        android:textColor="#F4F4F4"
+        android:textSize="8pt" />
+
 </RelativeLayout>

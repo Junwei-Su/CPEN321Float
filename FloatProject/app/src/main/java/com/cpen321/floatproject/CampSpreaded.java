@@ -4,6 +4,9 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.ImageButton;
 
 import com.cpen321.floatproject.campaigns.DestinationCampaign;
 import com.cpen321.floatproject.database.DB;
@@ -22,7 +25,8 @@ import java.util.List;
 public class CampSpreaded extends Activity {
 
     GetGPSLocation currentLoc;
-
+    Button checkMark;
+    
     @Override
     public void onCreate(Bundle savedInstanceState){
 
@@ -34,13 +38,12 @@ public class CampSpreaded extends Activity {
 
         //read camp and add loc to camp list of loc
         final String theCampaign = intent.getStringExtra("Title");
-        DB.camp_ref.addValueEventListener(new ValueEventListener() {
+        DB.camp_ref.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 DestinationCampaign campaign = DB.campDBinteractor.read(theCampaign,dataSnapshot);
                 campaign.add_location(currentLocation);
                 DB.campDBinteractor.update(campaign,DB.root_ref);
-
             }
 
             @Override
@@ -51,7 +54,7 @@ public class CampSpreaded extends Activity {
 
         //read user and add camp id to user list camp followed
         final String theUser = intent.getStringExtra("UserId");
-        DB.user_ref.addValueEventListener(new ValueEventListener() {
+        DB.user_ref.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 User user = DB.usersDBinteractor.read(theUser,dataSnapshot);
@@ -62,6 +65,15 @@ public class CampSpreaded extends Activity {
             @Override
             public void onCancelled(DatabaseError databaseError) {
 
+            }
+        });
+
+        checkMark = (Button) findViewById(R.id.check_mark_button);
+        checkMark.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), MapPage.class);
+                startActivity(intent);
             }
         });
     }

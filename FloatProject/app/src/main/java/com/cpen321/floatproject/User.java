@@ -23,7 +23,7 @@ public class User {
     private String metadata_id;
     private String refresh_token;
     private String profile_pic;
-    public List<String> list_of_campaign_followed = new LinkedList<String>();
+    private List<String> list_of_campaign_followed = new LinkedList<String>();
     private List<String> list_of_campaign_initialize = new LinkedList<String>();
 
 

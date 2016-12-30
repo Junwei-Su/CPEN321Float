@@ -1,5 +1,8 @@
 package com.cpen321.floatproject.campaigns;
 
+import android.util.Log;
+
+import com.cpen321.floatproject.algorithm.Algorithms;
 import com.google.android.gms.maps.model.LatLng;
 
 import java.util.Date;
@@ -99,7 +102,12 @@ public class Campaign {
     }
 
     public void add_location(LatLng newLoc){
-        if (this.list_locations.contains(newLoc)!=true) this.list_locations.add(newLoc);
+        for (LatLng loc: this.list_locations){
+            if(Algorithms.calculateDistance(loc, newLoc)<=0.1) {
+                return;
+            }
+        }
+        this.list_locations.add(newLoc);
     }
 
     public String getOwner_account(){
