@@ -8,7 +8,7 @@
         android:id="@+id/camp_details"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#F4F4F4"
+        android:background="@drawable/background_repeat"
         android:textColor="@android:color/black">
 
         <LinearLayout
@@ -118,7 +118,9 @@
                     android:textColor="#373737"
                     android:textSize="7pt"
                     android:paddingLeft="3dp"
-                    android:paddingTop="7dp" />
+                    android:paddingTop="7dp"
+                    android:layout_weight="0.27"
+                    android:paddingRight="2dp" />
 
                 <FrameLayout
                     android:layout_width="70dp"
@@ -137,7 +139,7 @@
                     <ImageView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:background="@drawable/thin_rounded_frame" />
+                        android:background="@drawable/square_frame" />
                 </FrameLayout>
 
             </LinearLayout>
@@ -177,8 +179,9 @@
                     android:text="user details"
                     android:textColor="#373737"
                     android:textSize="7pt"
-                    android:layout_weight="0.15"
-                    android:paddingTop="10dp" />
+                    android:layout_weight="0.37"
+                    android:paddingTop="10dp"
+                    android:paddingRight="2dp" />
 
                 <FrameLayout
                     android:layout_width="70dp"
@@ -197,7 +200,7 @@
                     <ImageView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:background="@drawable/thin_rounded_frame" />
+                        android:background="@drawable/square_frame" />
                 </FrameLayout>
 
             </LinearLayout>
