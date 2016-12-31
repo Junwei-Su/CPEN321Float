@@ -2,6 +2,7 @@ package com.cpen321.floatproject.activities;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Paint;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -9,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -34,10 +36,12 @@ public class CampListAdapter extends BaseAdapter{
     private static ArrayList<DestinationCampaign> campArrayList;
     private ActivityUtility activityUtility = new ActivityUtility();
     private LayoutInflater mInflater;
+    private Context context;
 
     public CampListAdapter(Context context, ArrayList<DestinationCampaign> campArrayList) {
         this.campArrayList = campArrayList;
         mInflater = LayoutInflater.from(context);
+        this.context = context;
     }
 
     public int getCount() {
@@ -63,6 +67,7 @@ public class CampListAdapter extends BaseAdapter{
             holder.campName = (TextView) convertView.findViewById(R.id.campListName);
             holder.userName = (TextView) convertView.findViewById(R.id.campListUser);
             holder.destination = (TextView) convertView.findViewById(R.id.campListDest);
+            holder.details = (Button) convertView.findViewById(R.id.details);
 
             convertView.setTag(holder);
 
@@ -71,13 +76,13 @@ public class CampListAdapter extends BaseAdapter{
         }
         final DestinationCampaign campaign = campArrayList.get(position);
         StorageReference imageRef = DB.images_ref.child(campaign.getCampaign_pic());
-        activityUtility.setPictureOnImageView(imageRef,(ImageView) convertView.findViewById(R.id.campListPic));
+        activityUtility.setPictureOnImageView(imageRef, (ImageView) convertView.findViewById(R.id.campListPic));
         holder.campName.setText(campaign.getCampaign_name());
 
         DB.user_ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                String user_name =(String) dataSnapshot.child(campaign.getOwner_account()).child("name").getValue();
+                String user_name = (String) dataSnapshot.child(campaign.getOwner_account()).child("name").getValue();
                 holder.userName.setText(user_name);
             }
 
@@ -87,7 +92,20 @@ public class CampListAdapter extends BaseAdapter{
             }
         });
 
+        View.OnClickListener detailslistener = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String campaignname = campaign.getCampaign_name();
+
+                //start CampDetails activity
+                Intent intent = new Intent(v.getContext(), CampDetails.class);
+                intent.putExtra("key", campaignname);
+                context.startActivity(intent);
+            }
+        };
+
         holder.destination.setText(campaign.getDestination());
+        holder.details.setOnClickListener(detailslistener);
 
         return convertView;
     }
@@ -97,5 +115,6 @@ public class CampListAdapter extends BaseAdapter{
         TextView campName;
         TextView userName;
         TextView destination;
+        Button details;
     }
 }
