@@ -77,18 +77,24 @@ public class CampDetails extends Activity {
                 charityref.addListenerForSingleValueEvent(charitylistener);
 
                 LatLng initial_location = campaign.getInitial_location();
+                LatLng currentLocation;
                 GetGPSLocation currentLoc = new GetGPSLocation(CampDetails.this, CampDetails.this);
-                LatLng currentLocation = new LatLng(currentLoc.getLatitude(),currentLoc.getLongitude());
-                double distance = Algorithms.calculateDistance(currentLocation, initial_location);
-                Log.i("distance", Double.toString(distance));
-                in_range = (distance <= radius);
-                Button b = (Button) findViewById(R.id.float_button);
-                if (in_range)
-                    b.setText("FLOAT");
-                else {
-                    b.setText("NOT IN RANGE");
-                    b.setBackgroundColor(Color.WHITE);
-                    b.setTextColor(Color.BLACK);
+                if (currentLoc.canGetLocation()) {
+                    currentLocation = new LatLng(currentLoc.getLatitude(), currentLoc.getLongitude());
+                    double distance = Algorithms.calculateDistance(currentLocation, initial_location);
+                    Log.i("distance", Double.toString(distance));
+                    in_range = (distance <= radius);
+                    Button b = (Button) findViewById(R.id.float_button);
+                    if (in_range)
+                        b.setText("FLOAT");
+                    else {
+                        b.setText("NOT IN RANGE");
+                        b.setBackgroundColor(Color.WHITE);
+                        b.setTextColor(Color.BLACK);
+                    }
+                }
+                else{
+                    currentLoc.showSettingsAlert();
                 }
 
                 tv = (TextView) findViewById(R.id.descriptiondeets);
