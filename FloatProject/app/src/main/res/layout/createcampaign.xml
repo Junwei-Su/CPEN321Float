@@ -167,10 +167,12 @@
                 android:layout_height="wrap_content"
                 android:textCursorDrawable="@drawable/color_cursor"
                 android:layout_weight="1"
+                android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                android:layout_marginRight="@dimen/activity_horizontal_margin"
                 android:fontFamily="sans-serif-light"
                 android:textColor = "#212121"
                 android:layout_marginBottom="15dp"
-                android:hint="   City, Country"/>
+                android:hint="City, Country"/>
         </LinearLayout>
     <TextView
         android:id="@+id/destinationlocationtext"
