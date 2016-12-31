@@ -23,8 +23,11 @@ import com.cpen321.floatproject.campaigns.Campaign;
 import com.cpen321.floatproject.charities.Charity;
 import com.cpen321.floatproject.database.CampsDBInteractor;
 import com.cpen321.floatproject.database.CharityDBinteractor;
+import com.cpen321.floatproject.database.DB;
 import com.cpen321.floatproject.users.User;
 import com.cpen321.floatproject.database.UsersDBInteractor;
+import com.cpen321.floatproject.utilities.ActivityUtility;
+import com.cpen321.floatproject.utilities.UtilityMethod;
 import com.facebook.Profile;
 import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
@@ -47,18 +50,14 @@ import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FileDownloadTask;
-import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by sfarinas on 10/17/2016.
@@ -67,18 +66,7 @@ public class MapPage extends FragmentActivity implements OnMapReadyCallback,
         GoogleMap.OnMarkerClickListener {
 
     //references to points in Firebase database
-    private DatabaseReference databaseref;
-    private DatabaseReference usersref;
-    private DatabaseReference listcampaignsref;
-    private DatabaseReference listlocationsref;
-    private DatabaseReference listcharitiesref;
-    private DatabaseReference charitiesref;
     private DatabaseReference campaignref;
-    private DatabaseReference launchusersref;
-
-    //references to points in Firebase storage
-    private FirebaseStorage storage;
-    private StorageReference imagesRef;
 
     //listeners for realtime database
     private ValueEventListener listlocationslistener;
@@ -291,12 +279,6 @@ public class MapPage extends FragmentActivity implements OnMapReadyCallback,
 
         //Log.d("Tag", "buttonpanelheight in onCreate() = " + Integer.toString(buttonpanelheight));
 
-        //obtain references to Firebase database
-        databaseref = FirebaseDatabase.getInstance().getReference();
-        listcampaignsref = databaseref.child("campaigns");
-        usersref = databaseref.child("users");
-        listcharitiesref = databaseref.child("charities");
-
         //obtain Facebook ID of logged in user
         Profile profile = Profile.getCurrentProfile();
 
@@ -306,7 +288,7 @@ public class MapPage extends FragmentActivity implements OnMapReadyCallback,
             //Log.d("Tag", "My userid is: " + userid);
 
             //update Facebook launchusername on top right of screen
-            DatabaseReference thisuserref = usersref.child(userid);
+            DatabaseReference thisuserref = DB.user_ref.child(userid);
             thisuserref.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
@@ -330,7 +312,7 @@ public class MapPage extends FragmentActivity implements OnMapReadyCallback,
                 String title = dataSnapshot.child("campaign_name").getValue(String.class);
                 Log.d("Tag", "title = " + title);
 
-                LatLng launchcoords = dataSnapshotToLatLng(dataSnapshot.child("initial_location"));
+                LatLng launchcoords = UtilityMethod.dataSnapshotToLatLng(dataSnapshot.child("initial_location"));
 
                 //create marker at campaign launch location
                 Marker marker = map.addMarker(new MarkerOptions()
@@ -361,24 +343,25 @@ public class MapPage extends FragmentActivity implements OnMapReadyCallback,
 
             }
         };
-        listcampaignsref.addChildEventListener(listcampaignslistener);
+        DB.camp_ref.addChildEventListener(listcampaignslistener);
 
         //listener to draw float circles of a campaign
         listlocationslistener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 int i = 0;
+                DataSnapshot list_locations = dataSnapshot.child("list_locations");
                 DataSnapshot locat;
                 Circle circle;
 
                 while (true) {
-//                    Log.d("Tag", "Another iteration!");
-                    if (!dataSnapshot.hasChild(Integer.toString(i)))
+
+                    if (!list_locations.hasChild(Integer.toString(i)))
                         break;
 
-                    locat = dataSnapshot.child(Integer.toString(i));
+                    locat = list_locations.child(Integer.toString(i));
 
-                    LatLng floatLocation = dataSnapshotToLatLng(locat);
+                    LatLng floatLocation = UtilityMethod.dataSnapshotToLatLng(locat);
 
                     //add a campaign circle to the map
                     circle = map.addCircle(new CircleOptions()
@@ -415,25 +398,20 @@ public class MapPage extends FragmentActivity implements OnMapReadyCallback,
 
                 //update campaign image
                 campaignpic = campaign.getCampaign_pic();
-                StorageReference imageref = imagesRef.child(campaignpic);
+                StorageReference imageref = DB.images_ref.child(campaignpic);
                 setDBPictureOnImageView(imageref, R.id.campaignpic);
 
                 //attach listener to launch user profile pic
                 launchusername = campaign.getOwner_account();
                 Log.d("Tag", "launchusername = " + launchusername);
 
-                launchusersref = databaseref.child("users");
-                launchusersref.addListenerForSingleValueEvent(launchuserslistener);
+                DB.user_ref.addListenerForSingleValueEvent(launchuserslistener);
 
                 //attach listener to charity
                 charityname = campaign.getCharity();
                 Log.d("Tag", "charityname = " + charityname);
 
-                charitiesref = databaseref.child("charities");
-                charitiesref.addListenerForSingleValueEvent(charitieslistener);
-
-                //TextView tv = (TextView) findViewById(R.id.launchusername);
-                //tv.setText(launchusername);
+                DB.char_ref.addListenerForSingleValueEvent(charitieslistener);
 
                 TextView tv = (TextView) findViewById(R.id.campaigntitle);
                 tv.setText(campaignname);
@@ -457,7 +435,7 @@ public class MapPage extends FragmentActivity implements OnMapReadyCallback,
                 //update profile pic of launcher of campaign
                 launchuserpic = user.getProfile_pic();
                 Log.d("Tag", "launchuserpic = " + launchuserpic);
-                StorageReference launchuserpicref = imagesRef.child(launchuserpic);
+                StorageReference launchuserpicref = DB.images_ref.child(launchuserpic);
                 setDBPictureOnImageView(launchuserpicref, R.id.userpic);
 
                 launchusernamestr = user.getName();
@@ -478,7 +456,7 @@ public class MapPage extends FragmentActivity implements OnMapReadyCallback,
 
                 charitypic = charity.getLogo();
                 Log.d("Tag", "charitypic = " + charitypic);
-                StorageReference logoRef = imagesRef.child(charitypic);
+                StorageReference logoRef = DB.images_ref.child(charitypic);
                 setDBPictureOnImageView(logoRef, R.id.charitypic);
             }
 
@@ -489,9 +467,7 @@ public class MapPage extends FragmentActivity implements OnMapReadyCallback,
         };
 
         //Getting the picture
-        storage = FirebaseStorage.getInstance();
-        imagesRef = storage.getReferenceFromUrl("gs://float-568c7.appspot.com/images");
-        StorageReference lighthouseRef = imagesRef.child("lighthouse.png");
+        StorageReference lighthouseRef = DB.images_ref.child("lighthouse.png");
         //setDBPictureOnImageView(lighthouseRef, R.id.campaignpic);
         //setDBPictureOnImageView(lighthouseRef, R.id.userpic);
     }
@@ -554,8 +530,8 @@ public class MapPage extends FragmentActivity implements OnMapReadyCallback,
         campinfo.setVisibility(View.VISIBLE);
 
         //remove database listeners from database
-        databaseref.removeEventListener(listlocationslistener);
-        databaseref.removeEventListener(campaignslistener);
+        DB.root_ref.removeEventListener(listlocationslistener);
+        DB.root_ref.removeEventListener(campaignslistener);
 
         //Log.d("Tag", "Started removing circles.");
         //remove old circles
@@ -568,14 +544,12 @@ public class MapPage extends FragmentActivity implements OnMapReadyCallback,
         }
 
         //add listener to new campaign
-        listcampaignsref.addValueEventListener(campaignslistener);
+        DB.camp_ref.addValueEventListener(campaignslistener);
 
-        campaignref = listcampaignsref.child(campaignname);
+        campaignref = DB.camp_ref.child(campaignname);
 
-        //get database reference to list of locations of different campaign
-        listlocationsref = campaignref.child("list_locations");
         //attach listener to list of locations of different campaign
-        listlocationsref.addListenerForSingleValueEvent(listlocationslistener);
+        campaignref.addListenerForSingleValueEvent(listlocationslistener);
 
         //update map padding to bring Google logo up
         map.setPadding(0, 0, 0, buttonpanelheight + infowindowheight);
@@ -635,19 +609,6 @@ public class MapPage extends FragmentActivity implements OnMapReadyCallback,
 
     //todo Refactor this later
 
-    /**
-     * Takes in a datashapshot and returns a LatLng object with the coordinates
-     * @param datasnapshot
-     * @return a LatLng object with the coordinates in datasnapshot
-     */
-    private LatLng dataSnapshotToLatLng (DataSnapshot datasnapshot){
-        //get coordinates of campaign launch location
-        Map<String, Double> mapcoords = (HashMap<String,Double>) datasnapshot.getValue();
-
-        //create LatLng object out of coordinates
-        return new LatLng(mapcoords.get("latitude"), mapcoords.get("longitude"));
-    };
-
     private void makeFuturePayment(String title){
         Profile profile = Profile.getCurrentProfile();
         String userid = profile.getId();
@@ -658,6 +619,7 @@ public class MapPage extends FragmentActivity implements OnMapReadyCallback,
     }
 
     private void zoomFitCircles(){
+
         //if no circles, do nothing
         if(listCircles.size() == 0)
             return;
@@ -670,11 +632,16 @@ public class MapPage extends FragmentActivity implements OnMapReadyCallback,
 
         //create a bounds object the contains the included
         LatLngBounds bounds = builder.build();
-        double degoffsetnorth = getResources().getInteger(R.integer.floatradius)/111111.0;
-        double degoffseteast = getResources().getInteger(R.integer.floatradius)/
-                111111.0/Math.cos(bounds.northeast.latitude/180.0*Math.PI);
-        double degoffsetwest = getResources().getInteger(R.integer.floatradius)/
-                111111.0/Math.cos(bounds.southwest.latitude/180.0*Math.PI);
+        int radiusinmeters = getResources().getInteger(R.integer.floatradius);
+        double radiusindegrees = ActivityUtility.metrestodegrees(radiusinmeters);
+        double degoffsetnorth = radiusindegrees;
+        double degoffseteast = radiusindegrees/
+                Math.cos(ActivityUtility.degreestoradians(bounds.northeast.latitude));
+        double degoffsetwest = radiusindegrees/
+                Math.cos(ActivityUtility.degreestoradians(bounds.southwest.latitude));
+
+        Log.d("Tag", "radiusindegrees = " +radiusindegrees);
+
         //Log.d("Tag", "degoffsetnorth = " + degoffsetnorth);
         //Log.d("Tag", "degoffseteast = " + degoffseteast);
         //Log.d("Tag", "degoffsetwest = " + degoffsetwest);

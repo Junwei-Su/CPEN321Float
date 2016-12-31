@@ -50,6 +50,7 @@ public class UtilityMethod {
      */
     public static LatLng dataSnapshotToLatLng (DataSnapshot datasnapshot){
 
+
         //get coordinates of campaign launch location
         Map<String, Double> mapcoords = (HashMap<String,Double>) datasnapshot.getValue();
         //create LatLng object out of coordinates
@@ -71,4 +72,5 @@ public class UtilityMethod {
 
         return to_return;
     };
+
 }
