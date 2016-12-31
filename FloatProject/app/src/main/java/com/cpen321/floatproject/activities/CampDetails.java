@@ -100,8 +100,8 @@ public class CampDetails extends Activity {
                 charityref = DB.char_ref.child(charity);
                 charityref.addListenerForSingleValueEvent(charitylistener);
 
-                setButtonStatus();
                 startTimer();
+                setButtonStatus();
                 setDistanceRemaining();
 
                 tv = (TextView) findViewById(R.id.descriptiondeets);
@@ -132,7 +132,7 @@ public class CampDetails extends Activity {
         float_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (in_range) {
+                if (in_range && mInitialTime > 0) {
                     Intent intent = new Intent(v.getContext(), CampSpreaded.class)
                             .putExtra("Title", campaign.getCampaign_name())
                             .putExtra("UserId", Profile.getCurrentProfile().getId());
@@ -188,10 +188,17 @@ public class CampDetails extends Activity {
             Log.i("distance", Double.toString(distance));
             in_range = (distance <= radius);
             Button b = (Button) findViewById(R.id.float_button);
-            if (in_range)
-                b.setText("FLOAT");
+            if (mInitialTime>0) {
+                if (in_range)
+                    b.setText("FLOAT");
+                else {
+                    b.setText("NOT IN RANGE");
+                    b.setBackgroundColor(Color.WHITE);
+                    b.setTextColor(Color.BLACK);
+                }
+            }
             else {
-                b.setText("NOT IN RANGE");
+                b.setText("OUT OF TIME");
                 b.setBackgroundColor(Color.WHITE);
                 b.setTextColor(Color.BLACK);
             }
@@ -205,8 +212,11 @@ public class CampDetails extends Activity {
         Date initial_date = Algorithms.string_to_date(campaign.getInitial_date());
         long difference = current_date.getTime() - initial_date.getTime();
         mInitialTime = total_time-difference;
-
         mTextView = (TextView) findViewById(R.id.timer);
+
+        if (mInitialTime <= 0)
+            mTextView.setBackgroundResource(R.drawable.rounded_corners_red);
+
         mCountDownTimer = new CountDownTimer(mInitialTime, 1000) {
             StringBuilder time = new StringBuilder();
 
