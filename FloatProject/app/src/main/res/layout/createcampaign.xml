@@ -170,7 +170,7 @@
                 android:fontFamily="sans-serif-light"
                 android:textColor = "#212121"
                 android:layout_marginBottom="15dp"
-                android:hint="   Address"/>
+                android:hint="   City, Country"/>
         </LinearLayout>
     <TextView
         android:id="@+id/destinationlocationtext"
@@ -192,6 +192,7 @@
         android:layout_centerHorizontal="true"
         android:orientation="horizontal"
         android:layout_below="@+id/destinationlocationtext">
+
         <EditText
             android:id="@+id/destlocatlatitude"
             android:layout_width="match_parent"
@@ -200,9 +201,11 @@
             android:layout_weight="1"
             android:fontFamily="sans-serif-light"
             android:textColor = "#212121"
+            android:textSize="16dp"
             android:hint="Latitude"/>
         <EditText
             android:id="@+id/destlocatlongitude"
+            android:textSize="16dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textCursorDrawable="@drawable/color_cursor"

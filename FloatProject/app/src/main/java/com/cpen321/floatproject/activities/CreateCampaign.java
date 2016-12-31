@@ -162,7 +162,6 @@ public class CreateCampaign extends AppCompatActivity {
                 // Get the Image from data
                 selectedImageURI = data.getData();
                 photo.setImageURI(selectedImageURI);
-                Log.d("Tag", selectedImageURI.toString());
             }
         } catch (Exception e) {
             Toast.makeText(this, "Something went wrong", Toast.LENGTH_LONG)
@@ -177,43 +176,35 @@ public class CreateCampaign extends AppCompatActivity {
         //these are the strings we need to save for a new campaign
         EditText myText = (EditText) findViewById(R.id.titlein);
         title = myText.getText().toString();
-        Log.d("Tag",title);
 
         myText = (EditText) findViewById(R.id.charityin);
         charity = myText.getText().toString();
-        Log.d("Tag", charity);
 
         myText = (EditText) findViewById(R.id.pledgein);
         pledge = UtilityMethod.text_to_long(myText);
 
         TextView myTextView = (TextView) findViewById(R.id.initlocatlatitude);
         initlocatlatitude = Double.parseDouble(myTextView.getText().toString());
-        Log.d("Tag", "initlocatlatitude: " + initlocatlatitude);
 
         myTextView = (TextView) findViewById(R.id.initlocatlongitude);
         initlocatlongitude = Double.parseDouble(myTextView.getText().toString());
-        Log.d("Tag", "initlocatlongitude: " + initlocatlongitude);
 
         init_location = new LatLng(initlocatlatitude, initlocatlongitude);
 
         //clarence added for destination field
         myText = (EditText) findViewById(R.id.destination);
         destination = myText.getText().toString();
-        Log.d("Tag",destination);
 
         myText = (EditText) findViewById(R.id.destlocatlatitude);
         destlocatlatitude = UtilityMethod.text_to_double(myText);
-        Log.d("Tag", "destlocatlatitude: " + destlocatlatitude);
 
         myText = (EditText) findViewById(R.id.destlocatlongitude);
         destlocatlongitude = UtilityMethod.text_to_double(myText);
-        Log.d("Tag", "destlocatlongitude: " + destlocatlongitude);
 
         dest_location = new LatLng(destlocatlatitude, destlocatlongitude);
 
         myText = (EditText) findViewById(R.id.descriptionin);
         description = myText.getText().toString();
-        Log.d("Tag", description);
 
         //get Facebook numerical ID of signed in user
         Profile profile = Profile.getCurrentProfile();
@@ -243,10 +234,8 @@ public class CreateCampaign extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 String user_name = (String) dataSnapshot.child(userid).child("name").getValue();
-                Log.d("create camp", userid);
                 Date currentDate = new Date();
                 String dateString = Algorithms.date_to_string(currentDate);
-                Log.d("create camp", dateString);
 
                 Campaign myCampaign = new DestinationCampaign(title, 0, charity, description,
                         pledge, init_location, userid, time_length, dateString, destination, dest_location, campPic_url);
