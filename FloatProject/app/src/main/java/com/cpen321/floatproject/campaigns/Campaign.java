@@ -1,12 +1,10 @@
 package com.cpen321.floatproject.campaigns;
 
-import android.util.Log;
-
 import com.cpen321.floatproject.utilities.Algorithms;
 import com.google.android.gms.maps.model.LatLng;
 
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
 
 public class Campaign {
 
@@ -64,7 +62,7 @@ public class Campaign {
         return this.accumulated_donation;
     }
 
-    public void add_donation(int newDonation){
+    public void add_donation(double newDonation){
         this.accumulated_donation += newDonation;
     }
 
@@ -80,7 +78,7 @@ public class Campaign {
         return this.goal_amount;
     }
 
-    public void setGoal_amount(int new_goal){
+    public void setGoal_amount(long new_goal){
         this.goal_amount = new_goal;
     }
 

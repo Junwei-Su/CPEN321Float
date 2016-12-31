@@ -29,15 +29,6 @@ public class InstantPaymentStatus extends AppCompatActivity {
             }
         });
 
-        Button again_button = (Button) findViewById(R.id.donate_again);
-        again_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(v.getContext(), InstantPaymentStatus.class);
-                startActivity(intent);
-            }
-        });
-
         //Getting Intent
         Intent intent = getIntent();
         try {
