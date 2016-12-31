@@ -262,6 +262,15 @@ public class MapPage extends FragmentActivity implements OnMapReadyCallback,
             }
         });
 
+        //click on map icon to return map to currentlocation
+        ImageButton centreButton = (ImageButton) findViewById(R.id.centreMap);
+        centreButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                map.animateCamera(CameraUpdateFactory.newCameraPosition(defaultcamerapos));
+            }
+        });
+
         //clarence code for camp list viewer
         ImageButton listButton = (ImageButton) findViewById(R.id.listCamp);
         listButton.setOnClickListener(new View.OnClickListener() {

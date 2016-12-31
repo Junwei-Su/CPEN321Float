@@ -221,7 +221,8 @@
             android:scaleType="fitCenter"
             android:src="@drawable/createnew" />
 
-        <ImageView
+        <ImageButton
+            android:id="@+id/centreMap"
             style="?android:attr/buttonBarButtonStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
