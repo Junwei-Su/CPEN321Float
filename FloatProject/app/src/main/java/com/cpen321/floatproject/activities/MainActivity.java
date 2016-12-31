@@ -4,24 +4,46 @@ import android.content.Intent;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 
 import com.cpen321.floatproject.R;
+import com.cpen321.floatproject.database.DB;
 import com.facebook.Profile;
+import com.facebook.ProfileTracker;
 
 public class MainActivity extends FragmentActivity {
+    Button mapButton;
+    ProfileTracker mapPageProfileTracker;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        if(Profile.getCurrentProfile()!=null)
-            startMapActivity();
+        mapButton = (Button) findViewById(R.id.mapButton);
+    }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mapPageProfileTracker = new ProfileTracker() {
+            @Override
+            protected void onCurrentProfileChanged(Profile profile, Profile profile2) {
+                // profile2 is the new mprofile
+                if(profile2 == null){
+                    //not logged, make map button gone
+                    mapButton.setVisibility(View.GONE);
+                }else{
+                    //logged in already, make map button visible
+                    mapButton.setVisibility(View.VISIBLE);
+                }
+                mapPageProfileTracker.stopTracking();
+            }
+        };
     }
 
     //starts MapPage activity
-    private void startMapActivity(){
+    public void startMapActivity(View view){
         Intent intent = new Intent(this, MapPage.class);
         startActivity(intent);
 
