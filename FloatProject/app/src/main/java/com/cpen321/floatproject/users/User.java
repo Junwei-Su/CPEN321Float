@@ -1,6 +1,5 @@
 package com.cpen321.floatproject.users;
 
-import com.cpen321.floatproject.campaigns.Campaign;
 import com.google.firebase.database.Exclude;
 
 import java.util.HashMap;
@@ -74,11 +73,11 @@ public class User {
 
     public long getAmount_raised(){ return this.amount_raised; }
 
-    public void addAmount_raised(int incre){ this.amount_raised+=incre;}
+    public void addAmount_raised(double incre){ this.amount_raised+=incre;}
 
     public long getAmount_donated(){return this.amount_donated;}
 
-    public void addAmount_donated(int incre){this.amount_donated+= incre;}
+    public void addAmount_donated(double incre){this.amount_donated+= incre;}
 
     public List<String> getList_of_campaign_followed(){ return this.list_of_campaign_followed;}
 

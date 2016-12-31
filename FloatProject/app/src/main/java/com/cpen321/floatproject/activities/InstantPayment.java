@@ -77,26 +77,6 @@ public class InstantPayment extends AppCompatActivity {
 
         payment_amount = dollar_amount.concat(cents_amount);
 
-        DB.root_ref.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-
-                User current_user = DB.usersDBinteractor.read(current_user_id, dataSnapshot);
-                User campaign_owner = DB.usersDBinteractor.read(campaign_owner_id, dataSnapshot);
-                Campaign campaign = DB.campDBinteractor.read(title, dataSnapshot);
-
-                current_user.addAmount_donated(Integer.valueOf(payment_amount));
-                campaign_owner.addAmount_raised(Integer.valueOf(payment_amount));
-                campaign.add_donation(Integer.valueOf(payment_amount));
-
-                DB.usersDBinteractor.update(current_user, DB.root_ref);
-                DB.usersDBinteractor.update(campaign_owner, DB.root_ref);
-                DB.campDBinteractor.update(campaign, DB.root_ref);
-            }
-            @Override
-            public void onCancelled(DatabaseError databaseError) {}
-        });
-
         PayPalPayment payment =
                 new PayPalPayment(new BigDecimal(String.valueOf(payment_amount)), "USD", "Test Payment", PayPalPayment.PAYMENT_INTENT_SALE);
 
@@ -114,6 +94,27 @@ public class InstantPayment extends AppCompatActivity {
                 PaymentConfirmation confirmation = data.getParcelableExtra(PaymentActivity.EXTRA_RESULT_CONFIRMATION);
                 if (confirmation != null) {
                     try {
+                        if (confirmation.getProofOfPayment().getState().equals("approved")) {
+                            DB.root_ref.addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(DataSnapshot dataSnapshot) {
+
+                                    User current_user = DB.usersDBinteractor.read(current_user_id, dataSnapshot.child("users"));
+                                    User campaign_owner = DB.usersDBinteractor.read(campaign_owner_id, dataSnapshot.child("users"));
+                                    Campaign campaign = DB.campDBinteractor.read(title, dataSnapshot.child("campaigns"));
+
+                                    current_user.addAmount_donated(Double.valueOf(payment_amount));
+                                    campaign_owner.addAmount_raised(Double.valueOf(payment_amount));
+                                    campaign.add_donation(Double.valueOf(payment_amount));
+
+                                    DB.usersDBinteractor.update(current_user, DB.user_ref);
+                                    DB.usersDBinteractor.update(campaign_owner, DB.user_ref);
+                                    DB.campDBinteractor.update(campaign, DB.camp_ref);
+                                }
+                                @Override
+                                public void onCancelled(DatabaseError databaseError) {}
+                            });
+                        }
                         //Get the payment details
                         String payment_details = confirmation.toJSONObject().toString(4);
 
