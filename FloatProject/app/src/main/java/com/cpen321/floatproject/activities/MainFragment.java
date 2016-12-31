@@ -40,24 +40,6 @@ public class MainFragment extends Fragment {
         @Override
         public void onSuccess(LoginResult loginResult) {
 
-            if(Profile.getCurrentProfile() == null) {
-                mprofiletracker = new ProfileTracker() {
-                    @Override
-                    protected void onCurrentProfileChanged(Profile profile, Profile profile2) {
-                        // profile2 is the new mprofile
-                        mprofile = profile2;
-                        DB.user_ref.addListenerForSingleValueEvent(userslistener);
-                        mprofiletracker.stopTracking();
-                    }
-                };
-                // no need to call startTracking() on mprofiletracker
-                // because it is called by its constructor, internally.
-            }
-            else {
-                mprofile = Profile.getCurrentProfile();
-                DB.user_ref.addListenerForSingleValueEvent(userslistener);
-            }
-
             userslistener = new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
@@ -82,6 +64,24 @@ public class MainFragment extends Fragment {
 
                 }
             };
+
+            if(Profile.getCurrentProfile() == null) {
+                mprofiletracker = new ProfileTracker() {
+                    @Override
+                    protected void onCurrentProfileChanged(Profile profile, Profile profile2) {
+                        // profile2 is the new mprofile
+                        mprofile = profile2;
+                        DB.user_ref.addListenerForSingleValueEvent(userslistener);
+                        mprofiletracker.stopTracking();
+                    }
+                };
+                // no need to call startTracking() on mprofiletracker
+                // because it is called by its constructor, internally.
+            }
+            else {
+                mprofile = Profile.getCurrentProfile();
+                DB.user_ref.addListenerForSingleValueEvent(userslistener);
+            }
 
         }
 
