@@ -57,6 +57,7 @@
         <activity android:name=".activities.FuturePaymentAgreement" />
         <activity android:name=".activities.MakeFuturePayment"></activity>
         <activity android:name=".activities.UserDetails"></activity>
+        <activity android:name=".activities.CreateUser"></activity>
     </application>
 
 </manifest>

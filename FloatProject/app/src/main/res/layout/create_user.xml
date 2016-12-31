@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#FFFFFF">
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/saveuserbuttonpanel"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_marginRight="@dimen/activity_horizontal_margin">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+            <EditText
+                android:id="@+id/username"
+                android:maxLength = "15"
+                android:fontFamily="sans-serif-light"
+                android:textColor = "#212121"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textCursorDrawable="@drawable/color_cursor"
+                android:hint="@string/usernamein"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif-light"
+                android:layout_marginLeft="65dp"
+                android:layout_marginRight="@dimen/activity_horizontal_margin"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@+id/pledgein"
+                android:textColor="@android:color/black"
+                android:hint="@string/profilepicin"/>
+            <LinearLayout
+                android:id="@+id/photopanel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/titlein"
+                android:gravity="center"
+                android:orientation="horizontal">
+                <FrameLayout
+                    android:layout_width="200dp"
+                    android:layout_height="200dp"
+                    android:layout_gravity="center">
+                    <ImageView
+                        android:id="@+id/photo"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_margin = "5dp"
+                        android:src="@drawable/default_camp_pic"/>
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/color_rounded_frame" />
+                </FrameLayout>
+                <Button
+                    android:layout_width="100dp"
+                    android:layout_height="80dp"
+                    android:layout_gravity="center_vertical"
+                    android:background="@drawable/mybutton"
+                    android:layout_marginLeft="30dp"
+                    android:text="Upload Photo"
+                    android:textColor="#FFFFFF"
+                    android:fontFamily="sans-serif-light"
+                    android:onClick="loadImagefromGallery"/>
+            </LinearLayout>
+
+            <EditText
+                android:id="@+id/namein"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif-light"
+                android:textColor = "#212121"
+                android:textCursorDrawable="@drawable/color_cursor"
+                android:hint="@string/namein"/>
+
+            <EditText
+                android:id="@+id/blurbin"
+                android:inputType="text"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:fontFamily="sans-serif-light"
+                android:textColor = "#212121"
+                android:textCursorDrawable="@drawable/color_cursor"
+                android:hint="@string/blurbin"/>
+
+        </LinearLayout>
+    </ScrollView>
+
+    <LinearLayout
+        android:id="@+id/saveuserbuttonpanel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:gravity="center_horizontal"
+        style="?android:attr/buttonBarStyle">
+        <Button
+            android:id="@+id/saveuser"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/saveuser"
+            android:textColor="#303F9F"
+            android:textStyle = "bold"
+            android:fontFamily="sans-serif-light"
+            android:onClick="saveuser"
+            style="?android:attr/buttonBarButtonStyle" />
+    </LinearLayout>
+</RelativeLayout>

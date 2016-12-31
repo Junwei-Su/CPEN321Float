@@ -19,6 +19,12 @@
     <string name="deets">Details</string>
     <string name="title_activity_payment_status">PaymentStatus</string>
 
+    <string name="usernamein">Username</string>
+    <string name="profilepicin">Profile Picture</string>
+    <string name="namein">Name</string>
+    <string name="blurbin">Tell us something about yourself</string>
+    <string name="saveuser">Create Account</string>
+
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_future_payment_agreement1">FuturePaymentAgreement1</string>

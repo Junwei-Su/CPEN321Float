@@ -119,14 +119,6 @@ public class CreateCampaign extends AppCompatActivity {
         });
     }
 
-    public void loadImagefromGallery(View view) {
-        // Create intent to Open Image applications like Gallery, Google Photos
-        Intent galleryIntent = new Intent(Intent.ACTION_PICK,
-                android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-        // Start the Intent
-        startActivityForResult(galleryIntent, 1);
-    }
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -138,7 +130,7 @@ public class CreateCampaign extends AppCompatActivity {
 
                 selectedImageURI = data.getData();
                 photo.setImageURI(selectedImageURI);
-                Log.d("url2", selectedImageURI.toString());
+                Log.d("Tag", selectedImageURI.toString());
             }
         } catch (Exception e) {
             Toast.makeText(this, "Something went wrong", Toast.LENGTH_LONG)
@@ -197,8 +189,8 @@ public class CreateCampaign extends AppCompatActivity {
 
         campPic_url = title + "_pic.jpg";
 
-        StorageReference riversRef = DB.images_ref.child(campPic_url);
-        UploadTask uploadTask = riversRef.putFile(selectedImageURI);
+        StorageReference picRef = DB.images_ref.child(campPic_url);
+        UploadTask uploadTask = picRef.putFile(selectedImageURI);
 
         // Register observers to listen for when the download is done or if it fails
         uploadTask.addOnFailureListener(new OnFailureListener() {
@@ -244,4 +236,12 @@ public class CreateCampaign extends AppCompatActivity {
 
     //save campaign
     private static void saveCampaign(){}
+
+    public void loadImagefromGallery(View view) {
+        // Create intent to Open Image applications like Gallery, Google Photos
+        Intent galleryIntent = new Intent(Intent.ACTION_PICK,
+                android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        // Start the Intent
+        startActivityForResult(galleryIntent, 1);
+    }
 }
