@@ -33,7 +33,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_marginTop="15dp"
-        android:layout_marginLeft="15dp"
+        android:layout_marginLeft="10dp"
         android:layout_toRightOf="@+id/frame_listPic"
         android:layout_weight="0.63"
         android:text="Campaign name"
