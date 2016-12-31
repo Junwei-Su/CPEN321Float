@@ -70,8 +70,8 @@ public class MakeFuturePayment extends AppCompatActivity {
         DB.root_ref.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                User user = DB.usersDBinteractor.read(userid, dataSnapshot);
-                Campaign campaign = DB.campDBinteractor.read(title, dataSnapshot);
+                User user = DB.usersDBinteractor.read(userid, dataSnapshot.child("users"));
+                Campaign campaign = DB.campDBinteractor.read(title, dataSnapshot.child("campaigns"));
                 String amount = String.valueOf(campaign.getGoal_amount());
                 makePayment(amount, user.getRefreshToken(), user.getMetadataid());
             }

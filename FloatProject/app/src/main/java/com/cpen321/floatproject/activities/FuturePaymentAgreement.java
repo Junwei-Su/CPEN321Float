@@ -108,10 +108,10 @@ public class FuturePaymentAgreement extends AppCompatActivity {
                         DB.root_ref.addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
                             public void onDataChange(DataSnapshot dataSnapshot) {
-                                User user = DB.usersDBinteractor.read(userid, dataSnapshot);
+                                User user = DB.usersDBinteractor.read(userid, dataSnapshot.child("users"));
                                 user.setRefreshToken(refresh_token);
                                 user.setMetadataid(metadata_id);
-                                DB.usersDBinteractor.update(user, DB.root_ref);
+                                DB.usersDBinteractor.update(user, DB.user_ref);
                             }
                             @Override
                             public void onCancelled(DatabaseError databaseError) {}

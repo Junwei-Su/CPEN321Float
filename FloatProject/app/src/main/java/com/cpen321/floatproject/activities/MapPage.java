@@ -18,6 +18,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.cpen321.floatproject.GPS.GetGPSLocation;
 import com.cpen321.floatproject.R;
 import com.cpen321.floatproject.campaigns.Campaign;
 import com.cpen321.floatproject.charities.Charity;
@@ -102,16 +103,19 @@ public class MapPage extends FragmentActivity implements OnMapReadyCallback,
     //list of circles presently on 'map'
     private List<Circle> listCircles = new LinkedList<>();
 
+
+    private GetGPSLocation currentLocation;
+
     //default location of user on map on activity creation
-    private LatLng userlocation = new LatLng(49.251899, -123.231948);
+    private LatLng userlocation;// = new LatLng(49.251899, -123.231948);
 
     //default position of camera on map on activity creation
-    private CameraPosition defaultcamerapos = new CameraPosition.Builder()
-            .target(userlocation)   // Sets the center of the map to Mountain View
-            .zoom(15)                   // Sets the zoom
-            .bearing(0)                // Sets the orientation of the camera to east
-            .tilt(0)                   // Sets the tilt of the camera to 30 degrees
-            .build();                   // Creates a CameraPosition from the builder
+    private CameraPosition defaultcamerapos;// = new CameraPosition.Builder()
+      //      .target(userlocation)   // Sets the center of the map to Mountain View
+        //    .zoom(15)                   // Sets the zoom
+          //  .bearing(0)                // Sets the orientation of the camera to east
+            //.tilt(0)                   // Sets the tilt of the camera to 30 degrees
+            //.build();                   // Creates a CameraPosition from the builder
 
     private String charityname;
     private String launchusername; //facebook numerical id of person who launched campaign
@@ -152,6 +156,25 @@ public class MapPage extends FragmentActivity implements OnMapReadyCallback,
         campsDBInteractor = new CampsDBInteractor();
         charityDBinteractor = new CharityDBinteractor();
         usersDBInteractor = new UsersDBInteractor();
+
+
+        //get current location with gps, prompts if gps off
+        currentLocation = new GetGPSLocation(MapPage.this, MapPage.this);
+        if (currentLocation.canGetLocation()) {
+            userlocation = new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude());
+        }
+        else{
+            currentLocation.showSettingsAlert();
+        }
+
+        //set default camera position to the current location
+        defaultcamerapos = new CameraPosition.Builder()
+                .target(userlocation)   // Sets the center of the map to Mountain View
+                .zoom(13)                   // Sets the zoom
+                .bearing(0)                // Sets the orientation of the camera to east
+                .tilt(0)                   // Sets the tilt of the camera to 30 degrees
+                .build();
+
 
         infowindow = (RelativeLayout) findViewById(R.id.infowindow);
 
@@ -239,6 +262,15 @@ public class MapPage extends FragmentActivity implements OnMapReadyCallback,
             }
         });
 
+        //click on map icon to return map to currentlocation
+        ImageButton centreButton = (ImageButton) findViewById(R.id.centreMap);
+        centreButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                map.animateCamera(CameraUpdateFactory.newCameraPosition(defaultcamerapos));
+            }
+        });
+
         //clarence code for camp list viewer
         ImageButton listButton = (ImageButton) findViewById(R.id.listCamp);
         listButton.setOnClickListener(new View.OnClickListener() {
@@ -285,7 +317,7 @@ public class MapPage extends FragmentActivity implements OnMapReadyCallback,
         if (profile != null) {
 
             String userid = profile.getId();
-            //Log.d("Tag", "My userid is: " + userid);
+            Log.d("Tag", "My userid is: " + userid);
 
             //update Facebook launchusername on top right of screen
             DatabaseReference thisuserref = DB.user_ref.child(userid);
