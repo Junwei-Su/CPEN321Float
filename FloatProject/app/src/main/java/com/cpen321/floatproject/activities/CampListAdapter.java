@@ -120,14 +120,4 @@ public class CampListAdapter extends BaseAdapter{
         Button details;
     }
 
-    public void directToDetail(View view){
-        TextView tv = (TextView) view.findViewById(R.id.campListName);
-        String campaignname = tv.getText().toString();
-
-        Log.d("Tag", "camptitleinfo = " + campaignname);
-        //start CampDetails activity
-        Intent intent = new Intent(view.getContext(), CampDetails.class);
-        intent.putExtra("key", campaignname);
-        activityUtility.startActivity(intent);
-    }
 }
