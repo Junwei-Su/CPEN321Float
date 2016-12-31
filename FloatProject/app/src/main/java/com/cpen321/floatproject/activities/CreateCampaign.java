@@ -1,6 +1,8 @@
 package com.cpen321.floatproject.activities;
 
 import android.content.Intent;
+import android.location.Address;
+import android.location.Geocoder;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -31,7 +33,9 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+import java.io.IOException;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by sfarinas on 10/17/2016.
@@ -62,6 +66,11 @@ public class CreateCampaign extends AppCompatActivity {
     private ImageView photo;
     private Uri selectedImageURI;
 
+    private Button return_camp;
+    private Button launch_camp;
+    private Button getCoords;
+    private Button findCoords;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,7 +80,7 @@ public class CreateCampaign extends AppCompatActivity {
         launchLong = (TextView) findViewById(R.id.initlocatlongitude);
         photo = (ImageView) findViewById(R.id.photo);
 
-        Button return_camp = (Button) findViewById(R.id.return_camp);
+        return_camp = (Button) findViewById(R.id.return_camp);
         return_camp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -80,8 +89,8 @@ public class CreateCampaign extends AppCompatActivity {
             }
         });
 
-        Button button = (Button) findViewById(R.id.launchcamp);
-        button.setOnClickListener(new View.OnClickListener() {
+        launch_camp = (Button) findViewById(R.id.launchcamp);
+        launch_camp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 addCampaign();
@@ -98,7 +107,7 @@ public class CreateCampaign extends AppCompatActivity {
             }
         });
 
-        Button getCoords = (Button) findViewById(R.id.getCoords);
+        getCoords = (Button) findViewById(R.id.getCoords);
         getCoords.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -115,6 +124,32 @@ public class CreateCampaign extends AppCompatActivity {
                 }
             }
         });
+
+
+        findCoords = (Button) findViewById((R.id.findCoords));
+        findCoords.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Geocoder geocoder = new Geocoder(getApplicationContext());
+                try {
+                    TextView address = (EditText) findViewById(R.id.destination);
+                    destination = address.getText().toString();
+                    List<Address> list = geocoder.getFromLocationName(destination,1);
+                    Address returnAddress = list.get(0);
+                    Double lat = returnAddress.getLatitude();
+                    Double lng = returnAddress.getLongitude();
+                    TextView destLat = (EditText) findViewById(R.id.destlocatlatitude);
+                    destLat.setText(Double.toString(lat));
+                    TextView destLong = (EditText) findViewById(R.id.destlocatlongitude);
+                    destLong.setText(Double.toString(lng));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        });
+
     }
 
     @Override
@@ -125,10 +160,8 @@ public class CreateCampaign extends AppCompatActivity {
             if (requestCode == 1 && resultCode == RESULT_OK
                     && null != data) {
                 // Get the Image from data
-
                 selectedImageURI = data.getData();
                 photo.setImageURI(selectedImageURI);
-                Log.d("Tag", selectedImageURI.toString());
             }
         } catch (Exception e) {
             Toast.makeText(this, "Something went wrong", Toast.LENGTH_LONG)
@@ -143,43 +176,35 @@ public class CreateCampaign extends AppCompatActivity {
         //these are the strings we need to save for a new campaign
         EditText myText = (EditText) findViewById(R.id.titlein);
         title = myText.getText().toString();
-        Log.d("Tag",title);
 
         myText = (EditText) findViewById(R.id.charityin);
         charity = myText.getText().toString();
-        Log.d("Tag", charity);
 
         myText = (EditText) findViewById(R.id.pledgein);
         pledge = UtilityMethod.text_to_long(myText);
 
         TextView myTextView = (TextView) findViewById(R.id.initlocatlatitude);
         initlocatlatitude = Double.parseDouble(myTextView.getText().toString());
-        Log.d("Tag", "initlocatlatitude: " + initlocatlatitude);
 
         myTextView = (TextView) findViewById(R.id.initlocatlongitude);
         initlocatlongitude = Double.parseDouble(myTextView.getText().toString());
-        Log.d("Tag", "initlocatlongitude: " + initlocatlongitude);
 
         init_location = new LatLng(initlocatlatitude, initlocatlongitude);
 
         //clarence added for destination field
         myText = (EditText) findViewById(R.id.destination);
         destination = myText.getText().toString();
-        Log.d("Tag",destination);
 
         myText = (EditText) findViewById(R.id.destlocatlatitude);
         destlocatlatitude = UtilityMethod.text_to_double(myText);
-        Log.d("Tag", "destlocatlatitude: " + destlocatlatitude);
 
         myText = (EditText) findViewById(R.id.destlocatlongitude);
         destlocatlongitude = UtilityMethod.text_to_double(myText);
-        Log.d("Tag", "destlocatlongitude: " + destlocatlongitude);
 
         dest_location = new LatLng(destlocatlatitude, destlocatlongitude);
 
         myText = (EditText) findViewById(R.id.descriptionin);
         description = myText.getText().toString();
-        Log.d("Tag", description);
 
         //get Facebook numerical ID of signed in user
         Profile profile = Profile.getCurrentProfile();
@@ -209,10 +234,8 @@ public class CreateCampaign extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 String user_name = (String) dataSnapshot.child(userid).child("name").getValue();
-                Log.d("create camp", userid);
                 Date currentDate = new Date();
                 String dateString = Algorithms.date_to_string(currentDate);
-                Log.d("create camp", dateString);
 
                 Campaign myCampaign = new DestinationCampaign(title, 0, charity, description,
                         pledge, init_location, userid, time_length, dateString, destination, dest_location, campPic_url);
