@@ -3,6 +3,7 @@ package com.cpen321.floatproject.activities;
 import android.content.Intent;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
@@ -10,6 +11,9 @@ import com.cpen321.floatproject.R;
 import com.cpen321.floatproject.database.DB;
 import com.facebook.Profile;
 import com.facebook.ProfileTracker;
+
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
 public class MainActivity extends FragmentActivity {
     Button mapButton;
@@ -40,6 +44,7 @@ public class MainActivity extends FragmentActivity {
                 mapPageProfileTracker.stopTracking();
             }
         };
+
     }
 
     //starts MapPage activity

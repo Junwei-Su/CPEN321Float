@@ -63,7 +63,7 @@ public class CreateUser extends Activity {
 
         //get current date as string
         Calendar calendar = Calendar.getInstance();
-        SimpleDateFormat dateFormat = new SimpleDateFormat("MMM dd, yyyy");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd");
         String date = dateFormat.format(calendar.getTime());
 
         String profilePic_url = username + "_profilepic.jpg";
