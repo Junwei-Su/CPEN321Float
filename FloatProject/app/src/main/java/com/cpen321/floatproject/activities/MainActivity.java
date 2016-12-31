@@ -30,21 +30,27 @@ public class MainActivity extends FragmentActivity {
     @Override
     protected void onResume() {
         super.onResume();
+
+        updateMapButton(Profile.getCurrentProfile());
+
         mapPageProfileTracker = new ProfileTracker() {
             @Override
             protected void onCurrentProfileChanged(Profile profile, Profile profile2) {
                 // profile2 is the new mprofile
-                if(profile2 == null){
-                    //not logged, make map button gone
-                    mapButton.setVisibility(View.GONE);
-                }else{
-                    //logged in already, make map button visible
-                    mapButton.setVisibility(View.VISIBLE);
-                }
+                updateMapButton(profile2);
                 mapPageProfileTracker.stopTracking();
             }
         };
+    }
 
+    public void updateMapButton(Profile profile){
+        if(profile == null){
+            //not logged, make map button gone
+            mapButton.setVisibility(View.GONE);
+        }else{
+            //logged in already, make map button visible
+            mapButton.setVisibility(View.VISIBLE);
+        }
     }
 
     //starts MapPage activity
