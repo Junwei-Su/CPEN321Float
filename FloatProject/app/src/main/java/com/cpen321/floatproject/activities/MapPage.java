@@ -265,7 +265,7 @@ public class MapPage extends FragmentActivity implements OnMapReadyCallback,
 
                 Log.d("Tag", "camptitleinfo = " + campaignname);
 
-                //start _Submenu activity
+                //start CampDetails activity
                 Intent intent = new Intent(v.getContext(), CampDetails.class);
                 intent.putExtra("key", campaignname);
                 startActivity(intent);

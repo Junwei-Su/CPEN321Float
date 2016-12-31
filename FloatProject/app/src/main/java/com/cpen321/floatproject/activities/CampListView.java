@@ -52,7 +52,7 @@ public class CampListView extends Activity {
 
 
 
-        CampListAdapter campListAdapter = new CampListAdapter(getApplicationContext(),  campaigns);
+        CampListAdapter campListAdapter = new CampListAdapter(CampListView.this,  campaigns);
 
         listView.setAdapter(campListAdapter);
 
