@@ -34,6 +34,15 @@ public class CampSpreaded extends Activity {
         Intent intent = getIntent();
         //get current location
         currentLoc = new GetGPSLocation(CampSpreaded.this, CampSpreaded.this);
+
+        if (currentLoc.canGetLocation()) {
+            currentLocation = new LatLng(currentLoc.getLatitude(),currentLoc.getLongitude());
+        }
+        else{
+            currentLoc.showSettingsAlert();
+        }
+
+
         currentLocation = new LatLng(currentLoc.getLatitude(),currentLoc.getLongitude());
 
         //read camp and add loc to camp list of loc
