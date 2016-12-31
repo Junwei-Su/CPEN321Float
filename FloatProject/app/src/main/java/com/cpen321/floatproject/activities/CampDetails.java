@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.text.Html;
 import android.text.format.DateUtils;
 import android.util.Log;
 import android.view.View;
@@ -76,8 +77,9 @@ public class CampDetails extends Activity {
             }
         });
 
+        String htmlString = "<u>".concat(theCampaign).concat("</u>");
         TextView tv = (TextView) findViewById(R.id.camptitledeets);
-        tv.setText(theCampaign);
+        tv.setText(Html.fromHtml(htmlString));
 
         DB.camp_ref.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override

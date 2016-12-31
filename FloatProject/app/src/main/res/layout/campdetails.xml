@@ -39,8 +39,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation = "horizontal"
-                android:paddingBottom = "15dp"
-                android:paddingTop = "10dp"
+                android:paddingBottom = "10dp"
+                android:paddingTop = "20dp"
                 android:layout_weight = "1">
 
                 <TextView
@@ -60,9 +60,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_gravity = "center_vertical"
-                    android:background = "@android:color/white"
+                    android:background = "@drawable/rounded_corners_white"
                     android:fontFamily="sans-serif-light"
-                    android:text="timer"
                     android:textColor="#212121"
                     android:textSize="7pt" />
             </LinearLayout>
@@ -93,7 +92,6 @@
                     android:layout_height="match_parent"
                     android:layout_gravity = "center_vertical"
                     android:fontFamily="sans-serif-light"
-                    android:text="distance"
                     android:textColor="#212121"
                     android:textSize="7pt" />
             </LinearLayout>
