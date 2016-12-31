@@ -27,6 +27,8 @@ import com.google.firebase.storage.StorageReference;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.support.v7.app.AppCompatActivity;
+
 /**
  * Created by Little_town on 12/26/2016.
  */
@@ -117,4 +119,5 @@ public class CampListAdapter extends BaseAdapter{
         TextView destination;
         Button details;
     }
+
 }
