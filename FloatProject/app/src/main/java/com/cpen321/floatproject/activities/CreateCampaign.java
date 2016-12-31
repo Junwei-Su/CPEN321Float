@@ -7,7 +7,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -55,7 +54,7 @@ public class CreateCampaign extends AppCompatActivity {
 
     //clarence added for destination field
     private String destination;
-    long time_length = 10;
+    long time_length;
     private String campPic_url;
     private CampsDBInteractor campsDBInteractor = new CampsDBInteractor();
 
@@ -84,8 +83,7 @@ public class CreateCampaign extends AppCompatActivity {
         return_camp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(v.getContext(), MapPage.class);
-                startActivity(intent);
+                finish();
             }
         });
 
@@ -95,11 +93,7 @@ public class CreateCampaign extends AppCompatActivity {
             public void onClick(View v) {
                 addCampaign();
 
-                //launchCampaign();
-                //TODO remove listener or grey out button after campaign is launched.
-
                 //start pledge_agreement activity (where the user agrees to pay the specified amount in the future)
-                //things to pass in: amount they paid, title
                 startActivity(new Intent(v.getContext(), FuturePaymentAgreement.class)
                         .putExtra("PledgeAmount", pledge)
                         .putExtra("Title", title)
@@ -210,6 +204,7 @@ public class CreateCampaign extends AppCompatActivity {
         Profile profile = Profile.getCurrentProfile();
         userid = profile.getId();
 
+        time_length = System.currentTimeMillis();
         campPic_url = title + "_pic.jpg";
 
         StorageReference picRef = DB.images_ref.child(campPic_url);
