@@ -246,10 +246,10 @@
         android:gravity="center_horizontal"
         style="?android:attr/buttonBarStyle">
         <Button
-            android:id="@+id/savecamp"
+            android:id="@+id/return_camp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/savecamp"
+            android:text="return to map"
             android:textColor="#303F9F"
             android:textStyle = "bold"
             android:fontFamily="sans-serif-light"

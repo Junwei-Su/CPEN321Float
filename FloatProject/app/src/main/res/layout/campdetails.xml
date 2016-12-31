@@ -40,7 +40,7 @@
                 android:layout_height="match_parent"
                 android:orientation = "horizontal"
                 android:paddingBottom = "15dp"
-                android:paddingTop = "5dp"
+                android:paddingTop = "10dp"
                 android:layout_weight = "1">
 
                 <TextView
@@ -66,6 +66,38 @@
                     android:textColor="#212121"
                     android:textSize="7pt" />
             </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation = "horizontal"
+                android:paddingBottom = "15dp"
+                android:layout_weight = "1">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_gravity = "center_vertical"
+                    android:paddingRight = "10dp"
+                    android:gravity = "center"
+                    android:background = "@android:color/white"
+                    android:fontFamily="sans-serif-light"
+                    android:text="Distance remaining:"
+                    android:textColor="#212121"
+                    android:textSize="7pt" />
+
+                <TextView
+                    android:id="@+id/dist_remaining"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_gravity = "center_vertical"
+                    android:fontFamily="sans-serif-light"
+                    android:text="distance"
+                    android:textColor="#212121"
+                    android:textSize="7pt" />
+            </LinearLayout>
+
             <FrameLayout
                 android:layout_width="300dp"
                 android:layout_height="300dp"
@@ -259,5 +291,16 @@
 
 
         </LinearLayout>
+
+        <ImageButton
+            android:id="@+id/return_map3"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/cross" />
+
     </RelativeLayout>
 </ScrollView>

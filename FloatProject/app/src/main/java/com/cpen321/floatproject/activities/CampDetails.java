@@ -9,6 +9,7 @@ import android.text.format.DateUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -26,6 +27,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.StorageReference;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Date;
 
 /**
@@ -33,7 +36,7 @@ import java.util.Date;
  */
 public class CampDetails extends Activity {
 
-    private long total_time = DateUtils.DAY_IN_MILLIS * 3;
+    private long total_time = DateUtils.DAY_IN_MILLIS *4;
     private DatabaseReference charityref;
     private DatabaseReference launchuserref;
     private ValueEventListener launchuserlistener;
@@ -53,6 +56,7 @@ public class CampDetails extends Activity {
     private CountDownTimer mCountDownTimer;
     private long mInitialTime;
     private TextView mTextView;
+    private LatLng currentLocation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +66,15 @@ public class CampDetails extends Activity {
 
         Intent intent = getIntent();
         theCampaign = intent.getStringExtra("key");
+
+        ImageButton return_button = (ImageButton) findViewById(R.id.return_map3);
+        return_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(v.getContext(), MapPage.class);
+                startActivity(intent);
+            }
+        });
 
         TextView tv = (TextView) findViewById(R.id.camptitledeets);
         tv.setText(theCampaign);
@@ -87,6 +100,7 @@ public class CampDetails extends Activity {
 
                 setButtonStatus();
                 startTimer();
+                setDistanceRemaining();
 
                 tv = (TextView) findViewById(R.id.descriptiondeets);
                 tv.setText(campaign.getDescription());
@@ -165,7 +179,6 @@ public class CampDetails extends Activity {
 
     private void setButtonStatus(){
         LatLng initial_location = campaign.getInitial_location();
-        LatLng currentLocation;
         GetGPSLocation currentLoc = new GetGPSLocation(CampDetails.this, CampDetails.this);
         if (currentLoc.canGetLocation()) {
             currentLocation = new LatLng(currentLoc.getLatitude(), currentLoc.getLongitude());
@@ -228,6 +241,15 @@ public class CampDetails extends Activity {
                 mTextView.setText(time.toString());
             }
         }.start();
+    }
+
+    public void setDistanceRemaining(){
+        //LatLng goal = campaign.getGoalLocation();
+        LatLng goal = new LatLng(49.018038, -123.081825); //hard coded for now
+        double distance = Algorithms.calculateDistance(goal, currentLocation);
+        BigDecimal dist = new BigDecimal(distance).setScale(2, RoundingMode.HALF_EVEN);
+        TextView d_text = (TextView) findViewById(R.id.dist_remaining);
+        d_text.setText(dist.toString().concat(" km"));
     }
 }
 

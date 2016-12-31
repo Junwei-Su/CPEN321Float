@@ -15,11 +15,11 @@ import android.widget.Toast;
 
 import com.cpen321.floatproject.GPS.GetGPSLocation;
 import com.cpen321.floatproject.R;
-import com.cpen321.floatproject.database.DB;
-import com.cpen321.floatproject.utilities.Algorithms;
 import com.cpen321.floatproject.campaigns.Campaign;
 import com.cpen321.floatproject.campaigns.DestinationCampaign;
 import com.cpen321.floatproject.database.CampsDBInteractor;
+import com.cpen321.floatproject.database.DB;
+import com.cpen321.floatproject.utilities.Algorithms;
 import com.cpen321.floatproject.utilities.UtilityMethod;
 import com.facebook.Profile;
 import com.google.android.gms.maps.model.LatLng;
@@ -27,10 +27,7 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
@@ -74,6 +71,15 @@ public class CreateCampaign extends AppCompatActivity {
         launchLong = (TextView) findViewById(R.id.initlocatlongitude);
         photo = (ImageView) findViewById(R.id.photo);
 
+        Button return_camp = (Button) findViewById(R.id.return_camp);
+        return_camp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(v.getContext(), MapPage.class);
+                startActivity(intent);
+            }
+        });
+
         Button button = (Button) findViewById(R.id.launchcamp);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -89,14 +95,6 @@ public class CreateCampaign extends AppCompatActivity {
                         .putExtra("PledgeAmount", pledge)
                         .putExtra("Title", title)
                         .putExtra("UserID", userid));
-            }
-        });
-
-        button = (Button) findViewById(R.id.savecamp);
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                addCampaign();
             }
         });
 
