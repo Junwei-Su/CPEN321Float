@@ -19,13 +19,10 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.cpen321.floatproject.R;
 import com.cpen321.floatproject.campaigns.Campaign;
-import com.cpen321.floatproject.database.CampsDBInteractor;
+import com.cpen321.floatproject.database.DB;
 import com.cpen321.floatproject.users.User;
-import com.cpen321.floatproject.database.UsersDBInteractor;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.paypal.base.rest.PayPalRESTException;
 
@@ -44,10 +41,6 @@ public class MakeFuturePayment extends AppCompatActivity {
             "EDoORf_P0yhpdjSDkCuQ1vDcIRQLGEtqXSZi34nA5UxZQ0xHqFuXNxUqDiLX6jYwGUHuewSbOcxBTMNQ";
     private static final String MAKE_PAYMENT =
             "http://ec2-54-213-91-175.us-west-2.compute.amazonaws.com/paypal-sdk/future_payment.php";
-
-    private DatabaseReference databaseref = FirebaseDatabase.getInstance().getReference();
-    private UsersDBInteractor usersDBInteractor = new UsersDBInteractor();
-    private CampsDBInteractor campsDBInteractor = new CampsDBInteractor();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,11 +67,11 @@ public class MakeFuturePayment extends AppCompatActivity {
 
     private void makePayment() throws PayPalRESTException, IOException {
 
-        databaseref.addListenerForSingleValueEvent(new ValueEventListener() {
+        DB.root_ref.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                User user = usersDBInteractor.read(userid, dataSnapshot);
-                Campaign campaign = campsDBInteractor.read(title, dataSnapshot);
+                User user = DB.usersDBinteractor.read(userid, dataSnapshot);
+                Campaign campaign = DB.campDBinteractor.read(title, dataSnapshot);
                 String amount = String.valueOf(campaign.getGoal_amount());
                 makePayment(amount, user.getRefreshToken(), user.getMetadataid());
             }

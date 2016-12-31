@@ -6,6 +6,8 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.database.DataSnapshot;
 
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -47,10 +49,28 @@ public class UtilityMethod {
      * @return a LatLng object with the coordinates in datasnapshot
      */
     public static LatLng dataSnapshotToLatLng (DataSnapshot datasnapshot){
+
+
         //get coordinates of campaign launch location
         Map<String, Double> mapcoords = (HashMap<String,Double>) datasnapshot.getValue();
-
         //create LatLng object out of coordinates
         return new LatLng(mapcoords.get("latitude"), mapcoords.get("longitude"));
     };
+
+    /**
+     * Takes in a datashapshot and returns a list of LatLng object with the coordinates
+     * @param datasnapshot
+     * @return a list of LatLng object with the coordinates in datasnapshot
+     */
+    public static List<LatLng> dataSnapshotToLatLngList (DataSnapshot datasnapshot){
+        //get coordinates of location
+        List<LatLng> to_return = new LinkedList<LatLng>();
+        for(DataSnapshot loc : datasnapshot.getChildren()){
+            LatLng location_to_add = dataSnapshotToLatLng(loc);
+            to_return.add(location_to_add);
+        }
+
+        return to_return;
+    };
+
 }

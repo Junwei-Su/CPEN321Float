@@ -10,13 +10,10 @@ import android.widget.EditText;
 
 import com.cpen321.floatproject.R;
 import com.cpen321.floatproject.campaigns.Campaign;
-import com.cpen321.floatproject.database.CampsDBInteractor;
+import com.cpen321.floatproject.database.DB;
 import com.cpen321.floatproject.users.User;
-import com.cpen321.floatproject.database.UsersDBInteractor;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.paypal.android.sdk.payments.PayPalConfiguration;
 import com.paypal.android.sdk.payments.PayPalPayment;
@@ -29,10 +26,6 @@ import org.json.JSONException;
 import java.math.BigDecimal;
 
 public class InstantPayment extends AppCompatActivity {
-
-    private DatabaseReference databaseref = FirebaseDatabase.getInstance().getReference();
-    private UsersDBInteractor usersDBInteractor = new UsersDBInteractor();
-    private CampsDBInteractor campsDBInteractor = new CampsDBInteractor();
 
     //set environment as the testing sandbox (can also be set to do actual transactions)
     private static final String CONFIG_ENVIRONMENT = PayPalConfiguration.ENVIRONMENT_SANDBOX;
@@ -84,20 +77,21 @@ public class InstantPayment extends AppCompatActivity {
 
         payment_amount = dollar_amount.concat(cents_amount);
 
-        databaseref.addListenerForSingleValueEvent(new ValueEventListener() {
+        DB.root_ref.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                User current_user = usersDBInteractor.read(current_user_id, dataSnapshot);
-                User campaign_owner = usersDBInteractor.read(campaign_owner_id, dataSnapshot);
-                Campaign campaign = campsDBInteractor.read(title, dataSnapshot);
+
+                User current_user = DB.usersDBinteractor.read(current_user_id, dataSnapshot);
+                User campaign_owner = DB.usersDBinteractor.read(campaign_owner_id, dataSnapshot);
+                Campaign campaign = DB.campDBinteractor.read(title, dataSnapshot);
 
                 current_user.addAmount_donated(Integer.valueOf(payment_amount));
                 campaign_owner.addAmount_raised(Integer.valueOf(payment_amount));
                 campaign.add_donation(Integer.valueOf(payment_amount));
 
-                usersDBInteractor.update(current_user, databaseref);
-                usersDBInteractor.update(campaign_owner, databaseref);
-                campsDBInteractor.update(campaign, databaseref);
+                DB.usersDBinteractor.update(current_user, DB.root_ref);
+                DB.usersDBinteractor.update(campaign_owner, DB.root_ref);
+                DB.campDBinteractor.update(campaign, DB.root_ref);
             }
             @Override
             public void onCancelled(DatabaseError databaseError) {}

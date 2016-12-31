@@ -15,8 +15,6 @@ public class User {
     private String account_name;
     private String date_join;
     private String blurb;
-    private boolean is_charity;
-    private long amount_gain;
     private long amount_raised;
     private long amount_donated;
     private String address;
@@ -40,22 +38,18 @@ public class User {
         this.account_name = account_name;
         this.date_join = date;
         this.blurb = blurb;
-        this.is_charity=is_charity;
-        this.amount_gain = amount_gain;
         this.amount_raised = amount_raised;
         this.amount_donated = amount_donated;
         this.address = address;
     }
 
-    public User(String name, String account_name,String date, String blurb, boolean is_charity, long amount_gain,
+    public User(String name, String account_name,String date, String blurb,
                 long amount_raised, long amount_donated, String address,
                 List<String> list_of_campaign_initialize, List<String> list_of_campaign_followed, String profile_pic){
         this.name = name;
         this.account_name = account_name;
         this.date_join = date;
         this.blurb = blurb;
-        this.is_charity=is_charity;
-        this.amount_gain = amount_gain;
         this.amount_raised = amount_raised;
         this.amount_donated = amount_donated;
         this.address = address;
@@ -77,12 +71,6 @@ public class User {
     public String getBlurb(){ return this.blurb; }
 
     public void setBlurb(String newBlurb){ this.blurb = newBlurb; }
-
-    public boolean getIs_charity(){ return this.is_charity;}
-
-    public long getAmount_gain(){ return this.amount_gain;}
-
-    public void addAmount_gain(int incre){ this.amount_gain += incre; }
 
     public long getAmount_raised(){ return this.amount_raised; }
 
@@ -138,7 +126,6 @@ public class User {
         result.put("amount_raised", this.getAmount_raised());
         result.put("blurb", this.getBlurb());
         result.put("date_join", this.getDate());
-        result.put("is_charity", this.getIs_charity());
         result.put("list_camp_init", this.getList_of_campaign_initialize());
         result.put("list_camp_join", this.getList_of_campaign_followed());
         result.put("name", this.getName());

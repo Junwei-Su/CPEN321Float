@@ -102,6 +102,10 @@ public class Campaign {
 
     public void add_location(LatLng newLoc){
         Double thresHold = 1.0;
+        LatLng zero_loc = new LatLng(0.0, 0.0);
+
+        if(Algorithms.calculateDistance(zero_loc, newLoc)<= thresHold) return;
+
         for (LatLng loc: this.list_locations){
             if(Algorithms.calculateDistance(loc, newLoc)<= thresHold) {
                 return;

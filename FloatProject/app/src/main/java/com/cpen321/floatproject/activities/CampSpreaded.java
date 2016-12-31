@@ -24,7 +24,8 @@ public class CampSpreaded extends Activity {
 
     GetGPSLocation currentLoc;
     Button checkMark;
-    
+    LatLng currentLocation;
+
     @Override
     public void onCreate(Bundle savedInstanceState){
 
@@ -33,7 +34,7 @@ public class CampSpreaded extends Activity {
         Intent intent = getIntent();
         //get current location
         currentLoc = new GetGPSLocation(CampSpreaded.this, CampSpreaded.this);
-        final LatLng currentLocation = new LatLng(currentLoc.getLatitude(),currentLoc.getLongitude());
+        currentLocation = new LatLng(currentLoc.getLatitude(),currentLoc.getLongitude());
 
         //read camp and add loc to camp list of loc
         final String theCampaign = intent.getStringExtra("Title");
