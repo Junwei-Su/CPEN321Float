@@ -2,34 +2,27 @@ package com.cpen321.floatproject.activities;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.net.Uri;
+import android.graphics.Color;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.cpen321.floatproject.GPS.GetGPSLocation;
 import com.cpen321.floatproject.R;
 import com.cpen321.floatproject.campaigns.Campaign;
-import com.cpen321.floatproject.database.CampsDBInteractor;
 import com.cpen321.floatproject.database.DB;
 import com.cpen321.floatproject.utilities.ActivityUtility;
+import com.cpen321.floatproject.utilities.Algorithms;
 import com.facebook.Profile;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.storage.FileDownloadTask;
-import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-
-import java.io.File;
-import java.io.IOException;
 
 /**
  * Created by sfarinas on 10/17/2016.
@@ -48,6 +41,9 @@ public class CampDetails extends Activity {
     private ImageView campPic;
     private ImageView userPic;
     private ImageView charPic;
+
+    private boolean in_range;
+    private double radius = 500;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,6 +76,21 @@ public class CampDetails extends Activity {
                 charityref = DB.char_ref.child(charity);
                 charityref.addListenerForSingleValueEvent(charitylistener);
 
+                LatLng initial_location = campaign.getInitial_location();
+                GetGPSLocation currentLoc = new GetGPSLocation(CampDetails.this, CampDetails.this);
+                LatLng currentLocation = new LatLng(currentLoc.getLatitude(),currentLoc.getLongitude());
+                double distance = Algorithms.calculateDistance(currentLocation, initial_location);
+                Log.i("distance", Double.toString(distance));
+                in_range = (distance <= radius);
+                Button b = (Button) findViewById(R.id.float_button);
+                if (in_range)
+                    b.setText("FLOAT");
+                else {
+                    b.setText("NOT IN RANGE");
+                    b.setBackgroundColor(Color.WHITE);
+                    b.setTextColor(Color.BLACK);
+                }
+
                 tv = (TextView) findViewById(R.id.descriptiondeets);
                 tv.setText(campaign.getDescription());
 
@@ -110,10 +121,12 @@ public class CampDetails extends Activity {
         float_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(v.getContext(), CampSpreaded.class)
-                        .putExtra("Title", campaign.getCampaign_name())
-                        .putExtra("UserId", Profile.getCurrentProfile().getId());
-                startActivity(intent);
+                if (in_range) {
+                    Intent intent = new Intent(v.getContext(), CampSpreaded.class)
+                            .putExtra("Title", campaign.getCampaign_name())
+                            .putExtra("UserId", Profile.getCurrentProfile().getId());
+                    startActivity(intent);
+                }
             }
         });
 
