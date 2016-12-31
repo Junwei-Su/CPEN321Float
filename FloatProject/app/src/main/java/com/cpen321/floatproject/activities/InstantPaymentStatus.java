@@ -24,8 +24,7 @@ public class InstantPaymentStatus extends AppCompatActivity {
         map_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(v.getContext(), MapPage.class);
-                startActivity(intent);
+                finish();
             }
         });
 

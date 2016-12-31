@@ -18,6 +18,7 @@ import com.cpen321.floatproject.GPS.GetGPSLocation;
 import com.cpen321.floatproject.R;
 import com.cpen321.floatproject.campaigns.Campaign;
 import com.cpen321.floatproject.database.DB;
+import com.cpen321.floatproject.users.User;
 import com.cpen321.floatproject.utilities.ActivityUtility;
 import com.cpen321.floatproject.utilities.Algorithms;
 import com.facebook.Profile;
@@ -30,7 +31,7 @@ import com.google.firebase.storage.StorageReference;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.util.Date;
+import java.util.List;
 
 /**
  * Created by sfarinas on 10/17/2016.
@@ -51,13 +52,20 @@ public class CampDetails extends Activity {
     private ImageView userPic;
     private ImageView charPic;
 
+    private List<String> list_of_campaign_followed;
+    private User user;
+
     private double radius = 500;
 
     private boolean in_range;
+    private boolean floated;
     private CountDownTimer mCountDownTimer;
     private long mInitialTime;
     private TextView mTextView;
     private LatLng currentLocation;
+
+    private final static int REQUEST_CODE_FLOAT = 1;
+    private final static int REQUEST_CODE_DONATE = 2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,8 +80,7 @@ public class CampDetails extends Activity {
         return_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(v.getContext(), MapPage.class);
-                startActivity(intent);
+                finish();
             }
         });
 
@@ -81,10 +88,23 @@ public class CampDetails extends Activity {
         TextView tv = (TextView) findViewById(R.id.camptitledeets);
         tv.setText(Html.fromHtml(htmlString));
 
-        DB.camp_ref.addListenerForSingleValueEvent(new ValueEventListener() {
+        DB.root_ref.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                campaign = DB.campDBinteractor.read(theCampaign, dataSnapshot);
+                Profile profile = Profile.getCurrentProfile();
+                String userid = profile.getId();
+
+                campaign = DB.campDBinteractor.read(theCampaign, dataSnapshot.child("campaigns"));
+                user = DB.usersDBinteractor.read(userid, dataSnapshot.child("users"));
+
+                startTimer();
+                list_of_campaign_followed = user.getList_of_campaign_followed();
+                if (list_of_campaign_followed.contains(theCampaign))
+                    floated = true;
+                else
+                    floated = false;
+                setButtonStatus();
+                setDistanceRemaining();
 
                 //update campaign image
                 StorageReference imageref = DB.images_ref.child(campaign.getCampaign_pic());
@@ -100,10 +120,6 @@ public class CampDetails extends Activity {
                 charityref = DB.char_ref.child(charity);
                 charityref.addListenerForSingleValueEvent(charitylistener);
 
-                startTimer();
-                setButtonStatus();
-                setDistanceRemaining();
-
                 tv = (TextView) findViewById(R.id.descriptiondeets);
                 tv.setText(campaign.getDescription());
             }
@@ -113,7 +129,6 @@ public class CampDetails extends Activity {
 
             }
         });
-
 
         Button donate_button = (Button) findViewById(R.id.donate_button);
         donate_button.setOnClickListener(new View.OnClickListener() {
@@ -132,11 +147,12 @@ public class CampDetails extends Activity {
         float_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (in_range && mInitialTime > 0) {
+                checkIfFloated();
+                if (in_range && mInitialTime > 0 && !floated) {
                     Intent intent = new Intent(v.getContext(), CampSpreaded.class)
                             .putExtra("Title", campaign.getCampaign_name())
                             .putExtra("UserId", Profile.getCurrentProfile().getId());
-                    startActivity(intent);
+                    startActivityForResult(intent, REQUEST_CODE_FLOAT);
                 }
             }
         });
@@ -173,10 +189,31 @@ public class CampDetails extends Activity {
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-
             }
         };
 
+    }
+
+    private void checkIfFloated(){
+        DB.user_ref.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Profile profile = Profile.getCurrentProfile();
+                String userid = profile.getId();
+
+                user = DB.usersDBinteractor.read(userid, dataSnapshot);
+
+                list_of_campaign_followed = user.getList_of_campaign_followed();
+                if (list_of_campaign_followed.contains(theCampaign))
+                    floated = true;
+                else
+                    floated = false;
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+            }
+        });
     }
 
     private void setButtonStatus(){
@@ -188,29 +225,36 @@ public class CampDetails extends Activity {
             Log.i("distance", Double.toString(distance));
             in_range = (distance <= radius);
             Button b = (Button) findViewById(R.id.float_button);
-            if (mInitialTime>0) {
-                if (in_range)
-                    b.setText("FLOAT");
-                else {
-                    b.setText("NOT IN RANGE");
+            if (!floated) {
+                if (mInitialTime > 0) {
+                    if (in_range)
+                        b.setText("FLOAT");
+                    else {
+                        b.setText("NOT IN RANGE");
+                        b.setBackgroundColor(Color.WHITE);
+                        b.setTextColor(Color.BLACK);
+                    }
+                } else {
+                    b.setText("OUT OF TIME");
                     b.setBackgroundColor(Color.WHITE);
                     b.setTextColor(Color.BLACK);
                 }
             }
-            else {
-                b.setText("OUT OF TIME");
+            else{
+                b.setText("FLOATED");
                 b.setBackgroundColor(Color.WHITE);
                 b.setTextColor(Color.BLACK);
             }
+
         } else {
             currentLoc.showSettingsAlert();
         }
     }
 
+
     private void startTimer(){
-        Date current_date = new Date();
-        Date initial_date = Algorithms.string_to_date(campaign.getInitial_date());
-        long difference = current_date.getTime() - initial_date.getTime();
+        long starting_time = campaign.getTime_length();
+        long difference = System.currentTimeMillis() - starting_time;
         mInitialTime = total_time-difference;
         mTextView = (TextView) findViewById(R.id.timer);
 
@@ -255,14 +299,34 @@ public class CampDetails extends Activity {
         }.start();
     }
 
-    public void setDistanceRemaining(){
+    private void setDistanceRemaining(){
         //LatLng goal = campaign.getGoalLocation();
         LatLng goal = new LatLng(49.018038, -123.081825); //hard coded for now
         double distance = Algorithms.calculateDistance(goal, currentLocation);
         BigDecimal dist = new BigDecimal(distance).setScale(2, RoundingMode.HALF_EVEN);
         TextView d_text = (TextView) findViewById(R.id.dist_remaining);
         d_text.setText(dist.toString().concat(" km"));
+
+        String pledge_amount = String.valueOf(campaign.getGoal_amount());
+        TextView p_text = (TextView) findViewById(R.id.pledge_camp);
+        p_text.setText(pledge_amount.concat(" CAD"));
     }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch(requestCode) {
+            case REQUEST_CODE_FLOAT:
+                Button b = (Button) findViewById(R.id.float_button);
+                b.setText("FLOATED");
+                b.setBackgroundColor(Color.WHITE);
+                b.setTextColor(Color.BLACK);
+                floated = true;
+                break;
+            case REQUEST_CODE_DONATE:
+                break;
+        }
+    }
+
 }
 
 

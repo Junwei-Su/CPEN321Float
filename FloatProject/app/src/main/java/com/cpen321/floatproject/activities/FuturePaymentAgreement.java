@@ -69,7 +69,7 @@ public class FuturePaymentAgreement extends AppCompatActivity {
 
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
-            pledge_amount = extras.getString("PledgeAmount");
+            pledge_amount = String.valueOf(extras.getLong("PledgeAmount"));
             title = extras.getString("Title");
             userid = extras.getString("UserID");
         }

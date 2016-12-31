@@ -123,6 +123,8 @@ public class InstantPayment extends AppCompatActivity {
                                 .putExtra("PaymentDetails", payment_details)
                                 .putExtra("PaymentAmount", payment_amount));
 
+                        finish();
+
                     } catch (JSONException e) {
                         Log.e("paymentExample", "an extremely unlikely failure occurred: ", e);
                     }

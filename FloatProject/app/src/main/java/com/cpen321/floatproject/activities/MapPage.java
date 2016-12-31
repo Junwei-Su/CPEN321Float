@@ -175,7 +175,6 @@ public class MapPage extends FragmentActivity implements OnMapReadyCallback,
                 .tilt(0)                   // Sets the tilt of the camera to 30 degrees
                 .build();
 
-
         infowindow = (RelativeLayout) findViewById(R.id.infowindow);
 
         //listen to infowindow once to obtain height in pixels
@@ -251,7 +250,6 @@ public class MapPage extends FragmentActivity implements OnMapReadyCallback,
                 //move camera to fit campaign circles in screen
                 zoomFitCircles();
 
-                //TODO add button to reset camera position to user's location
                 //map.animateCamera(CameraUpdateFactory.newCameraPosition(defaultcamerapos));
 
                 //animate infowindow disappearing
@@ -302,6 +300,12 @@ public class MapPage extends FragmentActivity implements OnMapReadyCallback,
                 intent.putExtra("key", campaignname);
                 startActivity(intent);
 
+                map.setPadding(0, 0, 0, buttonpanelheight);
+                zoomFitCircles();
+                ObjectAnimator infowindowanimator = ObjectAnimator.ofFloat(infowindow, View.Y, infowindowtop, buttonpaneltop);
+                infowindowanimator.setDuration(0);
+                infowindowanimator.start();
+                infowindowvisible = false;
             }
         });
 

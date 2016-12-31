@@ -45,7 +45,7 @@
         android:fontFamily="sans-serif-light"
         android:layout_centerInParent="true"
         android:layout_marginTop="15dp"
-        android:text="return to map"
+        android:text="return"
         android:textColor="#FFFFFF"
         android:textSize="8pt" />
 

@@ -81,8 +81,7 @@ public class CampSpreaded extends Activity {
         checkMark.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), MapPage.class);
-                startActivity(intent);
+                finish();
             }
         });
     }

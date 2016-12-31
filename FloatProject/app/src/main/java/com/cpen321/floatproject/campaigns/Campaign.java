@@ -18,7 +18,7 @@ public class Campaign {
     private LatLng initial_location;
     private List<LatLng> list_locations;
     private String owner_account;
-    private long time_length;
+    private long time_length; //time_length holds the initial starting time in milliseconds. Length of campaign is hard coded to 4 days
     private String campaign_pic = "default_camp_pic.jpg"; //default campaign picture
 
     public Campaign() {

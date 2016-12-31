@@ -142,6 +142,35 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:orientation = "horizontal"
+                android:paddingBottom = "5dp"
+                android:layout_weight = "1">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity = "center_vertical"
+                android:paddingRight = "10dp"
+                android:gravity = "center"
+                android:background = "@android:color/white"
+                android:fontFamily="sans-serif-light"
+                android:text="Pledge amount:"
+                android:textColor="#212121"
+                android:textSize="6pt" />
+
+            <TextView
+                android:id="@+id/pledge_camp"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity = "center_vertical"
+                android:fontFamily="sans-serif-light"
+                android:textColor="#212121"
+                android:textSize="6pt" />
+        </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:gravity="center"
                 android:orientation="horizontal"
