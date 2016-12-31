@@ -27,6 +27,8 @@ import com.google.firebase.storage.StorageReference;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.support.v7.app.AppCompatActivity;
+
 /**
  * Created by Little_town on 12/26/2016.
  */
@@ -116,5 +118,16 @@ public class CampListAdapter extends BaseAdapter{
         TextView userName;
         TextView destination;
         Button details;
+    }
+
+    public void directToDetail(View view){
+        TextView tv = (TextView) view.findViewById(R.id.campListName);
+        String campaignname = tv.getText().toString();
+
+        Log.d("Tag", "camptitleinfo = " + campaignname);
+        //start CampDetails activity
+        Intent intent = new Intent(view.getContext(), CampDetails.class);
+        intent.putExtra("key", campaignname);
+        activityUtility.startActivity(intent);
     }
 }

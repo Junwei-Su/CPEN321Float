@@ -94,6 +94,7 @@
         android:layout_below="@+id/campListDest"
         android:layout_alignParentRight="true"
         android:text="@string/deets"
-        android:textColor="#303F9F" />
+        android:textColor="#303F9F"
+        android:onClick="directToDetail"/>
 
 </RelativeLayout>
