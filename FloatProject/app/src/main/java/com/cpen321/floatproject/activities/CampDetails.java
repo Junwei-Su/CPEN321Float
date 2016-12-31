@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.CountDownTimer;
+import android.text.format.DateUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -24,11 +26,14 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.StorageReference;
 
+import java.util.Date;
+
 /**
  * Created by sfarinas on 10/17/2016.
  */
 public class CampDetails extends Activity {
 
+    private long total_time = DateUtils.DAY_IN_MILLIS * 3;
     private DatabaseReference charityref;
     private DatabaseReference launchuserref;
     private ValueEventListener launchuserlistener;
@@ -42,8 +47,12 @@ public class CampDetails extends Activity {
     private ImageView userPic;
     private ImageView charPic;
 
-    private boolean in_range;
     private double radius = 500;
+
+    private boolean in_range;
+    private CountDownTimer mCountDownTimer;
+    private long mInitialTime;
+    private TextView mTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,7 +61,7 @@ public class CampDetails extends Activity {
         setContentView(R.layout.campdetails);
 
         Intent intent = getIntent();
-        theCampaign= intent.getStringExtra("key");
+        theCampaign = intent.getStringExtra("key");
 
         TextView tv = (TextView) findViewById(R.id.camptitledeets);
         tv.setText(theCampaign);
@@ -76,30 +85,11 @@ public class CampDetails extends Activity {
                 charityref = DB.char_ref.child(charity);
                 charityref.addListenerForSingleValueEvent(charitylistener);
 
-                LatLng initial_location = campaign.getInitial_location();
-                LatLng currentLocation;
-                GetGPSLocation currentLoc = new GetGPSLocation(CampDetails.this, CampDetails.this);
-                if (currentLoc.canGetLocation()) {
-                    currentLocation = new LatLng(currentLoc.getLatitude(), currentLoc.getLongitude());
-                    double distance = Algorithms.calculateDistance(currentLocation, initial_location);
-                    Log.i("distance", Double.toString(distance));
-                    in_range = (distance <= radius);
-                    Button b = (Button) findViewById(R.id.float_button);
-                    if (in_range)
-                        b.setText("FLOAT");
-                    else {
-                        b.setText("NOT IN RANGE");
-                        b.setBackgroundColor(Color.WHITE);
-                        b.setTextColor(Color.BLACK);
-                    }
-                }
-                else{
-                    currentLoc.showSettingsAlert();
-                }
+                setButtonStatus();
+                startTimer();
 
                 tv = (TextView) findViewById(R.id.descriptiondeets);
                 tv.setText(campaign.getDescription());
-
             }
 
             @Override
@@ -108,8 +98,8 @@ public class CampDetails extends Activity {
             }
         });
 
-        Button donate_button = (Button) findViewById(R.id.donate_button);
 
+        Button donate_button = (Button) findViewById(R.id.donate_button);
         donate_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -123,7 +113,6 @@ public class CampDetails extends Activity {
         });
 
         float_button = (Button) findViewById(R.id.float_button);
-
         float_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -143,7 +132,7 @@ public class CampDetails extends Activity {
                 String launchuserpic = dataSnapshot.child("profile_pic").getValue(String.class);
                 StorageReference launchuserpicref = DB.images_ref.child(launchuserpic);
                 userPic = (ImageView) findViewById(R.id.userpicdeets);
-                ActivityUtility.setPictureOnImageView(launchuserpicref,userPic);
+                ActivityUtility.setPictureOnImageView(launchuserpicref, userPic);
 
                 //update username of launcher of campaign
                 String launchusername = dataSnapshot.child("name").getValue(String.class);
@@ -171,6 +160,75 @@ public class CampDetails extends Activity {
 
             }
         };
+
     }
 
+    private void setButtonStatus(){
+        LatLng initial_location = campaign.getInitial_location();
+        LatLng currentLocation;
+        GetGPSLocation currentLoc = new GetGPSLocation(CampDetails.this, CampDetails.this);
+        if (currentLoc.canGetLocation()) {
+            currentLocation = new LatLng(currentLoc.getLatitude(), currentLoc.getLongitude());
+            double distance = Algorithms.calculateDistance(currentLocation, initial_location);
+            Log.i("distance", Double.toString(distance));
+            in_range = (distance <= radius);
+            Button b = (Button) findViewById(R.id.float_button);
+            if (in_range)
+                b.setText("FLOAT");
+            else {
+                b.setText("NOT IN RANGE");
+                b.setBackgroundColor(Color.WHITE);
+                b.setTextColor(Color.BLACK);
+            }
+        } else {
+            currentLoc.showSettingsAlert();
+        }
+    }
+
+    private void startTimer(){
+        Date current_date = new Date();
+        Date initial_date = Algorithms.string_to_date(campaign.getInitial_date());
+        long difference = current_date.getTime() - initial_date.getTime();
+        mInitialTime = total_time-difference;
+
+        mTextView = (TextView) findViewById(R.id.timer);
+        mCountDownTimer = new CountDownTimer(mInitialTime, 1000) {
+            StringBuilder time = new StringBuilder();
+
+            @Override
+            public void onFinish() {
+                mTextView.setText(DateUtils.formatElapsedTime(0));
+                //mTextView.setText("Times Up!");
+            }
+
+            @Override
+            public void onTick(long millisUntilFinished) {
+                time.setLength(0);
+                // Use days if appropriate
+                if (millisUntilFinished > DateUtils.DAY_IN_MILLIS * 2)
+                    mTextView.setBackgroundResource(R.drawable.rounded_corners_green);
+                else if (millisUntilFinished > DateUtils.DAY_IN_MILLIS * 1)
+                    mTextView.setBackgroundResource(R.drawable.rounded_corners_yellow);
+                else if (millisUntilFinished > DateUtils.HOUR_IN_MILLIS * 5)
+                    mTextView.setBackgroundResource(R.drawable.rounded_corners_orange);
+                else
+                    mTextView.setBackgroundResource(R.drawable.rounded_corners_red);
+
+                if (millisUntilFinished > DateUtils.DAY_IN_MILLIS) {
+                    long count = millisUntilFinished / DateUtils.DAY_IN_MILLIS;
+                    if (count > 1)
+                        time.append(count).append(" days, ");
+                    else
+                        time.append(count).append(" day, ");
+
+                    millisUntilFinished %= DateUtils.DAY_IN_MILLIS;
+                }
+
+                time.append(DateUtils.formatElapsedTime(Math.round(millisUntilFinished / 1000d)));
+                mTextView.setText(time.toString());
+            }
+        }.start();
+    }
 }
+
+

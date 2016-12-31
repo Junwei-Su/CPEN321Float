@@ -219,7 +219,7 @@
             android:layout_weight="1"
             android:adjustViewBounds="true"
             android:scaleType="fitCenter"
-            android:src="@drawable/createnew" />
+            android:src="@drawable/pencil" />
 
         <ImageButton
             android:id="@+id/centreMap"
