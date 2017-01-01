@@ -68,19 +68,30 @@
             android:onClick="loadImagefromGallery"/>
     </LinearLayout>
 
-    <EditText
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/photopanel"
+        android:layout_centerHorizontal="true"
+        android:layout_marginRight="32dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="32dp">
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif-light"
+        android:layout_marginRight="20dp"
+        android:textSize="9pt"
+        android:text="Charity:" />
+    <Spinner
         android:id="@+id/charityin"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/activity_horizontal_margin"
-        android:layout_marginRight="@dimen/activity_horizontal_margin"
+        android:layout_height="match_parent"
         android:fontFamily="sans-serif-light"
         android:textColor = "#212121"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@+id/photopanel"
-        android:textCursorDrawable="@drawable/color_cursor"
-        android:hint="@string/charityin"/>
-
+        android:textSize = "9pt"
+        android:layout_centerHorizontal="true" />
+    </LinearLayout>
     <EditText
         android:id="@+id/pledgein"
         android:inputType="number"

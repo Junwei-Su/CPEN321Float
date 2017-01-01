@@ -9,9 +9,13 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -19,6 +23,7 @@ import com.cpen321.floatproject.GPS.GetGPSLocation;
 import com.cpen321.floatproject.R;
 import com.cpen321.floatproject.campaigns.Campaign;
 import com.cpen321.floatproject.campaigns.DestinationCampaign;
+import com.cpen321.floatproject.charities.Charity;
 import com.cpen321.floatproject.database.CampsDBInteractor;
 import com.cpen321.floatproject.database.DB;
 import com.cpen321.floatproject.utilities.Algorithms;
@@ -56,7 +61,7 @@ public class CreateCampaign extends AppCompatActivity {
     //clarence added for destination field
     private String destination;
     long time_length = 10;
-    private String campPic_url;
+    private String campPic_url = "default_camp_pic.jpg"; //default picture
     private CampsDBInteractor campsDBInteractor = new CampsDBInteractor();
 
     private GetGPSLocation gps;
@@ -70,6 +75,9 @@ public class CreateCampaign extends AppCompatActivity {
     private Button launch_camp;
     private Button getCoords;
     private Button findCoords;
+    private Spinner charitySpinner;
+    private ArrayAdapter<String> charityAdapter;
+    private String[] charityList = {"United Way", "Red Cross"}; //charity list
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,6 +96,13 @@ public class CreateCampaign extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        //charity spinner
+        charitySpinner = (Spinner) findViewById(R.id.charityin);
+        charityAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, charityList);
+        charityAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        charitySpinner.setAdapter(charityAdapter);
+
 
         launch_camp = (Button) findViewById(R.id.launchcamp);
         launch_camp.setOnClickListener(new View.OnClickListener() {
@@ -177,11 +192,11 @@ public class CreateCampaign extends AppCompatActivity {
         EditText myText = (EditText) findViewById(R.id.titlein);
         title = myText.getText().toString();
 
-        myText = (EditText) findViewById(R.id.charityin);
-        charity = myText.getText().toString();
-
         myText = (EditText) findViewById(R.id.pledgein);
         pledge = UtilityMethod.text_to_long(myText);
+
+        int position = charitySpinner.getSelectedItemPosition();
+        charity = charityList[position];
 
         TextView myTextView = (TextView) findViewById(R.id.initlocatlatitude);
         initlocatlatitude = Double.parseDouble(myTextView.getText().toString());
