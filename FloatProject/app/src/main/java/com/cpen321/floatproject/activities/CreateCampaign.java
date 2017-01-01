@@ -60,7 +60,7 @@ public class CreateCampaign extends AppCompatActivity {
     //clarence added for destination field
     private String destination;
     long time_length;
-    private String campPic_url = "default_camp_pic.jpg"; //default picture
+    private String campPic_url = "default_camp"; //default picture
     private CampsDBInteractor campsDBInteractor = new CampsDBInteractor();
 
     private GetGPSLocation gps;
