@@ -31,4 +31,9 @@
 
     <string name="filler">Lorem ipsum dolor sit amet, consectetur adipiscing elit,
         sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</string>
+
+    <string-array name="charity_name">
+        <item>United Way</item>
+        <item>Red Cross</item>
+    </string-array>
 </resources>
