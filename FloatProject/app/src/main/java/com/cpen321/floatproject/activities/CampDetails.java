@@ -16,7 +16,7 @@ import android.widget.TextView;
 
 import com.cpen321.floatproject.GPS.GetGPSLocation;
 import com.cpen321.floatproject.R;
-import com.cpen321.floatproject.campaigns.Campaign;
+import com.cpen321.floatproject.campaigns.DestinationCampaign;
 import com.cpen321.floatproject.database.DB;
 import com.cpen321.floatproject.users.User;
 import com.cpen321.floatproject.utilities.ActivityUtility;
@@ -45,7 +45,7 @@ public class CampDetails extends Activity {
     private ValueEventListener charitylistener;
     private Button float_button;
 
-    private Campaign campaign;
+    private DestinationCampaign campaign;
     private String theCampaign;
     private String charity;
     private ImageView campPic;
@@ -55,7 +55,7 @@ public class CampDetails extends Activity {
     private List<String> list_of_campaign_followed;
     private User user;
 
-    private double radius = 500;
+    private double radius = 0.5;
 
     private boolean in_range;
     private boolean floated;
@@ -300,8 +300,7 @@ public class CampDetails extends Activity {
     }
 
     private void setDistanceRemaining(){
-        //LatLng goal = campaign.getGoalLocation();
-        LatLng goal = new LatLng(49.018038, -123.081825); //hard coded for now
+        LatLng goal = campaign.getDest_location();
         double distance = Algorithms.calculateDistance(goal, currentLocation);
         BigDecimal dist = new BigDecimal(distance).setScale(2, RoundingMode.HALF_EVEN);
         TextView d_text = (TextView) findViewById(R.id.dist_remaining);
@@ -310,6 +309,9 @@ public class CampDetails extends Activity {
         String pledge_amount = String.valueOf(campaign.getGoal_amount());
         TextView p_text = (TextView) findViewById(R.id.pledge_camp);
         p_text.setText(pledge_amount.concat(" CAD"));
+
+        TextView g_text = (TextView) findViewById(R.id.goal_dest);
+        g_text.setText(campaign.getDestination());
     }
 
     @Override

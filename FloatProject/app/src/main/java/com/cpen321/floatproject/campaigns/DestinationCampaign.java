@@ -18,7 +18,7 @@ public class  DestinationCampaign extends Campaign {
 
     private String destination;
     private LatLng dest_location;
-    final int RADIUS = 20; //in kilometer
+    final double RADIUS = 0.5; //in kilometer
 
     //without existing location list
     public DestinationCampaign(String campaign_name, long accumulated_donation, String charity, String description,
@@ -60,7 +60,7 @@ public class  DestinationCampaign extends Campaign {
         return this.dest_location;
     }
 
-    public int getRADIUS(){
+    public double getRADIUS(){
         return this.RADIUS;
     }
 
