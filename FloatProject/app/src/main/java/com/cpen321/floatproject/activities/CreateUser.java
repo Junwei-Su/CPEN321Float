@@ -102,6 +102,9 @@ public class CreateUser extends Activity {
                     new ArrayList<String>(), new ArrayList<String>(), profilePic_url);
 
             DB.user_ref.child(userid).setValue(newUser);
+
+            Intent intent = new Intent(this, MapPage.class);
+            startActivity(intent);
         }
     }
 
