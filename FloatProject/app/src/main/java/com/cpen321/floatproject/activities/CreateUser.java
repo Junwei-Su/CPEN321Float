@@ -31,9 +31,15 @@ import java.util.GregorianCalendar;
  * Created by sfarinas on 12/30/2016.
  */
 public class CreateUser extends Activity {
-    Uri selectedImageURI;
-
-    ImageView profilepic;
+    private Uri selectedImageURI;
+    private ImageView profilepic;
+    private String name;
+    private String userid;
+    private String address;
+    private String blurb;
+    private EditText userDetail;
+    private int INIT_AMOUNT=0;
+    Profile profile;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,21 +58,25 @@ public class CreateUser extends Activity {
     }
 
     public void saveuser(View view) {
-        EditText userDetail = (EditText) findViewById(R.id.username);
-        String username = userDetail.getText().toString();
+
+        profile = Profile.getCurrentProfile();
+        userid = profile.getId();
 
         userDetail = (EditText) findViewById(R.id.namein);
-        String name = userDetail.getText().toString();
+        name = userDetail.getText().toString();
+
+        userDetail = (EditText) findViewById(R.id.userAddress);
+        address = userDetail.getText().toString();
 
         userDetail = (EditText) findViewById(R.id.blurbin);
-        String blurb = userDetail.getText().toString();
+        blurb = userDetail.getText().toString();
 
         //get current date as string
         Calendar calendar = Calendar.getInstance();
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd");
         String date = dateFormat.format(calendar.getTime());
 
-        String profilePic_url = username + "_profilepic.jpg";
+        String profilePic_url = userid + "_profilepic.jpg";
 
         StorageReference picRef = DB.images_ref.child(profilePic_url);
         UploadTask uploadTask = picRef.putFile(selectedImageURI);
@@ -87,12 +97,11 @@ public class CreateUser extends Activity {
 
         Profile profile = Profile.getCurrentProfile();
         if(profile!=null){
-            String account_name = profile.getId();
 
-            User newUser = new User(name, account_name, date, blurb, 0, 0, "123 Fiction Lane",
+            User newUser = new User(name, userid, date, blurb, INIT_AMOUNT, INIT_AMOUNT, address,
                     new ArrayList<String>(), new ArrayList<String>(), profilePic_url);
 
-            DB.user_ref.child(account_name).setValue(newUser);
+            DB.user_ref.child(userid).setValue(newUser);
         }
     }
 

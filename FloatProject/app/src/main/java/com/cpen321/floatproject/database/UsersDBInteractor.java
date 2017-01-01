@@ -31,12 +31,24 @@ public class UsersDBInteractor implements Readable, Writable {
         String address = (String) userSnap.child("address").getValue();
         String blurb = (String) userSnap.child("blurb").getValue();
         String date_join = (String) userSnap.child("date_join").getValue();
-        List<String> list_camp_init = dataSnapshotToCampList(userSnap.child("list_camp_init"));
-        List<String> list_camp_join = dataSnapshotToCampList(userSnap.child("list_camp_join"));
         String name = (String) userSnap.child("name").getValue();
         String profile_pic = (String) userSnap.child("profile_pic").getValue();
         String metadata_id = (String) userSnap.child("metadata_id").getValue();
         String refresh_token = (String) userSnap.child("refresh_token").getValue();
+
+        List<String> list_camp_init;
+        List<String> list_camp_join;
+        if (dataSnapshotToCampList(userSnap.child("list_camp_init")) == null){
+            list_camp_init = new LinkedList<String>();
+        }else{
+            list_camp_init = dataSnapshotToCampList(userSnap.child("list_camp_init"));
+        }
+
+        if(dataSnapshotToCampList(userSnap.child("list_camp_join")) == null){
+            list_camp_join = new LinkedList<String>();
+        }else{
+            list_camp_join = dataSnapshotToCampList(userSnap.child("list_camp_join"));
+        }
 
         User to_return = new User(name, account_name, date_join, blurb,
                 amount_raised, amount_donated, address,

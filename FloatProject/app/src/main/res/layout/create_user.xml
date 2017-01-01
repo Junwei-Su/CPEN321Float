@@ -13,15 +13,6 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
-            <EditText
-                android:id="@+id/username"
-                android:maxLength = "15"
-                android:fontFamily="sans-serif-light"
-                android:textColor = "#212121"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textCursorDrawable="@drawable/color_cursor"
-                android:hint="@string/usernamein"/>
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -76,6 +67,15 @@
                 android:hint="@string/namein"/>
 
             <EditText
+                android:id="@+id/userAddress"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif-light"
+                android:textColor = "#212121"
+                android:textCursorDrawable="@drawable/color_cursor"
+                android:hint="address"/>
+
+            <EditText
                 android:id="@+id/blurbin"
                 android:inputType="text"
                 android:layout_width="match_parent"
@@ -84,7 +84,6 @@
                 android:textColor = "#212121"
                 android:textCursorDrawable="@drawable/color_cursor"
                 android:hint="@string/blurbin"/>
-
         </LinearLayout>
     </ScrollView>
 
