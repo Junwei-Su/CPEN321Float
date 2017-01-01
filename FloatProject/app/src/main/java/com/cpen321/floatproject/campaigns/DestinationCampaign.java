@@ -1,5 +1,7 @@
 package com.cpen321.floatproject.campaigns;
 
+import android.text.format.DateUtils;
+
 import com.cpen321.floatproject.utilities.Algorithms;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.database.Exclude;
@@ -18,6 +20,7 @@ public class  DestinationCampaign extends Campaign {
 
     private String destination;
     private LatLng dest_location;
+    private long total_time = DateUtils.DAY_IN_MILLIS *4;
     final double RADIUS = 0.5; //in kilometer
 
     //without existing location list
@@ -34,6 +37,9 @@ public class  DestinationCampaign extends Campaign {
         this.destination = destination;
         this.dest_location = dest_location;
 
+    }
+
+    public DestinationCampaign() {
     }
 
     ////with existing location list
@@ -59,6 +65,8 @@ public class  DestinationCampaign extends Campaign {
     public LatLng getDest_location(){
         return this.dest_location;
     }
+
+    public long getTotal_time() { return this.total_time;}
 
     public double getRADIUS(){
         return this.RADIUS;

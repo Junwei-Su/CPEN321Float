@@ -38,7 +38,6 @@ import java.util.List;
  */
 public class CampDetails extends Activity {
 
-    private long total_time = DateUtils.DAY_IN_MILLIS *4;
     private DatabaseReference charityref;
     private DatabaseReference launchuserref;
     private ValueEventListener launchuserlistener;
@@ -253,6 +252,7 @@ public class CampDetails extends Activity {
 
 
     private void startTimer(){
+        long total_time = campaign.getTotal_time();
         long starting_time = campaign.getTime_length();
         long difference = System.currentTimeMillis() - starting_time;
         mInitialTime = total_time-difference;
