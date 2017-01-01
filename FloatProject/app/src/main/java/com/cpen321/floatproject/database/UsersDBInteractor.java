@@ -35,12 +35,15 @@ public class UsersDBInteractor implements Readable, Writable {
         List<String> list_camp_join = dataSnapshotToCampList(userSnap.child("list_camp_join"));
         String name = (String) userSnap.child("name").getValue();
         String profile_pic = (String) userSnap.child("profile_pic").getValue();
+        String metadata_id = (String) userSnap.child("metadata_id").getValue();
+        String refresh_token = (String) userSnap.child("refresh_token").getValue();
 
         User to_return = new User(name, account_name, date_join, blurb,
                 amount_raised, amount_donated, address,
                 list_camp_init, list_camp_join, profile_pic);
 
-
+        to_return.setRefreshToken(refresh_token);
+        to_return.setMetadataid(metadata_id);
         return to_return;
     }
 
@@ -57,6 +60,8 @@ public class UsersDBInteractor implements Readable, Writable {
         user_update_ref.child("list_camp_join").setValue(user_update.getList_of_campaign_followed());
         user_update_ref.child("name").setValue(user_update.getName());
         user_update_ref.child("profile_pic").setValue(user_update.getProfile_pic());
+        user_update_ref.child("metadata_id").setValue(user_update.getMetadataid());
+        user_update_ref.child("refresh_token").setValue(user_update.getRefreshToken());
     }
 
     @Override

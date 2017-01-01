@@ -154,7 +154,7 @@
                     android:gravity = "center"
                     android:background = "@android:color/white"
                     android:fontFamily="sans-serif-light"
-                    android:text="Distance:"
+                    android:text="User dist. from goal:"
                     android:textColor="#212121"
                     android:textSize="6pt" />
 
@@ -183,7 +183,7 @@
                 android:gravity = "center"
                 android:background = "@android:color/white"
                 android:fontFamily="sans-serif-light"
-                android:text="Pledge amount:"
+                android:text="Campaign pledge amount:"
                 android:textColor="#212121"
                 android:textSize="6pt" />
 
