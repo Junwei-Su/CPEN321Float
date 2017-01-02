@@ -642,18 +642,6 @@ public class MapPage extends FragmentActivity implements OnMapReadyCallback,
         client.disconnect();
     }
 
-
-    //todo Refactor this later
-
-    private void makeFuturePayment(String title){
-        Profile profile = Profile.getCurrentProfile();
-        String userid = profile.getId();
-
-        startActivity(new Intent(this, MakeFuturePayment.class)
-                .putExtra("Title", title)
-                .putExtra("UserID", userid));
-    }
-
     private void zoomFitCircles(){
 
         //if no circles, do nothing

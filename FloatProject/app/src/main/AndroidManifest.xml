@@ -1,24 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.cpen321.floatproject" >
-
-    <uses-permission
-        android:name="android.permission.ACCESS_FINE_LOCATION"/>
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    package="com.cpen321.floatproject">
 
     <uses-sdk tools:overrideLibrary="com.paypal.android.sdk.payments" />
 
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
+        android:hardwareAccelerated="false"
         android:icon="@drawable/float_logo"
         android:label="@string/app_name"
+        android:largeHeap="true"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme"
-        android:hardwareAccelerated="false"
-        android:largeHeap="true">
+        android:theme="@style/AppTheme">
         >
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
@@ -27,7 +25,7 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
 
-        <activity android:name=".activities.MainActivity" >
+        <activity android:name=".activities.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -58,9 +56,9 @@
             android:label="@string/title_activity_payment_status"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".activities.FuturePaymentAgreement" />
-        <activity android:name=".activities.MakeFuturePayment"></activity>
-        <activity android:name=".activities.UserDetails"></activity>
-        <activity android:name=".activities.CreateUser"></activity>
+        <activity android:name=".activities.UserDetails" />
+        <activity android:name=".activities.CreateUser" />
+        <activity android:name=".activities.ExecuteFuturePayment"></activity>
     </application>
 
 </manifest>

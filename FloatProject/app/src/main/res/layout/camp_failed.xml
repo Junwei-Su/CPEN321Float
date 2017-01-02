@@ -1,0 +1,35 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation = "vertical">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:paddingTop = "100sp"
+        android:paddingBottom = "150sp"
+        android:fontFamily="sans-serif-light"
+        android:textColor = "#212121"
+        android:text="This campaign has run out of time :("
+        android:textSize="10pt" />
+
+
+    <Button
+        android:layout_gravity = "center"
+        android:id = "@+id/failed_return"
+        android:background = "@drawable/mybutton"
+        android:textColor="#FFFFFF"
+        android:fontFamily="sans-serif-light"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Return to map page" />
+
+    </LinearLayout>
+
+</RelativeLayout>
