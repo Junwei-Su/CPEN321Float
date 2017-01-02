@@ -1,0 +1,26 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:paddingTop = "100sp"
+        android:fontFamily="sans-serif-light"
+        android:textColor = "#212121"
+        android:text="This campaign has succeeded!"
+        android:textSize="10pt" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop = "250sp"
+        android:gravity="center"
+        android:fontFamily="sans-serif-light"
+        android:textColor = "#212121"
+        android:text="Please stand by"
+        android:textSize="8pt" />
+
+</RelativeLayout>

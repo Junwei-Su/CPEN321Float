@@ -3,6 +3,7 @@ package com.cpen321.floatproject.activities;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
@@ -11,6 +12,7 @@ import com.cpen321.floatproject.R;
 import com.cpen321.floatproject.campaigns.DestinationCampaign;
 import com.cpen321.floatproject.database.DB;
 import com.cpen321.floatproject.users.User;
+import com.facebook.Profile;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -25,6 +27,12 @@ public class CampSpreaded extends Activity {
     GetGPSLocation currentLoc;
     Button checkMark;
     LatLng currentLocation;
+
+    private final static int REQUEST_CODE_SUCCESS = 1;
+    private final static int REQUEST_CODE_FAIL = 2;
+
+    private int status;
+    private String title;
 
     @Override
     public void onCreate(Bundle savedInstanceState){
@@ -53,6 +61,9 @@ public class CampSpreaded extends Activity {
                 DestinationCampaign campaign = DB.campDBinteractor.read(theCampaign,dataSnapshot);
                 campaign.add_location(currentLocation);
                 DB.campDBinteractor.update(campaign,DB.root_ref);
+                title = campaign.getCampaign_name();
+                status = campaign.returnStatus();
+                check();
             }
 
             @Override
@@ -84,5 +95,49 @@ public class CampSpreaded extends Activity {
                 finish();
             }
         });
+    }
+
+    private void check() {
+        Log.i("here", "h");
+        if (status == 2) {
+            Profile profile = Profile.getCurrentProfile();
+            String userid = profile.getId();
+
+            Log.i("title", title);
+            Log.i("status", Integer.toString(status));
+            startActivityForResult(new Intent(this, ExecuteFuturePayment.class)
+                    .putExtra("Title", title)
+                    .putExtra("UserID", userid), REQUEST_CODE_SUCCESS);
+        }
+        else if (status == 1){
+            setContentView(R.layout.camp_failed);
+            Button failed_return = (Button) findViewById(R.id.failed_return);
+
+            failed_return.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    deleteCampaign();
+                    Intent intent = new Intent(v.getContext(), MapPage.class);
+                    startActivity(intent);
+                }
+            });
+        }
+    }
+
+    public void deleteCampaign() {
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == REQUEST_CODE_SUCCESS && resultCode == RESULT_OK) {
+            Log.i("request", "r");
+            deleteCampaign();
+            Intent intent = new Intent(this, MapPage.class);
+            startActivity(intent);
+        } else if (requestCode == REQUEST_CODE_FAIL && resultCode == RESULT_OK) {
+            deleteCampaign();
+            Intent intent = new Intent(this, MapPage.class);
+            startActivity(intent);
+        }
     }
 }

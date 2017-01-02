@@ -6,11 +6,9 @@ import com.cpen321.floatproject.utilities.Algorithms;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.database.Exclude;
 
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.TimeUnit;
 
 /**
  * Created by Little_town on 12/21/2016.
@@ -83,21 +81,17 @@ public class  DestinationCampaign extends Campaign {
         int expire = 1;
         int successful = 2;
 
+        long total_time = this.getTotal_time();
+        long starting_time =  this.getTime_length();
+        long difference = System.currentTimeMillis() - starting_time;
+        if(difference >= total_time ){
+            return expire;
+        }
 
         for(LatLng loc : this.getList_locations()){
             if(Algorithms.calculateDistance(loc, this.getDest_location())<=this.RADIUS){
                 return successful;
             }
-        }
-
-        //check if expire
-        //get current date
-        Date current_date = new Date();
-        Date initial_date = Algorithms.string_to_date(this.getInitial_date());
-        long difference  = current_date.getTime() - initial_date.getTime();
-        long time_left = TimeUnit.DAYS.convert(difference, TimeUnit.MILLISECONDS);
-        if(time_left <=0 ){
-            return expire;
         }
 
         return in_progress;

@@ -1,12 +1,8 @@
 package com.cpen321.floatproject.activities;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.View;
-import android.widget.Button;
-import android.widget.TextView;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
@@ -30,7 +26,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-public class MakeFuturePayment extends AppCompatActivity {
+public class ExecuteFuturePayment extends AppCompatActivity {
 
     private String title;
     private String userid;
@@ -45,16 +41,13 @@ public class MakeFuturePayment extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.future_payment);
+        setContentView(R.layout.execute_future_payment);
 
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             title = extras.getString("Title");
             userid = extras.getString("UserID");
         }
-
-        TextView text_title = (TextView) findViewById(R.id.campaign_title1);
-        text_title.setText(title);
 
         try {
             makePayment();
@@ -71,8 +64,12 @@ public class MakeFuturePayment extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 User user = DB.usersDBinteractor.read(userid, dataSnapshot.child("users"));
+                Log.i("user", userid);
                 Campaign campaign = DB.campDBinteractor.read(title, dataSnapshot.child("campaigns"));
                 String amount = String.valueOf(campaign.getGoal_amount());
+                Log.i("amount", amount);
+                Log.i("refresh", user.getRefreshToken());
+                Log.i("metadata", user.getMetadataid());
                 makePayment(amount, user.getRefreshToken(), user.getMetadataid());
             }
             @Override
@@ -82,6 +79,7 @@ public class MakeFuturePayment extends AppCompatActivity {
 
     private void makePayment(final String payment_amount, final String refresh_token, final String metadata_id){
 
+        Log.i("payment", "future");
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         StringRequest putRequest = new StringRequest(Request.Method.POST, MAKE_PAYMENT,
                 new Response.Listener<String>()
@@ -90,8 +88,8 @@ public class MakeFuturePayment extends AppCompatActivity {
                     public void onResponse(String response) {
                         // The server should return a refresh token
                         Log.d("Payment ID", response);
-                        setContentView(R.layout.future_payment_status);
-                        showScript(payment_amount, response);
+                        setResult(RESULT_OK);
+                        finish();
                     }
                 },
                 new Response.ErrorListener()
@@ -129,26 +127,5 @@ public class MakeFuturePayment extends AppCompatActivity {
         RetryPolicy policy = new DefaultRetryPolicy(socketTimeout, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
         putRequest.setRetryPolicy(policy);
         requestQueue.add(putRequest);
-    }
-
-    private void showScript(String payment_amount, String payment_id){
-        TextView text_title = (TextView) findViewById(R.id.campaign_title2);
-        TextView text_amount = (TextView) findViewById(R.id.amount);
-        TextView text_id = (TextView) findViewById(R.id.future_payment_id);
-
-        payment_amount = payment_amount.concat(" CAD");
-
-        text_title.setText(title);
-        text_amount.setText(payment_amount);
-        text_id.setText(payment_id);
-
-        Button map_button = (Button) findViewById(R.id.return_map2);
-        map_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(v.getContext(), MapPage.class);
-                startActivity(intent);
-            }
-        });
     }
 }
