@@ -11,7 +11,7 @@
     <string name="descriptionin">Description</string>
     <string name="goalin">Goal Location Name</string>
     <string name="pledgein">Pledge amount</string>
-    <string name="initiallocationin">Launch Location Coordinates</string>
+    <string name="initiallocationin">Launch Location Coordinates (your current location)</string>
     <string name="destinationlocationin">Goal Location Coordinates</string>
 
     <string name="savecamp">Save Campaign</string>

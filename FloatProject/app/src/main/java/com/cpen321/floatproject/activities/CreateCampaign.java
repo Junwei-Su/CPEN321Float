@@ -67,6 +67,12 @@ public class CreateCampaign extends AppCompatActivity {
 
     private Button return_camp;
     private Button launch_camp;
+    private boolean isTakenStat;
+    private String testTitle;
+    private String[] messages;
+    private int index;
+    private Campaign testCamp;
+    private String testString;
     private Button getCoords;
     private Button findCoords;
     private Spinner charitySpinner;
@@ -107,59 +113,25 @@ public class CreateCampaign extends AppCompatActivity {
             }
         });
 
-        getCoords = (Button) findViewById(R.id.getCoords);
-        getCoords.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                gps = new GetGPSLocation(CreateCampaign.this, CreateCampaign.this);
+        gps = new GetGPSLocation(CreateCampaign.this, CreateCampaign.this);
 
-                if (gps.canGetLocation()) {
-                    double latitude = gps.getLatitude();
-                    double longitude = gps.getLongitude();
-                    launchLat.setText(Double.toString(latitude));
-                    launchLong.setText(Double.toString(longitude));
-                }
-                else{
-                    gps.showSettingsAlert();
-                }
-            }
-        });
-
-
-        findCoords = (Button) findViewById((R.id.findCoords));
-        findCoords.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                Geocoder geocoder = new Geocoder(getApplicationContext());
-                try {
-                    TextView address = (EditText) findViewById(R.id.destination);
-                    destination = address.getText().toString();
-                    List<Address> list = geocoder.getFromLocationName(destination,1);
-                    Address returnAddress = list.get(0);
-                    Double lat = returnAddress.getLatitude();
-                    Double lng = returnAddress.getLongitude();
-                    TextView destLat = (EditText) findViewById(R.id.destlocatlatitude);
-                    destLat.setText(Double.toString(lat));
-                    TextView destLong = (EditText) findViewById(R.id.destlocatlongitude);
-                    destLong.setText(Double.toString(lng));
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-
-            }
-        });
-
+        if (gps.canGetLocation()) {
+            double latitude = gps.getLatitude();
+            double longitude = gps.getLongitude();
+            launchLat.setText(Double.toString(latitude));
+            launchLong.setText(Double.toString(longitude));
+        } else {
+            gps.showSettingsAlert();
+        }
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == REQUEST_CODE_PAY && resultCode == RESULT_OK){
+        if (requestCode == REQUEST_CODE_PAY && resultCode == RESULT_OK) {
             addCampaign();
             Intent intent = new Intent(this, MapPage.class);
             startActivity(intent);
-        }
-        else if (requestCode == REQUEST_CODE_PAY && resultCode != RESULT_OK){
+        } else if (requestCode == REQUEST_CODE_PAY && resultCode != RESULT_OK) {
             Intent intent = new Intent(this, MapPage.class);
             startActivity(intent);
         }
@@ -179,7 +151,7 @@ public class CreateCampaign extends AppCompatActivity {
     }
 
     //add campaign to online database
-    public void addCampaign (){
+    public void addCampaign() {
 
         //these are the strings we need to save for a new campaign
         EditText myText = (EditText) findViewById(R.id.titlein);
@@ -199,13 +171,21 @@ public class CreateCampaign extends AppCompatActivity {
         myText = (EditText) findViewById(R.id.destination);
         destination = myText.getText().toString();
 
-        myText = (EditText) findViewById(R.id.destlocatlatitude);
-        destlocatlatitude = UtilityMethod.text_to_double(myText);
+        Double lat = null;
+        Double lng = null;
+        Geocoder geocoder = new Geocoder(getApplicationContext());
+        try {
+            TextView address = (EditText) findViewById(R.id.destination);
+            destination = address.getText().toString();
+            List<Address> list = geocoder.getFromLocationName(destination, 1);
+            Address returnAddress = list.get(0);
+            lat = returnAddress.getLatitude();
+            lng = returnAddress.getLongitude();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
-        myText = (EditText) findViewById(R.id.destlocatlongitude);
-        destlocatlongitude = UtilityMethod.text_to_double(myText);
-
-        dest_location = new LatLng(destlocatlatitude, destlocatlongitude);
+        dest_location = new LatLng(lat, lng);
 
         myText = (EditText) findViewById(R.id.descriptionin);
         description = myText.getText().toString();
@@ -254,11 +234,12 @@ public class CreateCampaign extends AppCompatActivity {
     }
 
     //launch campaign
-    private static void launchCampaign(){
+    private static void launchCampaign() {
     }
 
     //save campaign
-    private static void saveCampaign(){}
+    private static void saveCampaign() {
+    }
 
     public void loadImagefromGallery(View view) {
         // Create intent to Open Image applications like Gallery, Google Photos
@@ -269,21 +250,31 @@ public class CreateCampaign extends AppCompatActivity {
     }
 
     private void check() {
-        String[] messages = new String[5];
-        int index = 0;
+        messages = new String[5];
+        index = 0;
 
-        //these are the strings we need to save for a new campaign
         EditText myText = (EditText) findViewById(R.id.titlein);
         if (isEmpty(myText)) {
             messages[index++] = "- Enter a valid title";
+            isTakenStat = false;
+            checkCont();
+        } else {
+            testTitle = myText.getText().toString();
+            isTaken();
+        }
+    }
+
+    private void checkCont() {
+        if (isTakenStat) {
+            messages[index++] = "- Enter a new title (the current one is taken)";
         }
 
         if (selectedImageURI == null) {
             messages[index++] = "- Upload a campaign image";
         }
 
-        myText = (EditText) findViewById(R.id.pledgein);
-        if (isEmpty(myText) ||UtilityMethod.text_to_long(myText) == 0) {
+        EditText myText = (EditText) findViewById(R.id.pledgein);
+        if (isEmpty(myText) || UtilityMethod.text_to_long(myText) == 0) {
             messages[index++] = "- Enter a pledge amount";
         }
 
@@ -292,7 +283,7 @@ public class CreateCampaign extends AppCompatActivity {
             TextView address = (EditText) findViewById(R.id.destination);
             destination = address.getText().toString();
             List<Address> list = geocoder.getFromLocationName(destination, 1);
-            if (list == null) {
+            if (list == null || list.size() == 0) {
                 messages[index++] = "- Enter a valid destination";
             }
         } catch (IOException e) {
@@ -304,7 +295,6 @@ public class CreateCampaign extends AppCompatActivity {
             messages[index++] = "- Enter a description message";
         }
 
-
         if (index != 0) {
             Intent intent = new Intent(this, CatchEmptyFields.class)
                     .putExtra("Message0", messages[0])
@@ -313,8 +303,7 @@ public class CreateCampaign extends AppCompatActivity {
                     .putExtra("Message3", messages[3])
                     .putExtra("Message4", messages[4]);
             startActivityForResult(intent, 1001);
-        }
-        else {
+        } else {
             EditText mT = (EditText) findViewById(R.id.pledgein);
             pledge = UtilityMethod.text_to_long(mT);
 
@@ -326,6 +315,25 @@ public class CreateCampaign extends AppCompatActivity {
                     .putExtra("Title", title)
                     .putExtra("UserID", userid), REQUEST_CODE_PAY);
         }
+    }
+
+
+    private void isTaken() {
+        DB.camp_ref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.hasChild(testTitle))
+                    isTakenStat = true;
+                else
+                    isTakenStat = false;
+                checkCont();
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 
     private boolean isEmpty(EditText myeditText) {
