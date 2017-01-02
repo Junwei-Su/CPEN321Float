@@ -11,8 +11,9 @@
         android:layout_marginTop="@dimen/activity_horizontal_margin"
         android:layout_marginLeft="@dimen/activity_horizontal_margin"
         android:layout_marginRight="@dimen/activity_horizontal_margin"
+        android:fontFamily="sans-serif-light"
         android:textColor = "#212121"
-        android:textSize = "9pt"
+        android:textSize = "15pt"
         android:text="@string/wait"/>
     <LinearLayout
         android:layout_width="match_parent"

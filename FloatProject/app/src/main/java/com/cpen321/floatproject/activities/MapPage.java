@@ -110,12 +110,7 @@ public class MapPage extends FragmentActivity implements OnMapReadyCallback,
     private LatLng userlocation;// = new LatLng(49.251899, -123.231948);
 
     //default position of camera on map on activity creation
-    private CameraPosition defaultcamerapos;// = new CameraPosition.Builder()
-      //      .target(userlocation)   // Sets the center of the map to Mountain View
-        //    .zoom(15)                   // Sets the zoom
-          //  .bearing(0)                // Sets the orientation of the camera to east
-            //.tilt(0)                   // Sets the tilt of the camera to 30 degrees
-            //.build();                   // Creates a CameraPosition from the builder
+    private CameraPosition defaultcamerapos;
 
     private String charityname;
     private String launchusername; //facebook numerical id of person who launched campaign
@@ -187,8 +182,6 @@ public class MapPage extends FragmentActivity implements OnMapReadyCallback,
                         infowindowheight = infowindow.getHeight();
                         infowindowtop = infowindow.getTop();
 
-                        //Log.d("Tag", "infowindowheight = " + infowindowheight);
-
                         if (Build.VERSION.SDK_INT <= 14)
                             infowindow.getViewTreeObserver().removeGlobalOnLayoutListener(this);
                         else
@@ -207,8 +200,6 @@ public class MapPage extends FragmentActivity implements OnMapReadyCallback,
                         LinearLayout mapbuttonpanel = (LinearLayout) findViewById(R.id.mapbuttonpanel);
                         buttonpanelheight = mapbuttonpanel.getHeight();
                         buttonpaneltop = mapbuttonpanel.getTop();
-
-                        //Log.d("Tag", "buttonpanelheight = " + buttonpanelheight);
 
                         //alert layoutreadylistener buttonpanel is created
                         layoutreadylistener("buttonpanel");
@@ -249,8 +240,6 @@ public class MapPage extends FragmentActivity implements OnMapReadyCallback,
 
                 //move camera to fit campaign circles in screen
                 zoomFitCircles();
-
-                //map.animateCamera(CameraUpdateFactory.newCameraPosition(defaultcamerapos));
 
                 //animate infowindow disappearing
                 ObjectAnimator infowindowanimator = ObjectAnimator.ofFloat(infowindow, View.Y, infowindowtop, buttonpaneltop);
@@ -310,8 +299,6 @@ public class MapPage extends FragmentActivity implements OnMapReadyCallback,
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
         client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
-
-        //Log.d("Tag", "buttonpanelheight in onCreate() = " + Integer.toString(buttonpanelheight));
 
         //obtain Facebook ID of logged in user
         Profile profile = Profile.getCurrentProfile();
@@ -406,7 +393,6 @@ public class MapPage extends FragmentActivity implements OnMapReadyCallback,
 
                     //add a campaign circle to the list of circles
                     listCircles.add(circle);
-                    //Log.d("Tag", "add circle: " + listCircles);
 
                     i++;
                 }
@@ -499,11 +485,6 @@ public class MapPage extends FragmentActivity implements OnMapReadyCallback,
 
             }
         };
-
-        //Getting the picture
-        StorageReference lighthouseRef = DB.images_ref.child("lighthouse.png");
-        //setDBPictureOnImageView(lighthouseRef, R.id.campaignpic);
-        //setDBPictureOnImageView(lighthouseRef, R.id.userpic);
     }
 
     /**
@@ -567,14 +548,12 @@ public class MapPage extends FragmentActivity implements OnMapReadyCallback,
         DB.root_ref.removeEventListener(listlocationslistener);
         DB.root_ref.removeEventListener(campaignslistener);
 
-        //Log.d("Tag", "Started removing circles.");
         //remove old circles
         while(listCircles.size()!=0) {
             //remove circle from map
             listCircles.get(0).remove();
             //remove circle from list
             listCircles.remove(0);
-            //Log.d("Tag", "remove circle: " + listCircles);
         }
 
         //add listener to new campaign

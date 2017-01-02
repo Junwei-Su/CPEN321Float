@@ -14,6 +14,7 @@ import com.facebook.ProfileTracker;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Locale;
 
 public class MainActivity extends FragmentActivity {
     Button mapButton;
