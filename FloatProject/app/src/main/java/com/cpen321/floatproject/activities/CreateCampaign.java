@@ -21,6 +21,7 @@ import com.cpen321.floatproject.R;
 import com.cpen321.floatproject.campaigns.Campaign;
 import com.cpen321.floatproject.campaigns.DestinationCampaign;
 import com.cpen321.floatproject.database.DB;
+import com.cpen321.floatproject.users.User;
 import com.cpen321.floatproject.utilities.Algorithms;
 import com.cpen321.floatproject.utilities.UtilityMethod;
 import com.facebook.Profile;
@@ -207,6 +208,8 @@ public class CreateCampaign extends AppCompatActivity {
         DB.user_ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+                User user = DB.usersDBinteractor.read(userid, dataSnapshot);
+                String user_name = (String) dataSnapshot.child(userid).child("name").getValue();
                 Date currentDate = new Date();
                 int INITIAL_ACCU = 0 ;
                 String dateString = Algorithms.date_to_string(currentDate);

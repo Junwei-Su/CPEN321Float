@@ -28,12 +28,10 @@ public class CampSpreaded extends Activity {
     LatLng currentLocation;
 
     private final static int REQUEST_CODE_SUCCESS = 1;
-    private final static int REQUEST_CODE_FAIL = 2;
     private int IN_PROGRESS=0;
     private int EXPIRE = 1;
     private int SUCCEED = 2;
 
-    private int status;
     private String title;
 
     @Override
@@ -64,8 +62,7 @@ public class CampSpreaded extends Activity {
                 campaign.add_location(currentLocation);
                 DB.campDBinteractor.update(campaign,DB.root_ref);
                 title = campaign.getCampaign_name();
-                status = campaign.returnStatus();
-                check();
+                check(campaign.returnStatus());
             }
 
             @Override
@@ -99,8 +96,7 @@ public class CampSpreaded extends Activity {
         });
     }
 
-    private void check() {
-        status = 1;
+    private void check(int status) {
         if (status == SUCCEED) {
             Profile profile = Profile.getCurrentProfile();
             String userid = profile.getId();
@@ -109,33 +105,16 @@ public class CampSpreaded extends Activity {
                     .putExtra("Title", title)
                     .putExtra("UserID", userid), REQUEST_CODE_SUCCESS);
         }
-        else if (status == EXPIRE){
-            setContentView(R.layout.camp_failed);
-            Button failed_return = (Button) findViewById(R.id.failed_return);
-
-            failed_return.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    deleteCampaign();
-                    Intent intent = new Intent(v.getContext(), MapPage.class);
-                    startActivity(intent);
-                }
-            });
-        }
-    }
-
-    public void deleteCampaign() {
-        DB.campDBinteractor.removeCamp(title);
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_CODE_SUCCESS && resultCode == RESULT_OK) {
-            deleteCampaign();
+            DB.campDBinteractor.removeCamp(title);
             Intent intent = new Intent(this, MapPage.class);
             startActivity(intent);
-        } else if (requestCode == REQUEST_CODE_FAIL && resultCode == RESULT_OK) {
-            deleteCampaign();
+        }
+        else if (requestCode == REQUEST_CODE_SUCCESS && resultCode != RESULT_OK){
             Intent intent = new Intent(this, MapPage.class);
             startActivity(intent);
         }

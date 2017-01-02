@@ -21,12 +21,13 @@ import android.widget.TextView;
 import com.cpen321.floatproject.GPS.GetGPSLocation;
 import com.cpen321.floatproject.R;
 import com.cpen321.floatproject.campaigns.Campaign;
+import com.cpen321.floatproject.campaigns.DestinationCampaign;
 import com.cpen321.floatproject.charities.Charity;
 import com.cpen321.floatproject.database.CampsDBInteractor;
 import com.cpen321.floatproject.database.CharityDBinteractor;
 import com.cpen321.floatproject.database.DB;
-import com.cpen321.floatproject.users.User;
 import com.cpen321.floatproject.database.UsersDBInteractor;
+import com.cpen321.floatproject.users.User;
 import com.cpen321.floatproject.utilities.ActivityUtility;
 import com.cpen321.floatproject.utilities.UtilityMethod;
 import com.facebook.Profile;
@@ -152,7 +153,7 @@ public class MapPage extends FragmentActivity implements OnMapReadyCallback,
         charityDBinteractor = new CharityDBinteractor();
         usersDBInteractor = new UsersDBInteractor();
 
-
+        purge();
         //get current location with gps, prompts if gps off
         currentLocation = new GetGPSLocation(MapPage.this, MapPage.this);
         if (currentLocation.canGetLocation()) {
@@ -651,5 +652,23 @@ public class MapPage extends FragmentActivity implements OnMapReadyCallback,
         CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds,
                 (int)getResources().getDimension(R.dimen.activity_horizontal_margin));
         map.animateCamera(cu);
+    }
+
+
+    private void purge() {
+        DB.camp_ref.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot camp : dataSnapshot.getChildren()) {
+                    String key = camp.getKey();
+                    DestinationCampaign c = DB.campDBinteractor.read(key, dataSnapshot);
+                    int status = c.returnStatus();
+                    if (status == 1)
+                        DB.campDBinteractor.removeCamp(key);
+                }
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {}
+        });
     }
 }
