@@ -113,8 +113,10 @@ public class FuturePaymentAgreement extends AppCompatActivity {
                                 user.setMetadataid(metadata_id);
                                 DB.usersDBinteractor.update(user, DB.user_ref);
                             }
+
                             @Override
-                            public void onCancelled(DatabaseError databaseError) {}
+                            public void onCancelled(DatabaseError databaseError) {
+                            }
                         });
                     }
                 },
@@ -185,8 +187,9 @@ public class FuturePaymentAgreement extends AppCompatActivity {
             Log.i("FuturePaymentExample",
                     "Invalid PayPalConfiguration");
         }
-        Intent intent = new Intent(this, MapPage.class);
-        startActivity(intent);
+//        Intent intent = new Intent(this, MapPage.class);
+//        startActivity(intent);
+        finish();
     }
 
     @Override

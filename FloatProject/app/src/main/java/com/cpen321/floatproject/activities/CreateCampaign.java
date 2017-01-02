@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -103,13 +104,24 @@ public class CreateCampaign extends AppCompatActivity {
         launch_camp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                addCampaign();
+//                addCampaign();
+//
+//                //start pledge_agreement activity (where the user agrees to pay the specified amount in the future)
+//                startActivity(new Intent(v.getContext(), FuturePaymentAgreement.class)
+//                        .putExtra("PledgeAmount", pledge)
+//                        .putExtra("Title", title)
+//                        .putExtra("UserID", userid));
 
+                EditText myText = (EditText) findViewById(R.id.pledgein);
+                long pledge = UtilityMethod.text_to_long(myText);
+
+                Profile profile = Profile.getCurrentProfile();
+                userid = profile.getId();
                 //start pledge_agreement activity (where the user agrees to pay the specified amount in the future)
-                startActivity(new Intent(v.getContext(), FuturePaymentAgreement.class)
+                startActivityForResult(new Intent(v.getContext(), FuturePaymentAgreement.class)
                         .putExtra("PledgeAmount", pledge)
                         .putExtra("Title", title)
-                        .putExtra("UserID", userid));
+                        .putExtra("UserID", userid), 101);
             }
         });
 
@@ -160,7 +172,13 @@ public class CreateCampaign extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
+      //  super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == 101){
+            Log.i("reach", "reached");
+            addCampaign();
+            Intent intent = new Intent(this, MapPage.class);
+            startActivity(intent);
+        }
         try {
             // When an Image is picked
             if (requestCode == 1 && resultCode == RESULT_OK
