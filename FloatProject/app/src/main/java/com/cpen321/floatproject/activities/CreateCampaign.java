@@ -105,24 +105,9 @@ public class CreateCampaign extends AppCompatActivity {
         launch_camp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                addCampaign();
-//
-//                //start pledge_agreement activity (where the user agrees to pay the specified amount in the future)
-//                startActivity(new Intent(v.getContext(), FuturePaymentAgreement.class)
-//                        .putExtra("PledgeAmount", pledge)
-//                        .putExtra("Title", title)
-//                        .putExtra("UserID", userid));
 
-                EditText myText = (EditText) findViewById(R.id.pledgein);
-                pledge = UtilityMethod.text_to_long(myText);
+                check();
 
-                Profile profile = Profile.getCurrentProfile();
-                userid = profile.getId();
-                //start pledge_agreement activity (where the user agrees to pay the specified amount in the future)
-                startActivityForResult(new Intent(v.getContext(), FuturePaymentAgreement.class)
-                        .putExtra("PledgeAmount", pledge)
-                        .putExtra("Title", title)
-                        .putExtra("UserID", userid), REQUEST_CODE_PAY);
             }
         });
 
@@ -293,5 +278,69 @@ public class CreateCampaign extends AppCompatActivity {
                 android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         // Start the Intent
         startActivityForResult(galleryIntent, 1);
+    }
+
+    private void check() {
+        String[] messages = new String[5];
+        int index = 0;
+
+        //these are the strings we need to save for a new campaign
+        EditText myText = (EditText) findViewById(R.id.titlein);
+        if (isEmpty(myText)) {
+            messages[index++] = "- Enter a valid title";
+        }
+
+        if (selectedImageURI == null) {
+            messages[index++] = "- Upload a campaign image";
+        }
+
+        myText = (EditText) findViewById(R.id.pledgein);
+        if (isEmpty(myText) ||UtilityMethod.text_to_long(myText) == 0) {
+            messages[index++] = "- Enter a pledge amount";
+        }
+
+        Geocoder geocoder = new Geocoder(getApplicationContext());
+        try {
+            TextView address = (EditText) findViewById(R.id.destination);
+            destination = address.getText().toString();
+            List<Address> list = geocoder.getFromLocationName(destination, 1);
+            if (list == null) {
+                messages[index++] = "- Enter a valid destination";
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        myText = (EditText) findViewById(R.id.descriptionin);
+        if (isEmpty(myText)) {
+            messages[index++] = "- Enter a description message";
+        }
+
+
+        if (index != 0) {
+            Intent intent = new Intent(this, CatchEmptyFields.class)
+                    .putExtra("Message0", messages[0])
+                    .putExtra("Message1", messages[1])
+                    .putExtra("Message2", messages[2])
+                    .putExtra("Message3", messages[3])
+                    .putExtra("Message4", messages[4]);
+            startActivityForResult(intent, 1001);
+        }
+        else {
+            EditText mT = (EditText) findViewById(R.id.pledgein);
+            pledge = UtilityMethod.text_to_long(mT);
+
+            Profile profile = Profile.getCurrentProfile();
+            userid = profile.getId();
+            //start pledge_agreement activity (where the user agrees to pay the specified amount in the future)
+            startActivityForResult(new Intent(this, FuturePaymentAgreement.class)
+                    .putExtra("PledgeAmount", pledge)
+                    .putExtra("Title", title)
+                    .putExtra("UserID", userid), REQUEST_CODE_PAY);
+        }
+    }
+
+    private boolean isEmpty(EditText myeditText) {
+        return myeditText.getText().toString().trim().length() == 0;
     }
 }

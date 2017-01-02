@@ -29,7 +29,7 @@
      <TableLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="150sp"
+        android:paddingTop="100sp"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true">
 
@@ -103,7 +103,7 @@
 
             <Button
 
-                android:layout_marginTop="120dp"
+                android:layout_marginTop="60dp"
                 android:id="@+id/return_map"
                 android:layout_gravity="center"
                 android:layout_width="wrap_content"
