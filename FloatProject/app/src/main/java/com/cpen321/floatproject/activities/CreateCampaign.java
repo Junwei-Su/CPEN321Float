@@ -58,7 +58,6 @@ public class CreateCampaign extends AppCompatActivity {
     private String destination;
     long time_length;
     private String campPic_url = "default_camp"; //default picture
-    private CampsDBInteractor campsDBInteractor = new CampsDBInteractor();
 
     private GetGPSLocation gps;
 
@@ -105,13 +104,6 @@ public class CreateCampaign extends AppCompatActivity {
         launch_camp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                addCampaign();
-//
-//                //start pledge_agreement activity (where the user agrees to pay the specified amount in the future)
-//                startActivity(new Intent(v.getContext(), FuturePaymentAgreement.class)
-//                        .putExtra("PledgeAmount", pledge)
-//                        .putExtra("Title", title)
-//                        .putExtra("UserID", userid));
 
                 EditText myText = (EditText) findViewById(R.id.pledgein);
                 pledge = UtilityMethod.text_to_long(myText);
@@ -173,7 +165,6 @@ public class CreateCampaign extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-      //  super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_CODE_PAY && resultCode == RESULT_OK){
             addCampaign();
             Intent intent = new Intent(this, MapPage.class);
@@ -205,9 +196,6 @@ public class CreateCampaign extends AppCompatActivity {
         EditText myText = (EditText) findViewById(R.id.titlein);
         title = myText.getText().toString();
 
-//        myText = (EditText) findViewById(R.id.pledgein);
-//        pledge = UtilityMethod.text_to_long(myText);
-
         int position = charitySpinner.getSelectedItemPosition();
         charity = charityList[position];
 
@@ -218,8 +206,7 @@ public class CreateCampaign extends AppCompatActivity {
         initlocatlongitude = Double.parseDouble(myTextView.getText().toString());
 
         init_location = new LatLng(initlocatlatitude, initlocatlongitude);
-
-        //clarence added for destination field
+        
         myText = (EditText) findViewById(R.id.destination);
         destination = myText.getText().toString();
 
@@ -234,9 +221,6 @@ public class CreateCampaign extends AppCompatActivity {
         myText = (EditText) findViewById(R.id.descriptionin);
         description = myText.getText().toString();
 
-        //get Facebook numerical ID of signed in user
-//        Profile profile = Profile.getCurrentProfile();
-//        userid = profile.getId();
 
         time_length = System.currentTimeMillis();
         campPic_url = title + "_pic.jpg";
@@ -269,7 +253,7 @@ public class CreateCampaign extends AppCompatActivity {
                 Campaign myCampaign = new DestinationCampaign(title, 0, charity, description,
                         pledge, init_location, userid, time_length, dateString, destination, dest_location, campPic_url);
 
-                campsDBInteractor.put(myCampaign, DB.root_ref);
+                DB.campDBinteractor.put(myCampaign, DB.root_ref);
             }
 
             @Override
