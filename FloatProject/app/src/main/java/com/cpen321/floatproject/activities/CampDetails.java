@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.text.Html;
 import android.text.format.DateUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -54,8 +53,6 @@ public class CampDetails extends Activity {
     private List<String> list_of_campaign_followed;
     private User user;
 
-    private double radius = 0.5;
-
     private boolean in_range;
     private boolean floated;
     private CountDownTimer mCountDownTimer;
@@ -63,6 +60,7 @@ public class CampDetails extends Activity {
     private TextView mTextView;
     private LatLng currentLocation;
 
+    private final static double RADIUS = 0.5;
     private final static int REQUEST_CODE_FLOAT = 1;
     private final static int REQUEST_CODE_DONATE = 2;
     private final static long MILLISEC_IN_SEC = 1000;
@@ -220,13 +218,10 @@ public class CampDetails extends Activity {
     }
 
     private void setButtonStatus(){
-        LatLng initial_location = campaign.getInitial_location();
         GetGPSLocation currentLoc = new GetGPSLocation(CampDetails.this, CampDetails.this);
         if (currentLoc.canGetLocation()) {
             currentLocation = new LatLng(currentLoc.getLatitude(), currentLoc.getLongitude());
-            double distance = Algorithms.calculateDistance(currentLocation, initial_location);
-            Log.i("distance", Double.toString(distance));
-            in_range = (distance <= radius);
+            in_range = canSpread();
             Button b = (Button) findViewById(R.id.float_button);
             if (!floated) {
                 if (mInitialTime > 0) {
@@ -330,6 +325,17 @@ public class CampDetails extends Activity {
             case REQUEST_CODE_DONATE:
                 break;
         }
+    }
+
+    private boolean canSpread(){
+        if(Algorithms.calculateDistance(campaign.getInitial_location(), currentLocation) <= RADIUS)
+            return true;
+        for(LatLng loc : campaign.getList_locations()){
+            if(Algorithms.calculateDistance(loc, currentLocation)<= RADIUS){
+                return true;
+            }
+        }
+        return false;
     }
 
 }
