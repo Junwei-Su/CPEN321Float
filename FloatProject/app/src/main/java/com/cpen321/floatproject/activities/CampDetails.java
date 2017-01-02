@@ -65,6 +65,10 @@ public class CampDetails extends Activity {
 
     private final static int REQUEST_CODE_FLOAT = 1;
     private final static int REQUEST_CODE_DONATE = 2;
+    private final static long MILLISEC_IN_SEC = 1000;
+    private final static int GREEN_DAY_CUT_OFF = 2;
+    private final static int YELLOW_DAY_CUT_OFF = 1;
+    private final static int  ORANGE_HOUR_CUT_OFF = 5;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -261,24 +265,23 @@ public class CampDetails extends Activity {
         if (mInitialTime <= 0)
             mTextView.setBackgroundResource(R.drawable.rounded_corners_red);
 
-        mCountDownTimer = new CountDownTimer(mInitialTime, 1000) {
+        mCountDownTimer = new CountDownTimer(mInitialTime, MILLISEC_IN_SEC) {
             StringBuilder time = new StringBuilder();
 
             @Override
             public void onFinish() {
                 mTextView.setText(DateUtils.formatElapsedTime(0));
-                //mTextView.setText("Times Up!");
             }
 
             @Override
             public void onTick(long millisUntilFinished) {
                 time.setLength(0);
-                // Use days if appropriate
-                if (millisUntilFinished > DateUtils.DAY_IN_MILLIS * 2)
+
+                if (millisUntilFinished > DateUtils.DAY_IN_MILLIS * GREEN_DAY_CUT_OFF)
                     mTextView.setBackgroundResource(R.drawable.rounded_corners_green);
-                else if (millisUntilFinished > DateUtils.DAY_IN_MILLIS * 1)
+                else if (millisUntilFinished > DateUtils.DAY_IN_MILLIS * YELLOW_DAY_CUT_OFF)
                     mTextView.setBackgroundResource(R.drawable.rounded_corners_yellow);
-                else if (millisUntilFinished > DateUtils.HOUR_IN_MILLIS * 5)
+                else if (millisUntilFinished > DateUtils.HOUR_IN_MILLIS * ORANGE_HOUR_CUT_OFF)
                     mTextView.setBackgroundResource(R.drawable.rounded_corners_orange);
                 else
                     mTextView.setBackgroundResource(R.drawable.rounded_corners_red);
@@ -293,7 +296,7 @@ public class CampDetails extends Activity {
                     millisUntilFinished %= DateUtils.DAY_IN_MILLIS;
                 }
 
-                time.append(DateUtils.formatElapsedTime(Math.round(millisUntilFinished / 1000d)));
+                time.append(DateUtils.formatElapsedTime(Math.round(millisUntilFinished / MILLISEC_IN_SEC)));
                 mTextView.setText(time.toString());
             }
         }.start();
