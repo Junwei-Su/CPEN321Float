@@ -517,7 +517,6 @@ public class MapPage extends FragmentActivity implements OnMapReadyCallback,
 
     @Override
     public void onMapReady(GoogleMap map) {
-        //Log.d("Tag", "onMapReady()");
 
         this.map = map;
 
@@ -557,7 +556,7 @@ public class MapPage extends FragmentActivity implements OnMapReadyCallback,
         }
 
         //add listener to new campaign
-        DB.camp_ref.addValueEventListener(campaignslistener);
+        DB.camp_ref.addListenerForSingleValueEvent(campaignslistener);
 
         campaignref = DB.camp_ref.child(campaignname);
 

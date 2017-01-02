@@ -29,6 +29,9 @@ public class CampSpreaded extends Activity {
 
     private final static int REQUEST_CODE_SUCCESS = 1;
     private final static int REQUEST_CODE_FAIL = 2;
+    private int IN_PROGRESS=0;
+    private int EXPIRE = 1;
+    private int SUCCEED = 2;
 
     private int status;
     private String title;
@@ -98,7 +101,7 @@ public class CampSpreaded extends Activity {
 
     private void check() {
         status = 1;
-        if (status == 2) {
+        if (status == SUCCEED) {
             Profile profile = Profile.getCurrentProfile();
             String userid = profile.getId();
 
@@ -106,7 +109,7 @@ public class CampSpreaded extends Activity {
                     .putExtra("Title", title)
                     .putExtra("UserID", userid), REQUEST_CODE_SUCCESS);
         }
-        else if (status == 1){
+        else if (status == EXPIRE){
             setContentView(R.layout.camp_failed);
             Button failed_return = (Button) findViewById(R.id.failed_return);
 
@@ -122,7 +125,7 @@ public class CampSpreaded extends Activity {
     }
 
     public void deleteCampaign() {
-       // DB.campDBinteractor.removeCamp(title);
+        DB.campDBinteractor.removeCamp(title);
     }
 
     @Override

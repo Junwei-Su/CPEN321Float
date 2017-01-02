@@ -19,7 +19,8 @@ public class  DestinationCampaign extends Campaign {
     private String destination;
     private LatLng dest_location;
     private long total_time = DateUtils.DAY_IN_MILLIS *4;
-    final double RADIUS = 0.5; //in kilometer
+    private final double RADIUS = 0.5; //in kilometer
+
 
     //without existing location list
     public DestinationCampaign(String campaign_name, long accumulated_donation, String charity, String description,
