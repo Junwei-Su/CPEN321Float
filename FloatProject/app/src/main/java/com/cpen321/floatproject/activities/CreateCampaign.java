@@ -206,7 +206,7 @@ public class CreateCampaign extends AppCompatActivity {
         initlocatlongitude = Double.parseDouble(myTextView.getText().toString());
 
         init_location = new LatLng(initlocatlatitude, initlocatlongitude);
-        
+
         myText = (EditText) findViewById(R.id.destination);
         destination = myText.getText().toString();
 
