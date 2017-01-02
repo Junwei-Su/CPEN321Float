@@ -40,6 +40,7 @@
                     android:paddingLeft = "75sp"
                     android:textStyle="bold"
                     android:text = "$"
+                    android:layout_gravity = "center"
                     android:textSize="20sp"
                     android:fontFamily="sans-serif-light"
                     android:textColor = "#212121"
@@ -50,6 +51,7 @@
             <EditText android:id="@+id/dollar_donation_input"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity = "center"
                 android:hint = "dollar amount"
                 android:inputType="number"
                 android:textAlignment="center"
@@ -58,28 +60,6 @@
                 android:fontFamily="sans-serif-light"
                 android:textColor = "#212121"
                 android:textCursorDrawable = "@drawable/color_cursor" />
-
-                <TextView
-                    android:textStyle="bold"
-                    android:text = "."
-                    android:textSize="20sp"
-                    android:fontFamily="sans-serif-light"
-                    android:textColor = "#212121"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
-
-                <EditText android:id="@+id/cents_donation_input"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:hint = "cents"
-                    android:fontFamily="sans-serif-light"
-                    android:textColor = "#212121"
-                    android:inputType="number"
-                    android:textAlignment="center"
-                    android:cursorVisible="true"
-                    android:maxLength = "2"
-                    android:textCursorDrawable = "@drawable/color_cursor"/>
-
 
             </TableRow>
         </TableLayout>

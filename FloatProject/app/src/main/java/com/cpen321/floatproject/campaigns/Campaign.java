@@ -62,7 +62,7 @@ public class Campaign {
         return this.accumulated_donation;
     }
 
-    public void add_donation(double newDonation){
+    public void add_donation(long newDonation){
         this.accumulated_donation += newDonation;
     }
 

@@ -52,7 +52,7 @@ public class InstantPayment extends AppCompatActivity {
         if (extras != null) {
             title = extras.getString("Title");
             campaign_owner_id = extras.getString("Owner_id");
-            current_user_id= extras.getString("Current User_id");
+            current_user_id = extras.getString("Current User_id");
         }
 
         Intent paypal_service = new Intent(this, PayPalService.class);
@@ -60,22 +60,14 @@ public class InstantPayment extends AppCompatActivity {
         startService(paypal_service); //the PayPal service
     }
 
-    public void makeDonation(View view){
+    public void makeDonation(View view) {
 
         //get the dollar amount
-        EditText e1 = (EditText) findViewById(R.id.dollar_donation_input);
-        String dollar_amount = e1.getText().toString();
-
-        //get the cents amount
-        EditText e2 = (EditText) findViewById(R.id.cents_donation_input);
-        String cents_amount = e2.getText().toString();
-
-        if (cents_amount.length() <= 1)
-            cents_amount = ".0".concat(cents_amount);
+        EditText dollar = (EditText) findViewById(R.id.dollar_donation_input);
+        if (isEmpty(dollar))
+            payment_amount = "0";
         else
-            cents_amount = ".".concat(cents_amount);
-
-        payment_amount = dollar_amount.concat(cents_amount);
+            payment_amount = dollar.getText().toString();
 
         PayPalPayment payment =
                 new PayPalPayment(new BigDecimal(String.valueOf(payment_amount)), "USD", "Test Payment", PayPalPayment.PAYMENT_INTENT_SALE);
@@ -103,16 +95,24 @@ public class InstantPayment extends AppCompatActivity {
                                     User campaign_owner = DB.usersDBinteractor.read(campaign_owner_id, dataSnapshot.child("users"));
                                     Campaign campaign = DB.campDBinteractor.read(title, dataSnapshot.child("campaigns"));
 
-                                    current_user.addAmount_donated(Double.valueOf(payment_amount));
-                                    campaign_owner.addAmount_raised(Double.valueOf(payment_amount));
-                                    campaign.add_donation(Double.valueOf(payment_amount));
-
-                                    DB.usersDBinteractor.update(current_user, DB.user_ref);
-                                    DB.usersDBinteractor.update(campaign_owner, DB.user_ref);
+                                    if (current_user_id.equals(campaign_owner_id)){
+                                        current_user.addAmount_donated(Long.valueOf(payment_amount));
+                                        current_user.addAmount_raised(Long.valueOf(payment_amount));
+                                        DB.usersDBinteractor.update(current_user, DB.user_ref);
+                                    }
+                                    else {
+                                        current_user.addAmount_donated(Long.valueOf(payment_amount));
+                                        campaign_owner.addAmount_raised(Long.valueOf(payment_amount));
+                                        DB.usersDBinteractor.update(current_user, DB.user_ref);
+                                        DB.usersDBinteractor.update(campaign_owner, DB.user_ref);
+                                    }
+                                    campaign.add_donation(Long.valueOf(payment_amount));
                                     DB.campDBinteractor.update(campaign, DB.camp_ref);
                                 }
+
                                 @Override
-                                public void onCancelled(DatabaseError databaseError) {}
+                                public void onCancelled(DatabaseError databaseError) {
+                                }
                             });
                         }
                         //Get the payment details
@@ -138,6 +138,10 @@ public class InstantPayment extends AppCompatActivity {
         // Stop service when done
         stopService(new Intent(this, PayPalService.class));
         super.onDestroy();
+    }
+
+    private boolean isEmpty(EditText myeditText) {
+        return myeditText.getText().toString().trim().length() == 0;
     }
 }
 
