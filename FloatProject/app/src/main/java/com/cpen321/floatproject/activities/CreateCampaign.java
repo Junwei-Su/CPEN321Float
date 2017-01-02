@@ -7,7 +7,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -76,6 +75,8 @@ public class CreateCampaign extends AppCompatActivity {
     private ArrayAdapter<String> charityAdapter;
     private String[] charityList = {"United Way", "Red Cross"}; //charity list
 
+    private final static int REQUEST_CODE_PAY = 101;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -113,7 +114,7 @@ public class CreateCampaign extends AppCompatActivity {
 //                        .putExtra("UserID", userid));
 
                 EditText myText = (EditText) findViewById(R.id.pledgein);
-                long pledge = UtilityMethod.text_to_long(myText);
+                pledge = UtilityMethod.text_to_long(myText);
 
                 Profile profile = Profile.getCurrentProfile();
                 userid = profile.getId();
@@ -121,7 +122,7 @@ public class CreateCampaign extends AppCompatActivity {
                 startActivityForResult(new Intent(v.getContext(), FuturePaymentAgreement.class)
                         .putExtra("PledgeAmount", pledge)
                         .putExtra("Title", title)
-                        .putExtra("UserID", userid), 101);
+                        .putExtra("UserID", userid), REQUEST_CODE_PAY);
             }
         });
 
@@ -173,9 +174,12 @@ public class CreateCampaign extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
       //  super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == 101){
-            Log.i("reach", "reached");
+        if (requestCode == REQUEST_CODE_PAY && resultCode == RESULT_OK){
             addCampaign();
+            Intent intent = new Intent(this, MapPage.class);
+            startActivity(intent);
+        }
+        else if (requestCode == REQUEST_CODE_PAY && resultCode != RESULT_OK){
             Intent intent = new Intent(this, MapPage.class);
             startActivity(intent);
         }
@@ -201,8 +205,8 @@ public class CreateCampaign extends AppCompatActivity {
         EditText myText = (EditText) findViewById(R.id.titlein);
         title = myText.getText().toString();
 
-        myText = (EditText) findViewById(R.id.pledgein);
-        pledge = UtilityMethod.text_to_long(myText);
+//        myText = (EditText) findViewById(R.id.pledgein);
+//        pledge = UtilityMethod.text_to_long(myText);
 
         int position = charitySpinner.getSelectedItemPosition();
         charity = charityList[position];
@@ -231,8 +235,8 @@ public class CreateCampaign extends AppCompatActivity {
         description = myText.getText().toString();
 
         //get Facebook numerical ID of signed in user
-        Profile profile = Profile.getCurrentProfile();
-        userid = profile.getId();
+//        Profile profile = Profile.getCurrentProfile();
+//        userid = profile.getId();
 
         time_length = System.currentTimeMillis();
         campPic_url = title + "_pic.jpg";

@@ -176,6 +176,7 @@ public class FuturePaymentAgreement extends AppCompatActivity {
             if (auth != null) {
                 try {
                     sendAuthorizationToServer(auth);
+                    setResult(RESULT_OK);
                 } catch (PayPalRESTException e) {
                     Log.i("failure", "paypalrestexception");
                     e.printStackTrace();
@@ -187,8 +188,6 @@ public class FuturePaymentAgreement extends AppCompatActivity {
             Log.i("FuturePaymentExample",
                     "Invalid PayPalConfiguration");
         }
-//        Intent intent = new Intent(this, MapPage.class);
-//        startActivity(intent);
         finish();
     }
 
