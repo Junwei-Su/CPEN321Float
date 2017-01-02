@@ -19,6 +19,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.StorageReference;
 
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -79,13 +80,34 @@ public class UserDetails extends Activity {
         //name, date_join, blurb,amount_raised,_donated
         List<String> stats = new LinkedList<>();
 
-        stats.add(user.getName());
-        stats.add(user.getDate());
-        stats.add(user.getBlurb());
-        stats.add(String.valueOf(user.getAmount_donated()));
-        stats.add(String.valueOf(user.getAmount_raised()));
+        stats.add("Date Joined: " + user.getDate());
+        stats.add("Amount donated: $" + String.valueOf(user.getAmount_donated()));
+        stats.add("Amount raised: $" + String.valueOf(user.getAmount_raised()));
 
-        printList(stats);
+        List<String> camps_followed_list = user.getList_of_campaign_followed();
+        List<String> camps_initialized_list = user.getList_of_campaign_initialize();
+
+        String camps_followed_string;
+        String camps_initialized_string;
+
+        if(camps_followed_list.size() != 0){
+            camps_followed_string = Arrays.toString(camps_followed_list.toArray());
+            //remove outer square brackets
+            camps_followed_string = camps_followed_string.substring(1,camps_followed_string.length()-1);
+        }else{
+            camps_followed_string = "none";
+        }
+
+        if(camps_initialized_list.size() != 0){
+            camps_initialized_string = Arrays.toString(camps_initialized_list.toArray());
+            //remove outer square brackets
+            camps_initialized_string = camps_initialized_string.substring(1, camps_initialized_string.length()-1);
+        }else{
+            camps_initialized_string = "none";
+        }
+
+        stats.add("Campaigns followed: " + camps_followed_string);
+        stats.add("Campaigns started: " + camps_initialized_string);
 
         return stats;
     }
