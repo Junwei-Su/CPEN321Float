@@ -20,7 +20,6 @@ import com.cpen321.floatproject.GPS.GetGPSLocation;
 import com.cpen321.floatproject.R;
 import com.cpen321.floatproject.campaigns.Campaign;
 import com.cpen321.floatproject.campaigns.DestinationCampaign;
-import com.cpen321.floatproject.database.CampsDBInteractor;
 import com.cpen321.floatproject.database.DB;
 import com.cpen321.floatproject.utilities.Algorithms;
 import com.cpen321.floatproject.utilities.UtilityMethod;
@@ -58,7 +57,6 @@ public class CreateCampaign extends AppCompatActivity {
     private String destination;
     long time_length;
     private String campPic_url = "default_camp"; //default picture
-    private CampsDBInteractor campsDBInteractor = new CampsDBInteractor();
 
     private GetGPSLocation gps;
 
@@ -105,24 +103,7 @@ public class CreateCampaign extends AppCompatActivity {
         launch_camp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                addCampaign();
-//
-//                //start pledge_agreement activity (where the user agrees to pay the specified amount in the future)
-//                startActivity(new Intent(v.getContext(), FuturePaymentAgreement.class)
-//                        .putExtra("PledgeAmount", pledge)
-//                        .putExtra("Title", title)
-//                        .putExtra("UserID", userid));
-
-                EditText myText = (EditText) findViewById(R.id.pledgein);
-                pledge = UtilityMethod.text_to_long(myText);
-
-                Profile profile = Profile.getCurrentProfile();
-                userid = profile.getId();
-                //start pledge_agreement activity (where the user agrees to pay the specified amount in the future)
-                startActivityForResult(new Intent(v.getContext(), FuturePaymentAgreement.class)
-                        .putExtra("PledgeAmount", pledge)
-                        .putExtra("Title", title)
-                        .putExtra("UserID", userid), REQUEST_CODE_PAY);
+                check();
             }
         });
 
@@ -173,7 +154,6 @@ public class CreateCampaign extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-      //  super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_CODE_PAY && resultCode == RESULT_OK){
             addCampaign();
             Intent intent = new Intent(this, MapPage.class);
@@ -205,9 +185,6 @@ public class CreateCampaign extends AppCompatActivity {
         EditText myText = (EditText) findViewById(R.id.titlein);
         title = myText.getText().toString();
 
-//        myText = (EditText) findViewById(R.id.pledgein);
-//        pledge = UtilityMethod.text_to_long(myText);
-
         int position = charitySpinner.getSelectedItemPosition();
         charity = charityList[position];
 
@@ -219,7 +196,6 @@ public class CreateCampaign extends AppCompatActivity {
 
         init_location = new LatLng(initlocatlatitude, initlocatlongitude);
 
-        //clarence added for destination field
         myText = (EditText) findViewById(R.id.destination);
         destination = myText.getText().toString();
 
@@ -234,9 +210,6 @@ public class CreateCampaign extends AppCompatActivity {
         myText = (EditText) findViewById(R.id.descriptionin);
         description = myText.getText().toString();
 
-        //get Facebook numerical ID of signed in user
-//        Profile profile = Profile.getCurrentProfile();
-//        userid = profile.getId();
 
         time_length = System.currentTimeMillis();
         campPic_url = title + "_pic.jpg";
@@ -269,7 +242,7 @@ public class CreateCampaign extends AppCompatActivity {
                 Campaign myCampaign = new DestinationCampaign(title, 0, charity, description,
                         pledge, init_location, userid, time_length, dateString, destination, dest_location, campPic_url);
 
-                campsDBInteractor.put(myCampaign, DB.root_ref);
+                DB.campDBinteractor.put(myCampaign, DB.root_ref);
             }
 
             @Override
@@ -293,5 +266,69 @@ public class CreateCampaign extends AppCompatActivity {
                 android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         // Start the Intent
         startActivityForResult(galleryIntent, 1);
+    }
+
+    private void check() {
+        String[] messages = new String[5];
+        int index = 0;
+
+        //these are the strings we need to save for a new campaign
+        EditText myText = (EditText) findViewById(R.id.titlein);
+        if (isEmpty(myText)) {
+            messages[index++] = "- Enter a valid title";
+        }
+
+        if (selectedImageURI == null) {
+            messages[index++] = "- Upload a campaign image";
+        }
+
+        myText = (EditText) findViewById(R.id.pledgein);
+        if (isEmpty(myText) ||UtilityMethod.text_to_long(myText) == 0) {
+            messages[index++] = "- Enter a pledge amount";
+        }
+
+        Geocoder geocoder = new Geocoder(getApplicationContext());
+        try {
+            TextView address = (EditText) findViewById(R.id.destination);
+            destination = address.getText().toString();
+            List<Address> list = geocoder.getFromLocationName(destination, 1);
+            if (list == null) {
+                messages[index++] = "- Enter a valid destination";
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        myText = (EditText) findViewById(R.id.descriptionin);
+        if (isEmpty(myText)) {
+            messages[index++] = "- Enter a description message";
+        }
+
+
+        if (index != 0) {
+            Intent intent = new Intent(this, CatchEmptyFields.class)
+                    .putExtra("Message0", messages[0])
+                    .putExtra("Message1", messages[1])
+                    .putExtra("Message2", messages[2])
+                    .putExtra("Message3", messages[3])
+                    .putExtra("Message4", messages[4]);
+            startActivityForResult(intent, 1001);
+        }
+        else {
+            EditText mT = (EditText) findViewById(R.id.pledgein);
+            pledge = UtilityMethod.text_to_long(mT);
+
+            Profile profile = Profile.getCurrentProfile();
+            userid = profile.getId();
+            //start pledge_agreement activity (where the user agrees to pay the specified amount in the future)
+            startActivityForResult(new Intent(this, FuturePaymentAgreement.class)
+                    .putExtra("PledgeAmount", pledge)
+                    .putExtra("Title", title)
+                    .putExtra("UserID", userid), REQUEST_CODE_PAY);
+        }
+    }
+
+    private boolean isEmpty(EditText myeditText) {
+        return myeditText.getText().toString().trim().length() == 0;
     }
 }

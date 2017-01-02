@@ -58,7 +58,8 @@
         <activity android:name=".activities.FuturePaymentAgreement" />
         <activity android:name=".activities.UserDetails" />
         <activity android:name=".activities.CreateUser" />
-        <activity android:name=".activities.ExecuteFuturePayment"></activity>
+        <activity android:name=".activities.ExecuteFuturePayment" />
+        <activity android:name=".activities.CatchEmptyFields"></activity>
     </application>
 
 </manifest>

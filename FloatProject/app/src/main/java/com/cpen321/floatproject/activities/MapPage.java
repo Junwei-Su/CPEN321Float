@@ -293,8 +293,6 @@ public class MapPage extends FragmentActivity implements OnMapReadyCallback,
 
                 String campaignname = tv.getText().toString();
 
-                Log.d("Tag", "camptitleinfo = " + campaignname);
-
                 //start CampDetails activity
                 Intent intent = new Intent(v.getContext(), CampDetails.class);
                 intent.putExtra("key", campaignname);
@@ -664,15 +662,6 @@ public class MapPage extends FragmentActivity implements OnMapReadyCallback,
         double degoffsetwest = radiusindegrees/
                 Math.cos(ActivityUtility.degreestoradians(bounds.southwest.latitude));
 
-        Log.d("Tag", "radiusindegrees = " +radiusindegrees);
-
-        //Log.d("Tag", "degoffsetnorth = " + degoffsetnorth);
-        //Log.d("Tag", "degoffseteast = " + degoffseteast);
-        //Log.d("Tag", "degoffsetwest = " + degoffsetwest);
-
-        //Log.d("Tag", "old northeast = " + bounds.northeast.latitude + ", " + bounds.northeast.longitude);
-        //Log.d("Tag", "old southwest = " + bounds.southwest.latitude + ", " + bounds.southwest.longitude);
-
         LatLng northeast = new LatLng(bounds.northeast.latitude + degoffsetnorth,
                 bounds.northeast.longitude + degoffseteast);
         LatLng southwest = new LatLng(bounds.southwest.latitude - degoffsetnorth,
@@ -680,10 +669,6 @@ public class MapPage extends FragmentActivity implements OnMapReadyCallback,
 
         bounds = bounds.including(northeast);
         bounds = bounds.including(southwest);
-
-        //Log.d("Tag", "new northeast = " + bounds.northeast.latitude + ", " + bounds.northeast.longitude);
-        //Log.d("Tag", "new southwest = " + bounds.southwest.latitude + ", " + bounds.southwest.longitude);
-
         //provide bounds object and padding
         CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds,
                 (int)getResources().getDimension(R.dimen.activity_horizontal_margin));

@@ -1,0 +1,89 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation= "vertical">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:paddingTop = "50sp"
+        android:paddingLeft = "20sp"
+        android:paddingRight = "20sp"
+        android:paddingBottom = "50sp"
+        android:fontFamily="sans-serif-light"
+        android:textColor = "#212121"
+        android:text="Please fill in all fields before procceeding. You still need to:"
+        android:textSize="8pt" />
+
+        <TextView
+            android:id="@+id/a"
+            android:paddingLeft = "20sp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-light"
+            android:textColor = "#212121"
+            android:textSize="8pt" />
+
+        <TextView
+            android:id="@+id/b"
+            android:paddingLeft = "20sp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-light"
+            android:textColor = "#212121"
+            android:textSize="8pt" />
+
+        <TextView
+            android:id="@+id/c"
+            android:paddingLeft = "20sp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-light"
+            android:textColor = "#212121"
+            android:textSize="8pt" />
+
+        <TextView
+            android:id="@+id/d"
+            android:paddingLeft = "20sp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-light"
+            android:textColor = "#212121"
+            android:textSize="8pt" />
+
+
+        <TextView
+            android:id="@+id/e"
+            android:paddingLeft = "20sp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-light"
+            android:paddingBottom = "90sp"
+            android:textColor = "#212121"
+            android:textSize="8pt" />
+
+
+    <Button
+        android:id="@+id/try_again"
+        android:background = "@drawable/mybutton"
+        android:textColor="#FFFFFF"
+        android:layout_gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif-light"
+        android:text="try again"/>
+
+    </LinearLayout>
+
+</RelativeLayout>
+</ScrollView>
