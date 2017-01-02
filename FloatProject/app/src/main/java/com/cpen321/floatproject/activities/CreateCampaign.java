@@ -209,7 +209,9 @@ public class CreateCampaign extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 User user = DB.usersDBinteractor.read(userid, dataSnapshot);
-                String user_name = (String) dataSnapshot.child(userid).child("name").getValue();
+                user.addInitCamp(title);
+                DB.usersDBinteractor.update(user, DB.user_ref);
+
                 Date currentDate = new Date();
                 int INITIAL_ACCU = 0 ;
                 String dateString = Algorithms.date_to_string(currentDate);
