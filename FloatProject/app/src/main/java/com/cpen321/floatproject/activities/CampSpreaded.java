@@ -3,7 +3,6 @@ package com.cpen321.floatproject.activities;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
@@ -98,13 +97,11 @@ public class CampSpreaded extends Activity {
     }
 
     private void check() {
-        Log.i("here", "h");
+        status = 1;
         if (status == 2) {
             Profile profile = Profile.getCurrentProfile();
             String userid = profile.getId();
 
-            Log.i("title", title);
-            Log.i("status", Integer.toString(status));
             startActivityForResult(new Intent(this, ExecuteFuturePayment.class)
                     .putExtra("Title", title)
                     .putExtra("UserID", userid), REQUEST_CODE_SUCCESS);
@@ -125,12 +122,12 @@ public class CampSpreaded extends Activity {
     }
 
     public void deleteCampaign() {
+       // DB.campDBinteractor.removeCamp(title);
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_CODE_SUCCESS && resultCode == RESULT_OK) {
-            Log.i("request", "r");
             deleteCampaign();
             Intent intent = new Intent(this, MapPage.class);
             startActivity(intent);

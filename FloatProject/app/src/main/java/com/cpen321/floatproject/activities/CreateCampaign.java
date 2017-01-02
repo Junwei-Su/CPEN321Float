@@ -48,8 +48,6 @@ public class CreateCampaign extends AppCompatActivity {
     private String userid;
     private double initlocatlatitude;
     private double initlocatlongitude;
-    private double destlocatlatitude;
-    private double destlocatlongitude;
     private LatLng init_location;
     private LatLng dest_location;
 
@@ -68,13 +66,8 @@ public class CreateCampaign extends AppCompatActivity {
     private Button return_camp;
     private Button launch_camp;
     private boolean isTakenStat;
-    private String testTitle;
     private String[] messages;
     private int index;
-    private Campaign testCamp;
-    private String testString;
-    private Button getCoords;
-    private Button findCoords;
     private Spinner charitySpinner;
     private ArrayAdapter<String> charityAdapter;
     private String[] charityList = {"United Way", "Red Cross"}; //charity list
@@ -147,7 +140,6 @@ public class CreateCampaign extends AppCompatActivity {
             Toast.makeText(this, "Something went wrong", Toast.LENGTH_LONG)
                     .show();
         }
-
     }
 
     //add campaign to online database
@@ -230,15 +222,6 @@ public class CreateCampaign extends AppCompatActivity {
 
             }
         });
-
-    }
-
-    //launch campaign
-    private static void launchCampaign() {
-    }
-
-    //save campaign
-    private static void saveCampaign() {
     }
 
     public void loadImagefromGallery(View view) {
@@ -259,12 +242,12 @@ public class CreateCampaign extends AppCompatActivity {
             isTakenStat = false;
             checkCont();
         } else {
-            testTitle = myText.getText().toString();
-            isTaken();
+            isTaken(myText.getText().toString());
         }
     }
 
     private void checkCont() {
+
         if (isTakenStat) {
             messages[index++] = "- Enter a new title (the current one is taken)";
         }
@@ -318,11 +301,11 @@ public class CreateCampaign extends AppCompatActivity {
     }
 
 
-    private void isTaken() {
-        DB.camp_ref.addValueEventListener(new ValueEventListener() {
+    private void isTaken(final String s) {
+        DB.camp_ref.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                if (dataSnapshot.hasChild(testTitle))
+                if (dataSnapshot.hasChild(s))
                     isTakenStat = true;
                 else
                     isTakenStat = false;
