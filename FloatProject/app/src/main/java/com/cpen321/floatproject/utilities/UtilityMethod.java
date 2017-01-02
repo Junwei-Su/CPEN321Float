@@ -18,6 +18,8 @@ public class UtilityMethod {
     /*
     * convert an EditText to double and check if it is null
     * if null, return 0.0
+    * @param EditText
+    * @return Double version of the text
      */
     public static Double text_to_double(EditText s){
         Double toReturn = 0.0;
@@ -32,6 +34,8 @@ public class UtilityMethod {
     /*
     * convert an EditText to long and check if it is null
     * if null, return 0
+    * @param EditText
+    * @return long version of the text
      */
     public static long text_to_long(EditText s){
         long toReturn = 0;

@@ -112,12 +112,4 @@ public class UserDetails extends Activity {
         return stats;
     }
 
-    /**
-     * for debugging purposes
-     */
-    private void printList(List<String> list){
-        for(int i=0; i<list.size(); i++){
-            Log.d("Tag","list[" + i + "] = " + list.get(i));
-        }
-    }
 }

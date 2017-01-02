@@ -124,16 +124,6 @@ public class GetGPSLocation extends Service implements LocationListener {
     }
 
 
-    /*public void stopUsingGPS(){
-        if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
-                && checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-        }
-        if(locationManager != null){
-            locationManager.removeUpdates(GetGPSLocation.this);
-        }
-    }*/
-
-
     public double getLatitude(){
         if(location != null){
             latitude = location.getLatitude();

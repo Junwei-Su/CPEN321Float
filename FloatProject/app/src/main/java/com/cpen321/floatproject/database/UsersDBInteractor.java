@@ -14,19 +14,25 @@ import java.util.Map;
  */
 
 public class UsersDBInteractor implements Readable, Writable {
+    /*
+  * Read object from database with ID
+  * @Param: String: ID of the object
+  *        DataSnapshot: the dataSnapshot that has the object
+  * @return: corresponding object
+  */
     @Override
     public User read(String ID, DataSnapshot dataSnapshot) {
         //get the dataSnapshot of the user object with this ID
-        DataSnapshot userSnap =  dataSnapshot.child(ID);
+        DataSnapshot userSnap = dataSnapshot.child(ID);
 
         //if user not exist;
-        if(userSnap==null){
+        if (userSnap == null) {
             return null;
         }
 
         //retrive the user information
-        long amount_donated = (Long)userSnap.child("amount_donated").getValue();
-        long amount_raised = (Long)userSnap.child("amount_raised").getValue();
+        long amount_donated = (Long) userSnap.child("amount_donated").getValue();
+        long amount_raised = (Long) userSnap.child("amount_raised").getValue();
         String account_name = (String) userSnap.child("account_name").getValue();
         String address = (String) userSnap.child("address").getValue();
         String blurb = (String) userSnap.child("blurb").getValue();
@@ -36,15 +42,15 @@ public class UsersDBInteractor implements Readable, Writable {
 
         List<String> list_camp_init;
         List<String> list_camp_join;
-        if (dataSnapshotToCampList(userSnap.child("list_camp_init")) == null){
+        if (dataSnapshotToCampList(userSnap.child("list_camp_init")) == null) {
             list_camp_init = new LinkedList<String>();
-        }else{
+        } else {
             list_camp_init = dataSnapshotToCampList(userSnap.child("list_camp_init"));
         }
 
-        if(dataSnapshotToCampList(userSnap.child("list_camp_join")) == null){
+        if (dataSnapshotToCampList(userSnap.child("list_camp_join")) == null) {
             list_camp_join = new LinkedList<String>();
-        }else{
+        } else {
             list_camp_join = dataSnapshotToCampList(userSnap.child("list_camp_join"));
         }
 
@@ -57,7 +63,7 @@ public class UsersDBInteractor implements Readable, Writable {
             to_return.setMetadataid(metadata_id);
         }
 
-        if (userSnap.child("refresh_token") != null){
+        if (userSnap.child("refresh_token") != null) {
             String refresh_token = (String) userSnap.child("refresh_token").getValue();
             to_return.setRefreshToken(refresh_token);
         }
@@ -65,6 +71,12 @@ public class UsersDBInteractor implements Readable, Writable {
         return to_return;
     }
 
+    /*
+    *This method updates a User object in database with a user object
+    *@param:
+    *object: User
+    *DatabaseReference: databasereference to User root
+    */
     @Override
     public void update(Object o, DatabaseReference databaseReference) {
         User user_update = (User) o;
@@ -82,6 +94,12 @@ public class UsersDBInteractor implements Readable, Writable {
         user_update_ref.child("refresh_token").setValue(user_update.getRefreshToken());
     }
 
+    /*
+   * Put the corresponding object into the user
+   * @param:
+   * o: user to be put to database
+   * databaseReference: reference to user root
+    */
     @Override
     public void put(Object o, DatabaseReference databaseReference) {
         User to_push = (User) o;
@@ -93,14 +111,14 @@ public class UsersDBInteractor implements Readable, Writable {
         databaseReference.updateChildren(childUpdates);
     }
 
-    /*
+    /*helper function
      * return a list of campaign objects given a datasnapshot
      */
-    public List<String> dataSnapshotToCampList(DataSnapshot datasnapshot){
+    private List<String> dataSnapshotToCampList(DataSnapshot datasnapshot) {
         List<String> to_return = new LinkedList<String>();
 
-        for(DataSnapshot camp_name : datasnapshot.getChildren()){
-            String camp_to_add = (String)camp_name.getValue();
+        for (DataSnapshot camp_name : datasnapshot.getChildren()) {
+            String camp_to_add = (String) camp_name.getValue();
             to_return.add(camp_to_add);
         }
 

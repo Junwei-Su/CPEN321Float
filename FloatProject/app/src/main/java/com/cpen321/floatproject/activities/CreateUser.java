@@ -127,7 +127,6 @@ public class CreateUser extends Activity {
                 selectedImageURI = data.getData();
                 profilepic.setImageURI(selectedImageURI);
 
-                Log.d("Tag", selectedImageURI.toString());
             }
         } catch (Exception e) {
             Toast.makeText(this, "Something went wrong", Toast.LENGTH_LONG)

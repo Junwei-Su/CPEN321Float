@@ -207,11 +207,11 @@ public class CreateCampaign extends AppCompatActivity {
         DB.user_ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                String user_name = (String) dataSnapshot.child(userid).child("name").getValue();
                 Date currentDate = new Date();
+                int INITIAL_ACCU = 0 ;
                 String dateString = Algorithms.date_to_string(currentDate);
 
-                Campaign myCampaign = new DestinationCampaign(title, 0, charity, description,
+                Campaign myCampaign = new DestinationCampaign(title, INITIAL_ACCU, charity, description,
                         pledge, init_location, userid, time_length, dateString, destination, dest_location, campPic_url);
 
                 DB.campDBinteractor.put(myCampaign, DB.root_ref);

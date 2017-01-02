@@ -8,6 +8,12 @@ import com.google.firebase.database.DataSnapshot;
  */
 
 public class CharityDBinteractor implements Readable {
+    /*
+    * Read object from database with ID
+    * @Param: String: ID of the object
+    *        DataSnapshot: the dataSnapshot that has the object
+    * @return: corresponding object
+    */
     @Override
     public Charity read(String ID, DataSnapshot dataSnapshot) {
         //get the dataSnapshot of the charity object with this ID
