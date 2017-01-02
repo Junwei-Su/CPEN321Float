@@ -33,8 +33,6 @@ public class UsersDBInteractor implements Readable, Writable {
         String date_join = (String) userSnap.child("date_join").getValue();
         String name = (String) userSnap.child("name").getValue();
         String profile_pic = (String) userSnap.child("profile_pic").getValue();
-        String metadata_id = (String) userSnap.child("metadata_id").getValue();
-        String refresh_token = (String) userSnap.child("refresh_token").getValue();
 
         List<String> list_camp_init;
         List<String> list_camp_join;
@@ -54,8 +52,16 @@ public class UsersDBInteractor implements Readable, Writable {
                 amount_raised, amount_donated, address,
                 list_camp_init, list_camp_join, profile_pic);
 
-        to_return.setRefreshToken(refresh_token);
-        to_return.setMetadataid(metadata_id);
+        if (userSnap.child("metadata_id") != null) {
+            String metadata_id = (String) userSnap.child("metadata_id").getValue();
+            to_return.setMetadataid(metadata_id);
+        }
+
+        if (userSnap.child("refresh_token") != null){
+            String refresh_token = (String) userSnap.child("refresh_token").getValue();
+            to_return.setRefreshToken(refresh_token);
+        }
+
         return to_return;
     }
 
