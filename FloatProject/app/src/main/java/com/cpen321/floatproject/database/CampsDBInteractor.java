@@ -152,4 +152,12 @@ public class CampsDBInteractor implements Readable, Writable {
         return nearbyCamp_list;
     }
 
+    /*
+    * remove the camp object in Firebase given its name
+    * @param campName name of the campaign to be deleted
+     */
+    public void removeCamp(String campName){
+        DB.camp_ref.child(campName).removeValue();
+    }
+
 }

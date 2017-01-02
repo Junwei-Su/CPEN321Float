@@ -25,6 +25,7 @@ public class MainActivity extends FragmentActivity {
         setContentView(R.layout.activity_main);
 
         mapButton = (Button) findViewById(R.id.mapButton);
+
     }
 
     @Override
