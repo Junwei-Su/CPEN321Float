@@ -1,5 +1,7 @@
 package com.cpen321.floatproject.users;
 
+import android.util.Log;
+
 import com.google.firebase.database.Exclude;
 
 import java.util.HashMap;
@@ -31,23 +33,25 @@ public class User {
         this.account_name = account;
     }
 
-    public User(String name, String account_name,String date, String blurb, boolean is_charity, long amount_gain,
+    public User(String name, String account_name,String date_join, String blurb, boolean is_charity, long amount_gain,
                 long amount_raised, long amount_donated, String address){
+        Log.d("Tag", "Medium constructor used.");
         this.name = name;
         this.account_name = account_name;
-        this.date_join = date;
+        this.date_join = date_join;
         this.blurb = blurb;
         this.amount_raised = amount_raised;
         this.amount_donated = amount_donated;
         this.address = address;
     }
 
-    public User(String name, String account_name,String date, String blurb,
+    public User(String name, String account_name,String date_join, String blurb,
                 long amount_raised, long amount_donated, String address,
                 List<String> list_of_campaign_initialize, List<String> list_of_campaign_followed, String profile_pic){
+        Log.d("Tag", "Large constructor used.");
         this.name = name;
         this.account_name = account_name;
-        this.date_join = date;
+        this.date_join = date_join;
         this.blurb = blurb;
         this.amount_raised = amount_raised;
         this.amount_donated = amount_donated;
