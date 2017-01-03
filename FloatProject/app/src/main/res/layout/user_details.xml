@@ -76,6 +76,7 @@
         android:src="@drawable/pencil"
         style="?android:attr/buttonBarButtonStyle"/>
     <ImageButton
+        android:id="@+id/mapCamp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1"
@@ -84,6 +85,7 @@
         android:src="@drawable/map"
         style="?android:attr/buttonBarButtonStyle"/>
     <ImageButton
+        android:id="@+id/listCamp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1"

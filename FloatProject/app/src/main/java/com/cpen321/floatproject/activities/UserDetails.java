@@ -1,11 +1,12 @@
 package com.cpen321.floatproject.activities;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
+import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -64,6 +65,37 @@ public class UserDetails extends Activity {
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+        //wire createcamp button to CreateCampaign activity
+        ImageButton createCamp = (ImageButton) findViewById(R.id.createcamp);
+        createCamp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(v.getContext(), CreateCampaign.class);
+                startActivity(intent);
+
+            }
+        });
+
+        ImageButton mapButton = (ImageButton) findViewById(R.id.mapCamp);
+        mapButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent jumpToMapView = new Intent(v.getContext(), MapPage.class);
+                startActivity(jumpToMapView);
+
+            }
+        });
+
+        ImageButton listButton = (ImageButton) findViewById(R.id.listCamp);
+        listButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent jumpToListView = new Intent(v.getContext(), CampListView.class);
+                startActivity(jumpToListView);
 
             }
         });
