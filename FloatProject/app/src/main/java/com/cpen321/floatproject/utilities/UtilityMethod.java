@@ -52,35 +52,17 @@ public class UtilityMethod {
      * @return a LatLng object with the coordinates in datasnapshot
      */
     public static LatLng dataSnapshotToLatLng(DataSnapshot datasnapshot) {
+        return new LatLng(castToDouble(datasnapshot.child("latitude")),
+                castToDouble(datasnapshot.child("longitude")));
+    }
 
-        Double latitude;
-        Double longitude;
-
-        //get coordinates of campaign launch location
-        if (datasnapshot.child("latitude").getValue() instanceof Long &&
-                datasnapshot.child("longitude").getValue() instanceof Long) {
-            latitude = ((Long) datasnapshot.child("latitude").getValue()).doubleValue();
-            longitude = ((Long) datasnapshot.child("longitude").getValue()).doubleValue();
-        }
-        else if (datasnapshot.child("latitude").getValue() instanceof Long &&
-                !(datasnapshot.child("longitude").getValue() instanceof Long)) {
-            latitude = ((Long) datasnapshot.child("latitude").getValue()).doubleValue();
-            longitude = ((Double) datasnapshot.child("longitude").getValue());
-        }
-        else if (!(datasnapshot.child("latitude").getValue() instanceof Long) &&
-                datasnapshot.child("longitude").getValue() instanceof Long) {
-            latitude = ((Double) datasnapshot.child("latitude").getValue());
-            longitude = ((Long) datasnapshot.child("longitude").getValue()).doubleValue();
-        }
-        else {
-            latitude = ((Double) datasnapshot.child("latitude").getValue());
-            longitude = ((Double) datasnapshot.child("longitude").getValue());
-        }
-
-    return new LatLng(latitude, longitude);
-};
-
-/**
+    private static Double castToDouble(DataSnapshot datasnapshot){
+        if (datasnapshot.getValue() instanceof Long)
+            return ((Long) datasnapshot.getValue()).doubleValue();
+        else
+            return ((Double) datasnapshot.getValue());
+    }
+/*
  * Takes in a datashapshot and returns a list of LatLng object with the coordinates
  *
  * @param datasnapshot
@@ -95,6 +77,5 @@ public static List<LatLng>dataSnapshotToLatLngList(DataSnapshot datasnapshot){
         }
 
         return to_return;
-        };
-
         }
+}
