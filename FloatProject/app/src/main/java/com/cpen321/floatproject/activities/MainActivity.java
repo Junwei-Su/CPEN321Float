@@ -9,8 +9,13 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.cpen321.floatproject.R;
+import com.cpen321.floatproject.campaigns.DestinationCampaign;
+import com.cpen321.floatproject.database.DB;
 import com.facebook.Profile;
 import com.facebook.ProfileTracker;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.ValueEventListener;
 
 public class MainActivity extends FragmentActivity {
     Button mapButton;
@@ -20,7 +25,6 @@ public class MainActivity extends FragmentActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         mapButton = (Button) findViewById(R.id.mapButton);
 
     }
@@ -59,8 +63,7 @@ public class MainActivity extends FragmentActivity {
             t.setText("Please turn on location services before proceeding");
         }
         else {
-            Intent intent = new Intent(this, MapPage.class);
-            startActivity(intent);
+            purge();
         }
     }
 
@@ -79,5 +82,28 @@ public class MainActivity extends FragmentActivity {
         return off;
     }
 
+    private void purge() {
+        DB.camp_ref.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot camp : dataSnapshot.getChildren()) {
+                    String key = camp.getKey();
+                    DestinationCampaign c = DB.campDBinteractor.read(key, dataSnapshot);
+                    int status = c.returnStatus();
+                    if (status == 1)
+                        DB.campDBinteractor.removeCamp(key);
+
+                    startMapPage();
+                }
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {}
+        });
+    }
+
+    private void startMapPage(){
+        Intent intent = new Intent(this, MapPage.class);
+        startActivity(intent);
+    }
 
 }

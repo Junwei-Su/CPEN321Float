@@ -153,7 +153,6 @@ public class MapPage extends FragmentActivity implements OnMapReadyCallback,
         charityDBinteractor = new CharityDBinteractor();
         usersDBInteractor = new UsersDBInteractor();
 
-        purge();
         //get current location with gps, prompts if gps off
         currentLocation = new GetGPSLocation(MapPage.this, MapPage.this);
         if (currentLocation.canGetLocation()) {
@@ -652,23 +651,5 @@ public class MapPage extends FragmentActivity implements OnMapReadyCallback,
         CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds,
                 (int)getResources().getDimension(R.dimen.activity_horizontal_margin));
         map.animateCamera(cu);
-    }
-
-
-    private void purge() {
-        DB.camp_ref.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                for (DataSnapshot camp : dataSnapshot.getChildren()) {
-                    String key = camp.getKey();
-                    DestinationCampaign c = DB.campDBinteractor.read(key, dataSnapshot);
-                    int status = c.returnStatus();
-                    if (status == 1)
-                        DB.campDBinteractor.removeCamp(key);
-                }
-            }
-            @Override
-            public void onCancelled(DatabaseError databaseError) {}
-        });
     }
 }
