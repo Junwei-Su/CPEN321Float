@@ -340,8 +340,6 @@ public class CampDetails extends Activity {
     }
 
     private boolean canSpread(){
-        if(Algorithms.calculateDistance(campaign.getInitial_location(), currentLocation) <= RADIUS)
-            return true;
         for(LatLng loc : campaign.getList_locations()){
             if(Algorithms.calculateDistance(loc, currentLocation)<= RADIUS){
                 return true;

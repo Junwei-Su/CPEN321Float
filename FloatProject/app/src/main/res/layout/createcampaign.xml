@@ -202,7 +202,7 @@
                     android:layout_marginRight="@dimen/activity_horizontal_margin"
                     android:layout_weight="1"
                     android:fontFamily="sans-serif-light"
-                    android:hint="City, Country"
+                    android:hint="Address (optional), City, Country"
                     android:textColor="#212121"
                     android:textCursorDrawable="@drawable/color_cursor" />
             </LinearLayout>
