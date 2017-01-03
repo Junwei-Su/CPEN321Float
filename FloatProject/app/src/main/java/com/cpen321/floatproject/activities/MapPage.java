@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.ContextCompat;
@@ -133,13 +134,13 @@ public class MapPage extends FragmentActivity implements OnMapReadyCallback,
     boolean buttonpanelready = false;
 
     //initialize map paddings when map and buttonpanel are ready
-    private void layoutreadylistener(String caller){
-        if(caller.equals("map"))
+    private void layoutreadylistener(String caller) {
+        if (caller.equals("map"))
             mapready = true;
-        else if(caller.equals("buttonpanel"))
+        else if (caller.equals("buttonpanel"))
             buttonpanelready = true;
 
-        if(mapready && buttonpanelready)
+        if (mapready && buttonpanelready)
             map.setPadding(0, 0, 0, buttonpanelheight);
     }
 
@@ -153,346 +154,353 @@ public class MapPage extends FragmentActivity implements OnMapReadyCallback,
         charityDBinteractor = new CharityDBinteractor();
         usersDBInteractor = new UsersDBInteractor();
 
-        //get current location with gps, prompts if gps off
-        currentLocation = new GetGPSLocation(MapPage.this, MapPage.this);
-        if (currentLocation.canGetLocation()) {
-            userlocation = new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude());
-        }
-        else{
-            currentLocation.showSettingsAlert();
-        }
+        if (!locationOn()) {
+            Intent i = new Intent(this, MainActivity.class);
+            startActivity(i);
+            finish();
+        } else {
 
-        //set default camera position to the current location
-        defaultcamerapos = new CameraPosition.Builder()
-                .target(userlocation)   // Sets the center of the map to Mountain View
-                .zoom(13)                   // Sets the zoom
-                .bearing(0)                // Sets the orientation of the camera to east
-                .tilt(0)                   // Sets the tilt of the camera to 30 degrees
-                .build();
+            //get current location with gps, prompts if gps off
+            currentLocation = new GetGPSLocation(MapPage.this, MapPage.this);
+            if (currentLocation.canGetLocation()) {
+                userlocation = new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude());
+            } else {
+                currentLocation.showSettingsAlert();
+            }
 
-        infowindow = (RelativeLayout) findViewById(R.id.infowindow);
+            //set default camera position to the current location
+            defaultcamerapos = new CameraPosition.Builder()
+                    .target(userlocation)   // Sets the center of the map to Mountain View
+                    .zoom(13)                   // Sets the zoom
+                    .bearing(0)                // Sets the orientation of the camera to east
+                    .tilt(0)                   // Sets the tilt of the camera to 30 degrees
+                    .build();
 
-        //listen to infowindow once to obtain height in pixels
-        infowindow.getViewTreeObserver().addOnGlobalLayoutListener(
-                new ViewTreeObserver.OnGlobalLayoutListener() {
-                    @Override
-                    public void onGlobalLayout() {
-                        //called when layout is ready yet before drawn
+            infowindow = (RelativeLayout) findViewById(R.id.infowindow);
 
-                        infowindowheight = infowindow.getHeight();
-                        infowindowtop = infowindow.getTop();
+            //listen to infowindow once to obtain height in pixels
+            infowindow.getViewTreeObserver().addOnGlobalLayoutListener(
+                    new ViewTreeObserver.OnGlobalLayoutListener() {
+                        @Override
+                        public void onGlobalLayout() {
+                            //called when layout is ready yet before drawn
 
-                        if (Build.VERSION.SDK_INT <= 14)
-                            infowindow.getViewTreeObserver().removeGlobalOnLayoutListener(this);
-                        else
-                            infowindow.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                            infowindowheight = infowindow.getHeight();
+                            infowindowtop = infowindow.getTop();
+
+                            if (Build.VERSION.SDK_INT <= 14)
+                                infowindow.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+                            else
+                                infowindow.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                        }
                     }
-                }
-        );
+            );
 
-        LinearLayout mapbuttonpanel = (LinearLayout) findViewById(R.id.mapbuttonpanel);
-        mapbuttonpanel.getViewTreeObserver().addOnGlobalLayoutListener(
-                new ViewTreeObserver.OnGlobalLayoutListener() {
-                    @Override
-                    public void onGlobalLayout() {
-                        //called when layout is ready yet before drawn
+            LinearLayout mapbuttonpanel = (LinearLayout) findViewById(R.id.mapbuttonpanel);
+            mapbuttonpanel.getViewTreeObserver().addOnGlobalLayoutListener(
+                    new ViewTreeObserver.OnGlobalLayoutListener() {
+                        @Override
+                        public void onGlobalLayout() {
+                            //called when layout is ready yet before drawn
 
-                        LinearLayout mapbuttonpanel = (LinearLayout) findViewById(R.id.mapbuttonpanel);
-                        buttonpanelheight = mapbuttonpanel.getHeight();
-                        buttonpaneltop = mapbuttonpanel.getTop();
+                            LinearLayout mapbuttonpanel = (LinearLayout) findViewById(R.id.mapbuttonpanel);
+                            buttonpanelheight = mapbuttonpanel.getHeight();
+                            buttonpaneltop = mapbuttonpanel.getTop();
 
-                        //alert layoutreadylistener buttonpanel is created
-                        layoutreadylistener("buttonpanel");
+                            //alert layoutreadylistener buttonpanel is created
+                            layoutreadylistener("buttonpanel");
 
-                        //remove listener
-                        if (Build.VERSION.SDK_INT <= 14)
-                            mapbuttonpanel.getViewTreeObserver().removeGlobalOnLayoutListener(this);
-                        else
-                            mapbuttonpanel.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                            //remove listener
+                            if (Build.VERSION.SDK_INT <= 14)
+                                mapbuttonpanel.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+                            else
+                                mapbuttonpanel.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                        }
                     }
-                }
-        );
+            );
 
-        //get a handle on map
-        MapFragment mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.map);
-        mapFragment.getMapAsync(this);
+            //get a handle on map
+            MapFragment mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.map);
+            mapFragment.getMapAsync(this);
 
-        //wire createcamp button to CreateCampaign activity
-        ImageButton imageButton = (ImageButton) findViewById(R.id.createcamp);
-        imageButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //start _Submenu activity
-                Intent intent = new Intent(v.getContext(), CreateCampaign.class);
-                startActivity(intent);
-
-            }
-        });
-
-        //after infowindow is closed, update map paddings and camera
-        imageButton = (ImageButton) findViewById(R.id.closewindow);
-        imageButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                //update map margins after window is gone
-                map.setPadding(0, 0, 0, buttonpanelheight);
-
-                //move camera to fit campaign circles in screen
-                zoomFitCircles();
-
-                //animate infowindow disappearing
-                ObjectAnimator infowindowanimator = ObjectAnimator.ofFloat(infowindow, View.Y, infowindowtop, buttonpaneltop);
-                infowindowanimator.setDuration(slideduration);
-                infowindowanimator.start();
-                infowindowvisible = false;
-            }
-        });
-
-        //click on map icon to return map to currentlocation
-        ImageButton centreButton = (ImageButton) findViewById(R.id.centreMap);
-        centreButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                map.animateCamera(CameraUpdateFactory.newCameraPosition(defaultcamerapos));
-            }
-        });
-
-        //clarence code for camp list viewer
-        ImageButton listButton = (ImageButton) findViewById(R.id.listCamp);
-        listButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //user click the list button
-                //UI go to list page
-                Intent jumpToListView = new Intent(v.getContext(), CampListView.class);
-                //need to pass the current location of the user
-                startActivity(jumpToListView);
-
-            }
-        });
-
-        //wire details button to CampDetails activity
-        Button button = (Button) findViewById(R.id.details);
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                TextView tv = (TextView) findViewById(R.id.campaigntitle);
-
-                String campaignname = tv.getText().toString();
-
-                //start CampDetails activity
-                Intent intent = new Intent(v.getContext(), CampDetails.class);
-                intent.putExtra("key", campaignname);
-                startActivity(intent);
-
-                map.setPadding(0, 0, 0, buttonpanelheight);
-                zoomFitCircles();
-                ObjectAnimator infowindowanimator = ObjectAnimator.ofFloat(infowindow, View.Y, infowindowtop, buttonpaneltop);
-                infowindowanimator.setDuration(0);
-                infowindowanimator.start();
-                infowindowvisible = false;
-            }
-        });
-
-        // ATTENTION: This was auto-generated to implement the App Indexing API.
-        // See https://g.co/AppIndexing/AndroidStudio for more information.
-        client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
-
-        //obtain Facebook ID of logged in user
-        Profile profile = Profile.getCurrentProfile();
-
-        if (profile != null) {
-
-            String userid = profile.getId();
-            Log.d("Tag", "My userid is: " + userid);
-
-            //update Facebook launchusername on top right of screen
-            DatabaseReference thisuserref = DB.user_ref.child(userid);
-            thisuserref.addListenerForSingleValueEvent(new ValueEventListener() {
+            //wire createcamp button to CreateCampaign activity
+            ImageButton imageButton = (ImageButton) findViewById(R.id.createcamp);
+            imageButton.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
-                    String thisusernamestr = dataSnapshot.child("name").getValue(String.class);
-                    TextView thisusername = (TextView) findViewById(R.id.thisusername);
-                    thisusername.setText(thisusernamestr);
+                public void onClick(View v) {
+                    //start _Submenu activity
+                    Intent intent = new Intent(v.getContext(), CreateCampaign.class);
+                    startActivity(intent);
+
+                }
+            });
+
+            //after infowindow is closed, update map paddings and camera
+            imageButton = (ImageButton) findViewById(R.id.closewindow);
+            imageButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    //update map margins after window is gone
+                    map.setPadding(0, 0, 0, buttonpanelheight);
+
+                    //move camera to fit campaign circles in screen
+                    zoomFitCircles();
+
+                    //animate infowindow disappearing
+                    ObjectAnimator infowindowanimator = ObjectAnimator.ofFloat(infowindow, View.Y, infowindowtop, buttonpaneltop);
+                    infowindowanimator.setDuration(slideduration);
+                    infowindowanimator.start();
+                    infowindowvisible = false;
+                }
+            });
+
+            //click on map icon to return map to currentlocation
+            ImageButton centreButton = (ImageButton) findViewById(R.id.centreMap);
+            centreButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    map.animateCamera(CameraUpdateFactory.newCameraPosition(defaultcamerapos));
+                }
+            });
+
+            //clarence code for camp list viewer
+            ImageButton listButton = (ImageButton) findViewById(R.id.listCamp);
+            listButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    //user click the list button
+                    //UI go to list page
+                    Intent jumpToListView = new Intent(v.getContext(), CampListView.class);
+                    //need to pass the current location of the user
+                    startActivity(jumpToListView);
+
+                }
+            });
+
+            //wire details button to CampDetails activity
+            Button button = (Button) findViewById(R.id.details);
+            button.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    TextView tv = (TextView) findViewById(R.id.campaigntitle);
+
+                    String campaignname = tv.getText().toString();
+
+                    //start CampDetails activity
+                    Intent intent = new Intent(v.getContext(), CampDetails.class);
+                    intent.putExtra("key", campaignname);
+                    startActivity(intent);
+
+                    map.setPadding(0, 0, 0, buttonpanelheight);
+                    zoomFitCircles();
+                    ObjectAnimator infowindowanimator = ObjectAnimator.ofFloat(infowindow, View.Y, infowindowtop, buttonpaneltop);
+                    infowindowanimator.setDuration(0);
+                    infowindowanimator.start();
+                    infowindowvisible = false;
+                }
+            });
+
+            // ATTENTION: This was auto-generated to implement the App Indexing API.
+            // See https://g.co/AppIndexing/AndroidStudio for more information.
+            client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
+
+            //obtain Facebook ID of logged in user
+            Profile profile = Profile.getCurrentProfile();
+
+            if (profile != null) {
+
+                String userid = profile.getId();
+                Log.d("Tag", "My userid is: " + userid);
+
+                //update Facebook launchusername on top right of screen
+                DatabaseReference thisuserref = DB.user_ref.child(userid);
+                thisuserref.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        String thisusernamestr = dataSnapshot.child("name").getValue(String.class);
+                        TextView thisusername = (TextView) findViewById(R.id.thisusername);
+                        thisusername.setText(thisusernamestr);
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+            }
+
+            //add listener to add markers to campaigns' launch points on map in realtime
+            listcampaignslistener = new ChildEventListener() {
+                @Override
+                public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                    //get name of campaign
+                    String title = dataSnapshot.child("campaign_name").getValue(String.class);
+                    Log.d("Tag", "title = " + title);
+
+                    LatLng launchcoords = UtilityMethod.dataSnapshotToLatLng(dataSnapshot.child("initial_location"));
+
+                    //create marker at campaign launch location
+                    Marker marker = map.addMarker(new MarkerOptions()
+                            .position(launchcoords)
+                            .title(title));
+
+                    //attaches campaign name to marker
+                    marker.setTag(title);
+                }
+
+                @Override
+                public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+                }
+
+                @Override
+                public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+                }
+
+                @Override
+                public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
                 }
 
                 @Override
                 public void onCancelled(DatabaseError databaseError) {
 
                 }
-            });
-        }
+            };
+            DB.camp_ref.addChildEventListener(listcampaignslistener);
 
-        //add listener to add markers to campaigns' launch points on map in realtime
-        listcampaignslistener = new ChildEventListener() {
-            @Override
-            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                //get name of campaign
-                String title = dataSnapshot.child("campaign_name").getValue(String.class);
-                Log.d("Tag", "title = " + title);
+            //listener to draw float circles of a campaign
+            listlocationslistener = new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    int i = 0;
+                    DataSnapshot list_locations = dataSnapshot.child("list_locations");
+                    DataSnapshot locat;
+                    Circle circle;
 
-                LatLng launchcoords = UtilityMethod.dataSnapshotToLatLng(dataSnapshot.child("initial_location"));
+                    while (true) {
 
-                //create marker at campaign launch location
-                Marker marker = map.addMarker(new MarkerOptions()
-                        .position(launchcoords)
-                        .title(title));
+                        if (!list_locations.hasChild(Integer.toString(i)))
+                            break;
 
-                //attaches campaign name to marker
-                marker.setTag(title);
-            }
+                        locat = list_locations.child(Integer.toString(i));
 
-            @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+                        LatLng floatLocation = UtilityMethod.dataSnapshotToLatLng(locat);
 
-            }
+                        //add a campaign circle to the map
+                        circle = map.addCircle(new CircleOptions()
+                                .center(floatLocation)
+                                .radius(getResources().getInteger(R.integer.floatradius))
+                                .strokeColor(ContextCompat.getColor(getApplicationContext(), R.color.circleoutline))
+                                .fillColor(ContextCompat.getColor(getApplicationContext(), R.color.circlefill)));
 
-            @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {
+                        //add a campaign circle to the list of circles
+                        listCircles.add(circle);
 
-            }
+                        i++;
+                    }
 
-            @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        };
-        DB.camp_ref.addChildEventListener(listcampaignslistener);
-
-        //listener to draw float circles of a campaign
-        listlocationslistener = new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                int i = 0;
-                DataSnapshot list_locations = dataSnapshot.child("list_locations");
-                DataSnapshot locat;
-                Circle circle;
-
-                while (true) {
-
-                    if (!list_locations.hasChild(Integer.toString(i)))
-                        break;
-
-                    locat = list_locations.child(Integer.toString(i));
-
-                    LatLng floatLocation = UtilityMethod.dataSnapshotToLatLng(locat);
-
-                    //add a campaign circle to the map
-                    circle = map.addCircle(new CircleOptions()
-                            .center(floatLocation)
-                            .radius(getResources().getInteger(R.integer.floatradius))
-                            .strokeColor(ContextCompat.getColor(getApplicationContext(), R.color.circleoutline))
-                            .fillColor(ContextCompat.getColor(getApplicationContext(), R.color.circlefill)));
-
-                    //add a campaign circle to the list of circles
-                    listCircles.add(circle);
-
-                    i++;
+                    //move camera to fit circles on screen
+                    zoomFitCircles();
                 }
 
-                //move camera to fit circles on screen
-                zoomFitCircles();
-            }
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
+                }
+            };
 
-            }
-        };
-
-        //listener to update launchusername, campaign_name and charity name on infowindow
-        campaignslistener = new ValueEventListener() {
+            //listener to update launchusername, campaign_name and charity name on infowindow
+            campaignslistener = new ValueEventListener() {
 
 
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
 
-                Campaign campaign = campsDBInteractor.read(campaignname,dataSnapshot);
+                    Campaign campaign = campsDBInteractor.read(campaignname, dataSnapshot);
 
-                //update campaign image
-                campaignpic = campaign.getCampaign_pic();
-                StorageReference imageref = DB.images_ref.child(campaignpic);
-                setDBPictureOnImageView(imageref, R.id.campaignpic);
+                    //update campaign image
+                    campaignpic = campaign.getCampaign_pic();
+                    StorageReference imageref = DB.images_ref.child(campaignpic);
+                    setDBPictureOnImageView(imageref, R.id.campaignpic);
 
-                //attach listener to launch user profile pic
-                launchusername = campaign.getOwner_account();
-                Log.d("Tag", "launchusername = " + launchusername);
+                    //attach listener to launch user profile pic
+                    launchusername = campaign.getOwner_account();
+                    Log.d("Tag", "launchusername = " + launchusername);
 
-                DB.user_ref.addListenerForSingleValueEvent(launchuserslistener);
+                    DB.user_ref.addListenerForSingleValueEvent(launchuserslistener);
 
-                //attach listener to charity
-                charityname = campaign.getCharity();
-                Log.d("Tag", "charityname = " + charityname);
+                    //attach listener to charity
+                    charityname = campaign.getCharity();
+                    Log.d("Tag", "charityname = " + charityname);
 
-                DB.char_ref.addListenerForSingleValueEvent(charitieslistener);
+                    DB.char_ref.addListenerForSingleValueEvent(charitieslistener);
 
-                TextView tv = (TextView) findViewById(R.id.campaigntitle);
-                tv.setText(campaignname);
+                    TextView tv = (TextView) findViewById(R.id.campaigntitle);
+                    tv.setText(campaignname);
 
-                tv = (TextView) findViewById(R.id.charityname);
-                tv.setText(charityname);
+                    tv = (TextView) findViewById(R.id.charityname);
+                    tv.setText(charityname);
 
-            }
+                }
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
 
-            }
-        };
+                }
+            };
 
-        launchuserslistener = new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                User user = usersDBInteractor.read(launchusername, dataSnapshot);
+            launchuserslistener = new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    User user = usersDBInteractor.read(launchusername, dataSnapshot);
 
-                //update profile pic of launcher of campaign
-                launchuserpic = user.getProfile_pic();
-                Log.d("Tag", "launchuserpic = " + launchuserpic);
-                StorageReference launchuserpicref = DB.images_ref.child(launchuserpic);
-                setDBPictureOnImageView(launchuserpicref, R.id.userpic);
+                    //update profile pic of launcher of campaign
+                    launchuserpic = user.getProfile_pic();
+                    Log.d("Tag", "launchuserpic = " + launchuserpic);
+                    StorageReference launchuserpicref = DB.images_ref.child(launchuserpic);
+                    setDBPictureOnImageView(launchuserpicref, R.id.userpic);
 
-                launchusernamestr = user.getName();
-                TextView tv = (TextView) findViewById(R.id.username);
-                tv.setText(launchusernamestr);
-            }
+                    launchusernamestr = user.getName();
+                    TextView tv = (TextView) findViewById(R.id.username);
+                    tv.setText(launchusernamestr);
+                }
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
 
-            }
-        };
+                }
+            };
 
-        charitieslistener = new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                Charity charity = charityDBinteractor.read(charityname, dataSnapshot);
+            charitieslistener = new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    Charity charity = charityDBinteractor.read(charityname, dataSnapshot);
 
-                charitypic = charity.getLogo();
-                Log.d("Tag", "charitypic = " + charitypic);
-                StorageReference logoRef = DB.images_ref.child(charitypic);
-                setDBPictureOnImageView(logoRef, R.id.charitypic);
-            }
+                    charitypic = charity.getLogo();
+                    Log.d("Tag", "charitypic = " + charitypic);
+                    StorageReference logoRef = DB.images_ref.child(charitypic);
+                    setDBPictureOnImageView(logoRef, R.id.charitypic);
+                }
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
 
-            }
-        };
+                }
+            };
+        }
     }
 
     /**
      * Updates an ImageView object with file in Firebase database at storageReference
+     *
      * @param storageReference
      * @param imageViewID
      */
-    public void setDBPictureOnImageView(StorageReference storageReference, final int imageViewID){
+    public void setDBPictureOnImageView(StorageReference storageReference, final int imageViewID) {
         final File localFile;
         try {
             localFile = File.createTempFile("images", "png");
@@ -548,7 +556,7 @@ public class MapPage extends FragmentActivity implements OnMapReadyCallback,
         DB.root_ref.removeEventListener(campaignslistener);
 
         //remove old circles
-        while(listCircles.size()!=0) {
+        while (listCircles.size() != 0) {
             //remove circle from map
             listCircles.get(0).remove();
             //remove circle from list
@@ -567,7 +575,7 @@ public class MapPage extends FragmentActivity implements OnMapReadyCallback,
         map.setPadding(0, 0, 0, buttonpanelheight + infowindowheight);
 
         //animate infowindow appearing
-        if( !infowindowvisible ) {
+        if (!infowindowvisible) {
             ObjectAnimator infowindowanimator = ObjectAnimator.ofFloat(infowindow, View.Y, buttonpaneltop, infowindowtop);
             infowindowanimator.setDuration(slideduration);
             infowindowanimator.start();
@@ -618,15 +626,15 @@ public class MapPage extends FragmentActivity implements OnMapReadyCallback,
         client.disconnect();
     }
 
-    private void zoomFitCircles(){
+    private void zoomFitCircles() {
 
         //if no circles, do nothing
-        if(listCircles.size() == 0)
+        if (listCircles.size() == 0)
             return;
 
         //create bounds object by supplying coordinates we need to include
         LatLngBounds.Builder builder = new LatLngBounds.Builder();
-        for(Circle c : listCircles){
+        for (Circle c : listCircles) {
             builder.include(c.getCenter());
         }
 
@@ -635,9 +643,9 @@ public class MapPage extends FragmentActivity implements OnMapReadyCallback,
         int radiusinmeters = getResources().getInteger(R.integer.floatradius);
         double radiusindegrees = ActivityUtility.metrestodegrees(radiusinmeters);
         double degoffsetnorth = radiusindegrees;
-        double degoffseteast = radiusindegrees/
+        double degoffseteast = radiusindegrees /
                 Math.cos(ActivityUtility.degreestoradians(bounds.northeast.latitude));
-        double degoffsetwest = radiusindegrees/
+        double degoffsetwest = radiusindegrees /
                 Math.cos(ActivityUtility.degreestoradians(bounds.southwest.latitude));
 
         LatLng northeast = new LatLng(bounds.northeast.latitude + degoffsetnorth,
@@ -649,7 +657,21 @@ public class MapPage extends FragmentActivity implements OnMapReadyCallback,
         bounds = bounds.including(southwest);
         //provide bounds object and padding
         CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds,
-                (int)getResources().getDimension(R.dimen.activity_horizontal_margin));
+                (int) getResources().getDimension(R.dimen.activity_horizontal_margin));
         map.animateCamera(cu);
     }
+
+    private boolean locationOn() {
+        int off = 0;
+        try {
+            off = Settings.Secure.getInt(getContentResolver(), Settings.Secure.LOCATION_MODE);
+        } catch (Settings.SettingNotFoundException e) {
+            e.printStackTrace();
+        }
+        if (off == 0)
+            return false;
+        else
+            return true;
+    }
+
 }

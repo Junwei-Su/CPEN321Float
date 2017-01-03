@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.provider.Settings;
 import android.text.Html;
 import android.text.format.DateUtils;
 import android.view.View;
@@ -104,8 +105,8 @@ public class CampDetails extends Activity {
                     floated = true;
                 else
                     floated = false;
-                setButtonStatus();
-                setDistanceRemaining();
+                setButtonStatus(locationOn());
+                setDistanceRemaining(locationOn());
 
                 //update campaign image
                 StorageReference imageref = DB.images_ref.child(campaign.getCampaign_pic());
@@ -149,7 +150,7 @@ public class CampDetails extends Activity {
             @Override
             public void onClick(View v) {
                 checkIfFloated();
-                if (in_range && mInitialTime > 0 && !floated) {
+                if (in_range && mInitialTime > 0 && !floated && locationOn()) {
                     Intent intent = new Intent(v.getContext(), CampSpreaded.class)
                             .putExtra("Title", campaign.getCampaign_name())
                             .putExtra("UserId", Profile.getCurrentProfile().getId());
@@ -217,35 +218,41 @@ public class CampDetails extends Activity {
         });
     }
 
-    private void setButtonStatus(){
-        GetGPSLocation currentLoc = new GetGPSLocation(CampDetails.this, CampDetails.this);
-        if (currentLoc.canGetLocation()) {
-            currentLocation = new LatLng(currentLoc.getLatitude(), currentLoc.getLongitude());
-            in_range = canSpread();
-            Button b = (Button) findViewById(R.id.float_button);
-            if (!floated) {
-                if (mInitialTime > 0) {
-                    if (in_range)
-                        b.setText("FLOAT");
-                    else {
-                        b.setText("NOT IN RANGE");
+    private void setButtonStatus(boolean GPSon){
+        Button b = (Button) findViewById(R.id.float_button);
+        if (GPSon) {
+            GetGPSLocation currentLoc = new GetGPSLocation(CampDetails.this, CampDetails.this);
+            if (currentLoc.canGetLocation()) {
+                currentLocation = new LatLng(currentLoc.getLatitude(), currentLoc.getLongitude());
+                in_range = canSpread();
+                if (!floated) {
+                    if (mInitialTime > 0) {
+                        if (in_range)
+                            b.setText("FLOAT");
+                        else {
+                            b.setText("NOT IN RANGE");
+                            b.setBackgroundColor(Color.WHITE);
+                            b.setTextColor(Color.BLACK);
+                        }
+                    } else {
+                        b.setText("OUT OF TIME");
                         b.setBackgroundColor(Color.WHITE);
                         b.setTextColor(Color.BLACK);
                     }
                 } else {
-                    b.setText("OUT OF TIME");
+                    b.setText("FLOATED");
                     b.setBackgroundColor(Color.WHITE);
                     b.setTextColor(Color.BLACK);
                 }
-            }
-            else{
-                b.setText("FLOATED");
-                b.setBackgroundColor(Color.WHITE);
-                b.setTextColor(Color.BLACK);
-            }
 
-        } else {
-            currentLoc.showSettingsAlert();
+            } else {
+                currentLoc.showSettingsAlert();
+            }
+        }
+        else{
+            b.setText("GPS DISABLED");
+            b.setBackgroundColor(Color.WHITE);
+            b.setTextColor(Color.BLACK);
         }
     }
 
@@ -297,12 +304,17 @@ public class CampDetails extends Activity {
         }.start();
     }
 
-    private void setDistanceRemaining(){
-        LatLng goal = campaign.getDest_location();
-        double distance = Algorithms.calculateDistance(goal, currentLocation);
-        BigDecimal dist = new BigDecimal(distance).setScale(2, RoundingMode.HALF_EVEN);
+    private void setDistanceRemaining(boolean GPSon){
         TextView d_text = (TextView) findViewById(R.id.dist_remaining);
-        d_text.setText(dist.toString().concat(" km"));
+
+        if (GPSon) {
+            LatLng goal = campaign.getDest_location();
+            double distance = Algorithms.calculateDistance(goal, currentLocation);
+            BigDecimal dist = new BigDecimal(distance).setScale(2, RoundingMode.HALF_EVEN);
+            d_text.setText(dist.toString().concat(" km"));
+        }
+        else
+            d_text.setText("GPS disabled");
 
         String pledge_amount = String.valueOf(campaign.getGoal_amount());
         TextView p_text = (TextView) findViewById(R.id.pledge_camp);
@@ -336,6 +348,19 @@ public class CampDetails extends Activity {
             }
         }
         return false;
+    }
+
+    private boolean locationOn(){
+        int off = 0;
+        try {
+            off = Settings.Secure.getInt(getContentResolver(), Settings.Secure.LOCATION_MODE);
+        } catch (Settings.SettingNotFoundException e) {
+            e.printStackTrace();
+        }
+        if(off == 0)
+            return false;
+        else
+            return true;
     }
 
 }
