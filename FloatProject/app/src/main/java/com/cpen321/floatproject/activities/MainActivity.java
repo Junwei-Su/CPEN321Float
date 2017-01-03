@@ -1,20 +1,16 @@
 package com.cpen321.floatproject.activities;
 
 import android.content.Intent;
-import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
-import android.util.Log;
+import android.provider.Settings;
+import android.support.v4.app.FragmentActivity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.cpen321.floatproject.R;
-import com.cpen321.floatproject.database.DB;
 import com.facebook.Profile;
 import com.facebook.ProfileTracker;
-
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Locale;
 
 public class MainActivity extends FragmentActivity {
     Button mapButton;
@@ -57,14 +53,31 @@ public class MainActivity extends FragmentActivity {
 
     //starts MapPage activity
     public void startMapActivity(View view){
-        Intent intent = new Intent(this, MapPage.class);
-        startActivity(intent);
-
+        int location = locationOn();
+        if (location == 0){
+            TextView t = (TextView) findViewById(R.id.locationOn);
+            t.setText("Please turn on location services before proceeding");
+        }
+        else {
+            Intent intent = new Intent(this, MapPage.class);
+            startActivity(intent);
+        }
     }
 
     public void toCreateUser(View view) {
         Intent intent = new Intent(this, CreateUser.class);
         startActivity(intent);
     }
+
+    private int locationOn(){
+        int off = 0;
+        try {
+            off = Settings.Secure.getInt(getContentResolver(), Settings.Secure.LOCATION_MODE);
+        } catch (Settings.SettingNotFoundException e) {
+            e.printStackTrace();
+        }
+        return off;
+    }
+
 
 }

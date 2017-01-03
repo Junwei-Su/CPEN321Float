@@ -22,6 +22,7 @@ public class CatchEmptyFields extends AppCompatActivity {
         String m2 = extras.getString("Message2");
         String m3 = extras.getString("Message3");
         String m4 = extras.getString("Message4");
+        String m5 = extras.getString("Message5");
 
         TextView a = (TextView) findViewById(R.id.a);
         a.setText(m0);
@@ -33,6 +34,8 @@ public class CatchEmptyFields extends AppCompatActivity {
         d.setText(m3);
         TextView e = (TextView) findViewById(R.id.e);
         e.setText(m4);
+        TextView f = (TextView) findViewById(R.id.f);
+        f.setText(m5);
 
         Button try_again = (Button) findViewById(R.id.try_again);
         try_again.setOnClickListener(new View.OnClickListener() {

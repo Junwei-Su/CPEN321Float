@@ -27,6 +27,15 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true" />
 
+    <TextView
+        android:id="@+id/locationOn"
+        android:layout_above="@+id/mapButton"
+        android:paddingBottom = "70dp"
+        android:layout_centerHorizontal="true"
+        android:layout_width="wrap_content"
+        android:textColor = "#FFFFFF"
+        android:layout_height="wrap_content" />
+
     <Button
         android:id="@+id/mapButton"
         android:layout_width="wrap_content"

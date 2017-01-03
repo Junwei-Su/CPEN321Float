@@ -107,16 +107,15 @@ public class CreateCampaign extends AppCompatActivity {
             }
         });
 
-        gps = new GetGPSLocation(CreateCampaign.this, CreateCampaign.this);
+        launchGPS();
 
-        if (gps.canGetLocation()) {
-            double latitude = gps.getLatitude();
-            double longitude = gps.getLongitude();
-            launchLat.setText(Double.toString(latitude));
-            launchLong.setText(Double.toString(longitude));
-        } else {
-            gps.showSettingsAlert();
-        }
+        Button getCoords = (Button) findViewById(R.id.getCoords);
+        getCoords.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                launchGPS();
+            }
+        });
     }
 
     @Override
@@ -213,7 +212,7 @@ public class CreateCampaign extends AppCompatActivity {
                 DB.usersDBinteractor.update(user, DB.user_ref);
 
                 Date currentDate = new Date();
-                int INITIAL_ACCU = 0 ;
+                int INITIAL_ACCU = 0;
                 String dateString = Algorithms.date_to_string(currentDate);
 
                 Campaign myCampaign = new DestinationCampaign(title, INITIAL_ACCU, charity, description,
@@ -238,7 +237,7 @@ public class CreateCampaign extends AppCompatActivity {
     }
 
     private void check() {
-        messages = new String[5];
+        messages = new String[6];
         index = 0;
 
         EditText myText = (EditText) findViewById(R.id.titlein);
@@ -266,6 +265,13 @@ public class CreateCampaign extends AppCompatActivity {
             messages[index++] = "- Enter a pledge amount";
         }
 
+        TextView myTextView1 = (TextView) findViewById(R.id.initlocatlatitude);
+        TextView myTextView2 = (TextView) findViewById(R.id.initlocatlongitude);
+        if(myTextView1 == null || myTextView1.getText().equals("") ||
+                myTextView2 == null || myTextView2.getText().equals("")){
+            messages[index++] = "- Get your current location";
+        }
+
         Geocoder geocoder = new Geocoder(getApplicationContext());
         try {
             TextView address = (EditText) findViewById(R.id.destination);
@@ -289,7 +295,8 @@ public class CreateCampaign extends AppCompatActivity {
                     .putExtra("Message1", messages[1])
                     .putExtra("Message2", messages[2])
                     .putExtra("Message3", messages[3])
-                    .putExtra("Message4", messages[4]);
+                    .putExtra("Message4", messages[4])
+                    .putExtra("Message5", messages[5]);
             startActivityForResult(intent, 1001);
         } else {
             EditText mT = (EditText) findViewById(R.id.pledgein);
@@ -326,5 +333,18 @@ public class CreateCampaign extends AppCompatActivity {
 
     private boolean isEmpty(EditText myeditText) {
         return myeditText.getText().toString().trim().length() == 0;
+    }
+
+    private void launchGPS(){
+        gps = new GetGPSLocation(CreateCampaign.this, CreateCampaign.this);
+
+        if (gps.canGetLocation()) {
+            double latitude = gps.getLatitude();
+            double longitude = gps.getLongitude();
+            launchLat.setText(Double.toString(latitude));
+            launchLong.setText(Double.toString(longitude));
+        } else {
+            gps.showSettingsAlert();
+        }
     }
 }
