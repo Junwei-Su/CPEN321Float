@@ -58,12 +58,12 @@ public class UsersDBInteractor implements Readable, Writable {
                 amount_raised, amount_donated, address,
                 list_camp_init, list_camp_join, profile_pic);
 
-        if (userSnap.child("metadata_id") != null) {
+        if (userSnap.hasChild("metadata_id")) {
             String metadata_id = (String) userSnap.child("metadata_id").getValue();
             to_return.setMetadataid(metadata_id);
         }
 
-        if (userSnap.child("refresh_token") != null) {
+        if (userSnap.hasChild("refresh_token")) {
             String refresh_token = (String) userSnap.child("refresh_token").getValue();
             to_return.setRefreshToken(refresh_token);
         }

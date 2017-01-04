@@ -204,7 +204,7 @@ public class CreateCampaign extends AppCompatActivity {
         });
 
 
-        DB.user_ref.addValueEventListener(new ValueEventListener() {
+        DB.user_ref.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 User user = DB.usersDBinteractor.read(userid, dataSnapshot);
