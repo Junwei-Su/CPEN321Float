@@ -88,9 +88,12 @@ public class MapPage extends FragmentActivity implements OnMapReadyCallback,
     //views
     RelativeLayout infowindow;
 
+
+
     //height, in pixels, of buttonpanel and infowindow
     private int buttonpanelheight;
     private int infowindowheight;
+    private int padding = 0;
 
     //top of views
     private int buttonpaneltop;
@@ -98,6 +101,7 @@ public class MapPage extends FragmentActivity implements OnMapReadyCallback,
 
     //animation durations
     private long slideduration = 300;
+
 
     //infowindow visibility flag
     private boolean infowindowvisible = false;
@@ -141,7 +145,7 @@ public class MapPage extends FragmentActivity implements OnMapReadyCallback,
             buttonpanelready = true;
 
         if (mapready && buttonpanelready)
-            map.setPadding(0, 0, 0, buttonpanelheight);
+            map.setPadding(padding, padding, padding, buttonpanelheight);
     }
 
     @Override
@@ -242,7 +246,7 @@ public class MapPage extends FragmentActivity implements OnMapReadyCallback,
                 public void onClick(View v) {
 
                     //update map margins after window is gone
-                    map.setPadding(0, 0, 0, buttonpanelheight);
+                    map.setPadding(padding, padding, padding, buttonpanelheight);
 
                     //move camera to fit campaign circles in screen
                     zoomFitCircles();
@@ -293,7 +297,7 @@ public class MapPage extends FragmentActivity implements OnMapReadyCallback,
                     intent.putExtra("key", campaignname);
                     startActivity(intent);
 
-                    map.setPadding(0, 0, 0, buttonpanelheight);
+                    map.setPadding(padding, padding, padding, buttonpanelheight);
                     zoomFitCircles();
                     ObjectAnimator infowindowanimator = ObjectAnimator.ofFloat(infowindow, View.Y, infowindowtop, buttonpaneltop);
                     infowindowanimator.setDuration(0);
@@ -572,7 +576,7 @@ public class MapPage extends FragmentActivity implements OnMapReadyCallback,
         campaignref.addListenerForSingleValueEvent(listlocationslistener);
 
         //update map padding to bring Google logo up
-        map.setPadding(0, 0, 0, buttonpanelheight + infowindowheight);
+        map.setPadding(padding, padding, padding, buttonpanelheight + infowindowheight);
 
         //animate infowindow appearing
         if (!infowindowvisible) {
