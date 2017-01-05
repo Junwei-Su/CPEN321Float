@@ -167,7 +167,10 @@ public class MapPage extends FragmentActivity implements OnMapReadyCallback,
             //get current location with gps, prompts if gps off
             currentLocation = new GetGPSLocation(MapPage.this, MapPage.this);
             if (currentLocation.canGetLocation()) {
+
                 userlocation = new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude());
+
+                Log.d("Tag", "My location is: " + userlocation);
             } else {
                 currentLocation.showSettingsAlert();
             }

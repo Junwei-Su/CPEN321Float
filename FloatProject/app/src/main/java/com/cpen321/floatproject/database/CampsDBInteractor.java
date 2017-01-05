@@ -86,6 +86,14 @@ public class CampsDBInteractor implements Readable, Writable {
     public void update(Object o, DatabaseReference databaseReference) {
         DestinationCampaign campaign_update = (DestinationCampaign) o;
         DatabaseReference camp_update_ref = DB.camp_ref.child(campaign_update.getCampaign_name());
+
+        //DEBUG
+        //List<LatLng> listLoc = campaign_update.getList_locations();
+        //for(LatLng loc: listLoc){
+        //    Log.d("Tag", "debug loc" + loc.toString());
+        //}
+
+
         //update infomation
         camp_update_ref.child("accumulated_donation").setValue(campaign_update.getAccumulated_donation());
         camp_update_ref.child("charity").setValue(campaign_update.getCharity());

@@ -3,6 +3,7 @@ package com.cpen321.floatproject.activities;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
@@ -16,6 +17,8 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
+
+import java.util.List;
 
 /**
  * Created by Little_town on 12/29/2016.
@@ -53,13 +56,23 @@ public class CampSpreaded extends Activity {
 
         currentLocation = new LatLng(currentLoc.getLatitude(),currentLoc.getLongitude());
 
+
         //read camp and add loc to camp list of loc
         final String theCampaign = intent.getStringExtra("Title");
         DB.camp_ref.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 DestinationCampaign campaign = DB.campDBinteractor.read(theCampaign,dataSnapshot);
+                //Log.d("Tag", "My spreadlocation is: " + currentLocation);
+
+
                 campaign.add_location(currentLocation);
+
+               /* List<LatLng> listLoc = campaign.getList_locations();
+                for(LatLng loc: listLoc){
+                    Log.d("Tag", "debug loc" + loc.toString());
+                }
+                */
                 DB.campDBinteractor.update(campaign,DB.root_ref);
                 title = campaign.getCampaign_name();
                 check(campaign.returnStatus());
