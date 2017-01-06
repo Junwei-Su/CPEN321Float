@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/background"
-    tools:context=".activities.MapPage">
+    tools:context=".activities.Log_in_and_map.MapPage">
 
     <fragment xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/map"
@@ -253,7 +253,7 @@
 
     <fragment
         android:id="@+id/userdeets_map"
-        android:name="com.cpen321.floatproject.activities.UserDetailsFragment"
+        android:name="com.cpen321.floatproject.activities.UserActivities.UserDetailsFragment"
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:layout_alignParentRight="true"

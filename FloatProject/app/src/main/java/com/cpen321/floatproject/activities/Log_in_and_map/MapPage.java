@@ -1,4 +1,4 @@
-package com.cpen321.floatproject.activities;
+package com.cpen321.floatproject.activities.Log_in_and_map;
 
 import android.animation.ObjectAnimator;
 import android.content.Intent;
@@ -21,8 +21,10 @@ import android.widget.TextView;
 
 import com.cpen321.floatproject.GPS.GetGPSLocation;
 import com.cpen321.floatproject.R;
+import com.cpen321.floatproject.activities.CampActivities.CampDetails;
+import com.cpen321.floatproject.activities.CampActivities.CampListView;
+import com.cpen321.floatproject.activities.CampActivities.CreateCampaign;
 import com.cpen321.floatproject.campaigns.Campaign;
-import com.cpen321.floatproject.campaigns.DestinationCampaign;
 import com.cpen321.floatproject.charities.Charity;
 import com.cpen321.floatproject.database.CampsDBInteractor;
 import com.cpen321.floatproject.database.CharityDBinteractor;

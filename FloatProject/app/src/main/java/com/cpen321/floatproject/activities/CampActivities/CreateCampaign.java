@@ -1,14 +1,12 @@
-package com.cpen321.floatproject.activities;
+package com.cpen321.floatproject.activities.CampActivities;
 
 import android.content.Intent;
 import android.location.Address;
 import android.location.Geocoder;
 import android.net.Uri;
-import android.nfc.Tag;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -20,6 +18,9 @@ import android.widget.Toast;
 
 import com.cpen321.floatproject.GPS.GetGPSLocation;
 import com.cpen321.floatproject.R;
+import com.cpen321.floatproject.activities.CatchEmptyFields;
+import com.cpen321.floatproject.activities.PaypalActivities.FuturePaymentAgreement;
+import com.cpen321.floatproject.activities.Log_in_and_map.MapPage;
 import com.cpen321.floatproject.campaigns.Campaign;
 import com.cpen321.floatproject.campaigns.DestinationCampaign;
 import com.cpen321.floatproject.database.DB;

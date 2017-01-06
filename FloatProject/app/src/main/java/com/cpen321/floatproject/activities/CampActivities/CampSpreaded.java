@@ -1,14 +1,15 @@
-package com.cpen321.floatproject.activities;
+package com.cpen321.floatproject.activities.CampActivities;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
 import com.cpen321.floatproject.GPS.GetGPSLocation;
 import com.cpen321.floatproject.R;
+import com.cpen321.floatproject.activities.PaypalActivities.ExecuteFuturePayment;
+import com.cpen321.floatproject.activities.Log_in_and_map.MapPage;
 import com.cpen321.floatproject.campaigns.DestinationCampaign;
 import com.cpen321.floatproject.database.DB;
 import com.cpen321.floatproject.users.User;
@@ -17,8 +18,6 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
-
-import java.util.List;
 
 /**
  * Created by Little_town on 12/29/2016.
@@ -63,16 +62,9 @@ public class CampSpreaded extends Activity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 DestinationCampaign campaign = DB.campDBinteractor.read(theCampaign,dataSnapshot);
-                //Log.d("Tag", "My spreadlocation is: " + currentLocation);
-
 
                 campaign.add_location(currentLocation);
 
-               /* List<LatLng> listLoc = campaign.getList_locations();
-                for(LatLng loc: listLoc){
-                    Log.d("Tag", "debug loc" + loc.toString());
-                }
-                */
                 DB.campDBinteractor.update(campaign,DB.root_ref);
                 title = campaign.getCampaign_name();
                 check(campaign.returnStatus());

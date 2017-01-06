@@ -1,4 +1,4 @@
-package com.cpen321.floatproject.activities;
+package com.cpen321.floatproject.activities.CampActivities;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -8,6 +8,7 @@ import android.widget.ImageButton;
 import android.widget.ListView;
 
 import com.cpen321.floatproject.R;
+import com.cpen321.floatproject.activities.Log_in_and_map.MapPage;
 import com.cpen321.floatproject.campaigns.DestinationCampaign;
 import com.cpen321.floatproject.database.DB;
 import com.google.firebase.database.DataSnapshot;

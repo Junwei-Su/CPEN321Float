@@ -1,4 +1,4 @@
-package com.cpen321.floatproject.activities;
+package com.cpen321.floatproject.activities.UserActivities;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -11,6 +11,9 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.cpen321.floatproject.R;
+import com.cpen321.floatproject.activities.CampActivities.CampListView;
+import com.cpen321.floatproject.activities.CampActivities.CreateCampaign;
+import com.cpen321.floatproject.activities.Log_in_and_map.MapPage;
 import com.cpen321.floatproject.database.DB;
 import com.cpen321.floatproject.users.User;
 import com.cpen321.floatproject.utilities.ActivityUtility;

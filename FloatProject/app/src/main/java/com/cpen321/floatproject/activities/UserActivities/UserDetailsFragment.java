@@ -1,4 +1,4 @@
-package com.cpen321.floatproject.activities;
+package com.cpen321.floatproject.activities.UserActivities;
 
 import android.app.Fragment;
 import android.content.Intent;

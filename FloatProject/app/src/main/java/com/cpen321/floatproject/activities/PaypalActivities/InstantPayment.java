@@ -1,4 +1,4 @@
-package com.cpen321.floatproject.activities;
+package com.cpen321.floatproject.activities.PaypalActivities;
 
 import android.app.Activity;
 import android.content.Intent;

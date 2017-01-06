@@ -1,19 +1,18 @@
-package com.cpen321.floatproject.activities;
+package com.cpen321.floatproject.activities.UserActivities;
 
 import android.net.Uri;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.cpen321.floatproject.R;
+import com.cpen321.floatproject.activities.Log_in_and_map.MapPage;
 import com.cpen321.floatproject.database.DB;
-import com.cpen321.floatproject.database.UsersDBInteractor;
 import com.cpen321.floatproject.users.User;
 import com.facebook.Profile;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -21,12 +20,9 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.Locale;
 
 /**

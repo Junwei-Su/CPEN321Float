@@ -1,14 +1,10 @@
-package com.cpen321.floatproject.activities;
+package com.cpen321.floatproject.activities.CampActivities;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Paint;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -17,7 +13,6 @@ import android.widget.TextView;
 import com.cpen321.floatproject.R;
 import com.cpen321.floatproject.campaigns.DestinationCampaign;
 import com.cpen321.floatproject.database.DB;
-import com.cpen321.floatproject.database.UsersDBInteractor;
 import com.cpen321.floatproject.utilities.ActivityUtility;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -25,9 +20,6 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
-import java.util.List;
-
-import android.support.v7.app.AppCompatActivity;
 
 /**
  * Created by Little_town on 12/26/2016.

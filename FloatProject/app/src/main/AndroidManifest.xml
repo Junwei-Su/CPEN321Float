@@ -25,7 +25,7 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
 
-        <activity android:name=".activities.MainActivity">
+        <activity android:name=".activities.Log_in_and_map.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -37,11 +37,11 @@
             android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
             android:label="@string/app_name"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
-        <activity android:name=".activities.MapPage" />
-        <activity android:name=".activities.CreateCampaign" />
-        <activity android:name=".activities.CampDetails" />
-        <activity android:name=".activities.CampListView" />
-        <activity android:name=".activities.CampSpreaded" />
+        <activity android:name=".activities.Log_in_and_map.MapPage" />
+        <activity android:name=".activities.CampActivities.CreateCampaign" />
+        <activity android:name=".activities.CampActivities.CampDetails" />
+        <activity android:name=".activities.CampActivities.CampListView" />
+        <activity android:name=".activities.CampActivities.CampSpreaded" />
         <!--
  ATTENTION: This was auto-generated to add Google Play services to your project for
      App Indexing.  See https://g.co/AppIndexing/AndroidStudio for more information.
@@ -50,15 +50,15 @@
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
 
-        <activity android:name=".activities.InstantPayment" />
+        <activity android:name=".activities.PaypalActivities.InstantPayment" />
         <activity
-            android:name=".activities.InstantPaymentStatus"
+            android:name=".activities.PaypalActivities.InstantPaymentStatus"
             android:label="@string/title_activity_payment_status"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".activities.FuturePaymentAgreement" />
-        <activity android:name=".activities.UserDetails" />
-        <activity android:name=".activities.CreateUser" />
-        <activity android:name=".activities.ExecuteFuturePayment" />
+        <activity android:name=".activities.PaypalActivities.FuturePaymentAgreement" />
+        <activity android:name=".activities.UserActivities.UserDetails" />
+        <activity android:name=".activities.UserActivities.CreateUser" />
+        <activity android:name=".activities.PaypalActivities.ExecuteFuturePayment" />
         <activity android:name=".activities.CatchEmptyFields"></activity>
     </application>
 
