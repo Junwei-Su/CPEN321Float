@@ -37,7 +37,7 @@ public class AlgorithmTest {
         LatLng loc1 = new LatLng(-100,23);
         LatLng loc2 = new LatLng(102.3, -200);
         double expectedResult = 20015;
-        double errorMargin = 0.5;
+        double errorMargin = 0.01;
 
         double distance  = Algorithms.calculateDistance(loc1, loc2);
         if(Math.abs(distance-expectedResult)/distance <= errorMargin){
@@ -52,7 +52,7 @@ public class AlgorithmTest {
         LatLng loc1 = new LatLng(10.92018392,20.2837128);
         LatLng loc2 = new LatLng(30.0000,50.111333);
         double expectedResult = 3742;
-        double errorMargin = 0.5;
+        double errorMargin = 0.01;
         double distance  = Algorithms.calculateDistance(loc1, loc2);
         if(Math.abs(distance-expectedResult)/distance <= errorMargin){
             Assert.assertTrue(true);

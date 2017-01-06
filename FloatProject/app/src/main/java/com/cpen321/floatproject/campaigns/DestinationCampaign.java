@@ -19,7 +19,7 @@ public class  DestinationCampaign extends Campaign {
     private String destination;
     private LatLng dest_location;
     private long total_time = DateUtils.DAY_IN_MILLIS *4;
-    private final double RADIUS = 0.5; //in kilometer
+    private final double RADIUS = 0.1; //in kilometer
 
 
     //without existing location list
@@ -85,14 +85,16 @@ public class  DestinationCampaign extends Campaign {
         long total_time = this.getTotal_time();
         long starting_time =  this.getTime_length();
         long difference = System.currentTimeMillis() - starting_time;
-        if(difference >= total_time ){
-            return expire;
-        }
 
         for(LatLng loc : this.getList_locations()){
             if(Algorithms.calculateDistance(loc, this.getDest_location())<=this.RADIUS){
                 return successful;
             }
+        }
+
+
+        if(difference >= total_time ){
+            return expire;
         }
 
         return in_progress;
