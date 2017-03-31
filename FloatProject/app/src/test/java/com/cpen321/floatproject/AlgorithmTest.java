@@ -15,7 +15,8 @@ import java.util.Date;
 
 public class AlgorithmTest {
 
-
+    
+    /* Tests the CalculateDistance algorithm. */
     @Test
     public void testCalculateDistance1(){
         LatLng loc1 = new LatLng(0,0);
@@ -62,6 +63,7 @@ public class AlgorithmTest {
         }
     }
 
+    /* Tests StringToDate */
     @Test
     public void testStringToDate1() {
         String str = "1999-10-01";
@@ -114,6 +116,7 @@ public class AlgorithmTest {
     }
 
 
+    /* Test DataToString */
     @Test
     public void testDateToString1(){
         Date dt = new Date(99,9,1);
