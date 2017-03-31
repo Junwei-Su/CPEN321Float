@@ -25,6 +25,9 @@ import org.json.JSONException;
 
 import java.math.BigDecimal;
 
+/**
+ * Creates an instant payment, charging the user
+ */
 public class InstantPayment extends AppCompatActivity {
 
     //set environment as the testing sandbox (can also be set to do actual transactions)
@@ -48,6 +51,7 @@ public class InstantPayment extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.instant_payment);
 
+        //retrieve the campaign title, the current user and the user that started the campaign
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             title = extras.getString("Title");
@@ -55,14 +59,15 @@ public class InstantPayment extends AppCompatActivity {
             current_user_id = extras.getString("Current User_id");
         }
 
+        //start the paypal service
         Intent paypal_service = new Intent(this, PayPalService.class);
         paypal_service.putExtra(PayPalService.EXTRA_PAYPAL_CONFIGURATION, paypal_configuration);
-        startService(paypal_service); //the PayPal service
+        startService(paypal_service);
     }
 
     public void makeDonation(View view) {
 
-        //get the dollar amount
+        //get the dollar amount that the user inputted
         EditText dollar = (EditText) findViewById(R.id.dollar_donation_input);
         if (isEmpty(dollar))
             payment_amount = "0";
@@ -87,6 +92,8 @@ public class InstantPayment extends AppCompatActivity {
                 if (confirmation != null) {
                     try {
                         if (confirmation.getProofOfPayment().getState().equals("approved")) {
+                            //if the payment is approved, update the campaign's collected donations field
+                            //also update the 'donated' and 'raised' fields for the users in the database
                             DB.root_ref.addListenerForSingleValueEvent(new ValueEventListener() {
                                 @Override
                                 public void onDataChange(DataSnapshot dataSnapshot) {
@@ -95,17 +102,20 @@ public class InstantPayment extends AppCompatActivity {
                                     User campaign_owner = DB.usersDBinteractor.read(campaign_owner_id, dataSnapshot.child("users"));
                                     Campaign campaign = DB.campDBinteractor.read(title, dataSnapshot.child("campaigns"));
 
+                                    //if the current user and campaing owner are the same, we only have to update one user in the database
                                     if (current_user_id.equals(campaign_owner_id)){
                                         current_user.addAmount_donated(Long.valueOf(payment_amount));
                                         current_user.addAmount_raised(Long.valueOf(payment_amount));
                                         DB.usersDBinteractor.update(current_user, DB.user_ref);
                                     }
                                     else {
+                                        //otherwise, update twice. Once for the donating user, and once for the campaign starter
                                         current_user.addAmount_donated(Long.valueOf(payment_amount));
                                         campaign_owner.addAmount_raised(Long.valueOf(payment_amount));
                                         DB.usersDBinteractor.update(current_user, DB.user_ref);
                                         DB.usersDBinteractor.update(campaign_owner, DB.user_ref);
                                     }
+                                    //also record the donation in the campaign
                                     campaign.add_donation(Long.valueOf(payment_amount));
                                     DB.campDBinteractor.update(campaign, DB.camp_ref);
                                 }
@@ -140,6 +150,7 @@ public class InstantPayment extends AppCompatActivity {
         super.onDestroy();
     }
 
+    //function that checks if an edit text field is empty
     private boolean isEmpty(EditText myeditText) {
         return myeditText.getText().toString().trim().length() == 0;
     }

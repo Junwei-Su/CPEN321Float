@@ -35,6 +35,9 @@ import com.paypal.base.rest.PayPalRESTException;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Lets the user agree to being charged a specified amount in the future
+ */
 public class FuturePaymentAgreement extends AppCompatActivity {
 
     private String pledge_amount;
@@ -43,10 +46,12 @@ public class FuturePaymentAgreement extends AppCompatActivity {
 
     //set environment as the testing sandbox (can also be set to do actual transactions)
     private static final String CONFIG_ENVIRONMENT = PayPalConfiguration.ENVIRONMENT_SANDBOX;
+    //ID and Secret associated with the paypal account that payments will be directed to
     private static final String CLIENT_ID =
             "AfwKVfqhDY263y2WMId3yTpSlalnyNCP47ebWaVH0q0d20sXeO8je9-kM2zWHuV2zKXmxIkbf9UMggdF";
     private static final String CLIENT_SECRET =
             "EDoORf_P0yhpdjSDkCuQ1vDcIRQLGEtqXSZi34nA5UxZQ0xHqFuXNxUqDiLX6jYwGUHuewSbOcxBTMNQ";
+    //location of the server/php script
     private static final String GET_REFRESH =
             "http://ec2-54-213-91-175.us-west-2.compute.amazonaws.com/paypal-sdk/refresh.php";
 
@@ -66,8 +71,7 @@ public class FuturePaymentAgreement extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.future_payment_agreement);
 
-        Log.i("test", "test");
-
+        //retrieve the pledge amount, campaign title and current user
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             pledge_amount = String.valueOf(extras.getLong("PledgeAmount"));
@@ -76,15 +80,16 @@ public class FuturePaymentAgreement extends AppCompatActivity {
         }
         showScript();
 
+        //start the paypal service
         Intent paypal_service = new Intent(this, PayPalService.class);
         paypal_service.putExtra(PayPalService.EXTRA_PAYPAL_CONFIGURATION, paypal_configuration);
-        startService(paypal_service); //the PayPal service
+        startService(paypal_service);
 
+        //button that allows the user to return to map page
         Button donate_button = (Button) findViewById(R.id.return_from_consent);
         donate_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //start paypal
                 Intent intent = new Intent(v.getContext(), MapPage.class);
                 startActivity(intent);
             }
@@ -98,6 +103,7 @@ public class FuturePaymentAgreement extends AppCompatActivity {
         Log.d("auth", authorization_code);
         Log.d("metadata", metadata_id);
 
+        //send the auth code, client ID, client secret and metadataID to the server, and receive the refresh token as a response
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         StringRequest putRequest = new StringRequest(Request.Method.POST, GET_REFRESH,
                 new Response.Listener<String>() {
@@ -106,6 +112,7 @@ public class FuturePaymentAgreement extends AppCompatActivity {
                         Log.d("Refresh Token Response", response);
                         final String refresh_token = response;
 
+                        //save the metadata ID and the refresh token to the database for future use
                         DB.root_ref.addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
                             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -129,11 +136,10 @@ public class FuturePaymentAgreement extends AppCompatActivity {
                     }
                 }
         ) {
-            // We send the strings we want to the server in this method
+            //we send the strings we want to the server in this method
             @Override
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<String, String>();
-                //for future payments
                 params.put("authorizationCode", authorization_code);
                 params.put("clientMetadataId", metadata_id);
                 params.put("clientSecret", CLIENT_SECRET);
@@ -158,24 +164,25 @@ public class FuturePaymentAgreement extends AppCompatActivity {
     public void agreePayment(View pressed) {
         Intent intent = new Intent(FuturePaymentAgreement.this, PayPalFuturePaymentActivity.class);
 
-        // send the same configuration for restart resiliency
+        //send the same configuration for restart resiliency
         intent.putExtra(PayPalService.EXTRA_PAYPAL_CONFIGURATION, paypal_configuration);
         startActivityForResult(intent, REQUEST_CODE_FUTURE_PAYMENT);
     }
 
     private void showScript() {
+        //show the amount the user will have to pay on the screen
         TextView text_amount = (TextView) findViewById(R.id.pledge_amount);
         text_amount.setText(pledge_amount + " CAD");
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        // super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == Activity.RESULT_OK) {
             PayPalAuthorization auth = data
                     .getParcelableExtra(PayPalFuturePaymentActivity.EXTRA_RESULT_AUTHORIZATION);
             if (auth != null) {
                 try {
+                    //after the paypal future payment activity, send the authorization code to the server
                     sendAuthorizationToServer(auth);
                     setResult(RESULT_OK);
                 } catch (PayPalRESTException e) {

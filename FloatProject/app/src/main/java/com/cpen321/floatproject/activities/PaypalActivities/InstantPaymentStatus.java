@@ -12,6 +12,9 @@ import com.cpen321.floatproject.R;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+/**
+ * Displays the status of the instant payment made by the user
+ */
 public class InstantPaymentStatus extends AppCompatActivity {
 
     @Override
@@ -19,7 +22,7 @@ public class InstantPaymentStatus extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.instant_payment_status);
 
-        //listener for returning to map page
+        //button and listener for returning to map page
         Button map_button = (Button) findViewById(R.id.return_map);
         map_button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -28,7 +31,7 @@ public class InstantPaymentStatus extends AppCompatActivity {
             }
         });
 
-        //Getting Intent
+        //Getting the Intent, along with the payment details
         Intent intent = getIntent();
         try {
             JSONObject jsonDetails = new JSONObject(intent.getStringExtra("PaymentDetails"));
