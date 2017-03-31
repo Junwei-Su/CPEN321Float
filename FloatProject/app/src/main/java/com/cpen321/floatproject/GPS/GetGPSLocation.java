@@ -45,7 +45,8 @@ public class GetGPSLocation extends Service implements LocationListener {
 
     private final int MY_REQUEST_READ_GPS = 1;
 
-
+	//Constructor to create an object of our class
+	//The constructor calls the get location function
     public GetGPSLocation(Context context, Activity main){
         this.context = context;
         this.main = main;
@@ -68,9 +69,9 @@ public class GetGPSLocation extends Service implements LocationListener {
 
             if (!isGPSEnabled && !isNetworkEnabled) {
                 // no network provider is enabled
-            } else {
+            } else { //Check for the required permissions during running of our application
                 if ((ContextCompat.checkSelfPermission(main, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) && (ContextCompat.checkSelfPermission(main, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED)){
-
+					//If the permissions are not given, request them from user.
                     ActivityCompat.requestPermissions(main,
                             new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
                             MY_REQUEST_READ_GPS);
@@ -88,6 +89,7 @@ public class GetGPSLocation extends Service implements LocationListener {
                             MIN_DISTANCE_CHANGE_FOR_UPDATES, this);
                     Log.d("Network", "Network");
                     if (locationManager != null) {
+                    	//We are retrieving the last known location of the user and returning it
                         location = locationManager
                                 .getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
                         if (location != null) {
@@ -142,6 +144,8 @@ public class GetGPSLocation extends Service implements LocationListener {
         return this.canGetLocation;
     }
 
+
+	//Function that gets called when we can't get the location of the user
     public void showSettingsAlert(){
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(context);
 
@@ -149,6 +153,7 @@ public class GetGPSLocation extends Service implements LocationListener {
 
         alertDialog.setMessage("GPS is not enabled, Do you want to go to settings menu?");
 
+		//On click of the settings button, we enter the settings source to require the permissions
         alertDialog.setPositiveButton("Settings", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -157,6 +162,7 @@ public class GetGPSLocation extends Service implements LocationListener {
             }
         });
 
+		//If cancelled we will not be required to retrieve gps locations
         alertDialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
