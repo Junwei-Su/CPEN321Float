@@ -32,11 +32,13 @@ public class User {
 
     public User(){}
 
+    /* The simplest constructor */
     public User(String name, String account){
         this.name = name;
         this.account_name = account;
     }
 
+    /* The short version constructor */
     public User(String name, String account_name,String date_join, String blurb, boolean is_charity, long amount_gain,
                 long amount_raised, long amount_donated, String address){
 
@@ -49,6 +51,7 @@ public class User {
         this.address = address;
     }
 
+    /* The full constructor cover all the fields */
     public User(String name, String account_name,String date_join, String blurb,
                 long amount_raised, long amount_donated, String address,
                 List<String> list_of_campaign_initialize, List<String> list_of_campaign_followed, String profile_pic){
@@ -65,6 +68,7 @@ public class User {
         this.profile_pic = profile_pic;
     }
 
+    /* Functions to retrieve fields of a user */
     public String getName(){
         return this.name;
     }
