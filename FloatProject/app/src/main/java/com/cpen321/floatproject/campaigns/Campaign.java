@@ -8,6 +8,10 @@ import com.google.android.gms.maps.model.LatLng;
 import java.util.ArrayList;
 import java.util.List;
 
+/*
+ * this class represent the campaign object in the application
+ */
+
 public class Campaign {
 
     //campaign field

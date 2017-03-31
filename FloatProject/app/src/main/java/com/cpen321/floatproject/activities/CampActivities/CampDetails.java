@@ -37,6 +37,10 @@ import java.util.List;
 /**
  * Created by sfarinas on 10/17/2016.
  */
+
+/*
+ * this class represent the campaign detail activity in the application
+ */
 public class CampDetails extends Activity {
 
     private DatabaseReference charityref;

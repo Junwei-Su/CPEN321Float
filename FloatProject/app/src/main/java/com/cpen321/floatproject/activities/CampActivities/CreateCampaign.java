@@ -18,7 +18,7 @@ import android.widget.Toast;
 
 import com.cpen321.floatproject.GPS.GetGPSLocation;
 import com.cpen321.floatproject.R;
-import com.cpen321.floatproject.activities.CatchEmptyFields;
+import com.cpen321.floatproject.utilities.CatchEmptyFields;
 import com.cpen321.floatproject.activities.PaypalActivities.FuturePaymentAgreement;
 import com.cpen321.floatproject.activities.Log_in_and_map.MapPage;
 import com.cpen321.floatproject.campaigns.Campaign;
@@ -43,6 +43,10 @@ import java.util.List;
 
 /**
  * Created by sfarinas on 10/17/2016.
+ */
+
+/*
+ * this class represent the campaign creating activity in the application
  */
 public class CreateCampaign extends AppCompatActivity {
     private String title;

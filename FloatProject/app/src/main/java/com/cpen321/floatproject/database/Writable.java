@@ -8,7 +8,7 @@ import com.google.firebase.database.DatabaseReference;
 
 public interface Writable {
     /*
-    * Update the corresponding object in the database
+     * Update the corresponding object in the database
      */
     public void update(Object o, DatabaseReference databaseReference);
 

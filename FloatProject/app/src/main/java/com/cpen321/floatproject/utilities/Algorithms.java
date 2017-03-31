@@ -13,6 +13,10 @@ import java.util.Locale;
  * Created by clarence on 2016-11-25.
  */
 
+/*
+ * this class represent a container for algorithms used in the application
+ */
+
 public class Algorithms {
 
     /*

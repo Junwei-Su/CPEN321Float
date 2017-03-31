@@ -7,6 +7,11 @@ import com.google.firebase.database.DataSnapshot;
  * Created by Little_town on 12/24/2016.
  */
 
+/*
+ * this class serves a communication layer between the android application and
+ * firebase for the charity object
+ */
+
 public class CharityDBinteractor implements Readable {
     /*
     * Read object from database with ID

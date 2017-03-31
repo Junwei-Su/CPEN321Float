@@ -17,6 +17,9 @@ import java.io.IOException;
  * Created by Little_town on 12/27/2016.
  */
 
+/*
+ * this class serves as a container for some common activity methods shared among the app activities
+ */
 public class ActivityUtility extends Activity {
 
     /**

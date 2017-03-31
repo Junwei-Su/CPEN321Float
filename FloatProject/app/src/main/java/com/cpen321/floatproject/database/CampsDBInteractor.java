@@ -22,6 +22,11 @@ import java.util.Set;
  * Created by clarence on 2016-11-24.
  */
 
+/*
+ * this class serves a communication layer between the android application and
+ * firebase for the campaign object
+ */
+
 public class CampsDBInteractor implements Readable, Writable {
 
     /*

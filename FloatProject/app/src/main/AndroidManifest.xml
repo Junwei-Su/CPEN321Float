@@ -59,7 +59,7 @@
         <activity android:name=".activities.UserActivities.UserDetails" />
         <activity android:name=".activities.UserActivities.CreateUser" />
         <activity android:name=".activities.PaypalActivities.ExecuteFuturePayment" />
-        <activity android:name=".activities.CatchEmptyFields"></activity>
+        <activity android:name=".utilities.CatchEmptyFields"></activity>
     </application>
 
 </manifest>

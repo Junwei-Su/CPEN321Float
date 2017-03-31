@@ -14,6 +14,12 @@ import java.util.Map;
  * Created by Little_town on 12/21/2016.
  */
 
+/*
+ * this class represent a destination campaign object in the application
+ * destination campaign is a children of campaign with success condition
+ * that the campaign is floated to the prescribed location
+ */
+
 public class  DestinationCampaign extends Campaign {
 
     private String destination;

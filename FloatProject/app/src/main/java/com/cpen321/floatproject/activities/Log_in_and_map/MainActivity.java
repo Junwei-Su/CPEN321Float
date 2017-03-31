@@ -18,6 +18,10 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
 
+/*
+ * this class represent the main page activity in the application
+ */
+
 public class MainActivity extends FragmentActivity {
     Button mapButton;
     ProfileTracker mapPageProfileTracker;

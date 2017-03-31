@@ -4,6 +4,10 @@ package com.cpen321.floatproject.charities;
  * Created by Little_town on 12/24/2016.
  */
 
+/*
+ * this class represent a charity object in the application
+ */
+
 public class Charity {
 
     private String name;

@@ -23,6 +23,9 @@ import com.google.firebase.database.ValueEventListener;
  * Created by Little_town on 12/29/2016.
  */
 
+/*
+ * this class represent the campaign spreading activity in the application
+ */
 public class CampSpreaded extends Activity {
 
     GetGPSLocation currentLoc;

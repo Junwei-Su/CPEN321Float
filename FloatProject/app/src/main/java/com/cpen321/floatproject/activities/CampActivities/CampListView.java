@@ -21,6 +21,9 @@ import java.util.ArrayList;
  * Created by Little_town on 12/26/2016.
  */
 
+/*
+ * this class represent the campaign list activity in the application
+ */
 public class CampListView extends Activity {
 
     ArrayList<DestinationCampaign> campaigns;

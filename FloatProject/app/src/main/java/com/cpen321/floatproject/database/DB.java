@@ -11,6 +11,10 @@ import com.google.firebase.storage.StorageReference;
  * Created by Little_town on 12/26/2016.
  */
 
+/*
+ * this class represents a container for the references of database
+ */
+
 public class DB {
     final static public DatabaseReference root_ref = FirebaseDatabase.getInstance().getReference();
     final static public DatabaseReference user_ref = root_ref.child("users");

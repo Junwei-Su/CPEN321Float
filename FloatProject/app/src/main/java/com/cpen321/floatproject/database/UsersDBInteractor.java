@@ -13,6 +13,11 @@ import java.util.Map;
  * Created by Little_town on 12/22/2016.
  */
 
+/*
+ * this class serves a communication layer between the android application and
+ * firebase for the user object
+ */
+
 public class UsersDBInteractor implements Readable, Writable {
     /*
   * Read object from database with ID

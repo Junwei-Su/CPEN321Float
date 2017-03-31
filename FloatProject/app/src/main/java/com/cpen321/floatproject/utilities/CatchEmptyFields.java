@@ -1,4 +1,4 @@
-package com.cpen321.floatproject.activities;
+package com.cpen321.floatproject.utilities;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;

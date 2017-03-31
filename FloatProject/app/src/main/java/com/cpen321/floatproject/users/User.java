@@ -9,6 +9,10 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+/*
+ * this class represent a user object in the application
+ */
+
 public class User {
 
     //field in database
@@ -35,7 +39,7 @@ public class User {
 
     public User(String name, String account_name,String date_join, String blurb, boolean is_charity, long amount_gain,
                 long amount_raised, long amount_donated, String address){
-        Log.d("Tag", "Medium constructor used.");
+
         this.name = name;
         this.account_name = account_name;
         this.date_join = date_join;

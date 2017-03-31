@@ -67,6 +67,10 @@ import java.util.List;
 /**
  * Created by sfarinas on 10/17/2016.
  */
+
+/*
+ * this class represent the map page activity in the application
+ */
 public class MapPage extends FragmentActivity implements OnMapReadyCallback,
         GoogleMap.OnMarkerClickListener {
 
