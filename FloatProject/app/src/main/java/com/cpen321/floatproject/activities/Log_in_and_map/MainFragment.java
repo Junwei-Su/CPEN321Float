@@ -29,8 +29,6 @@ import com.google.firebase.database.ValueEventListener;
  */
 public class MainFragment extends Fragment {
 
-    private TextView mTextDetails;
-
     private ValueEventListener userslistener;
 
     private CallbackManager mCallbackManager;

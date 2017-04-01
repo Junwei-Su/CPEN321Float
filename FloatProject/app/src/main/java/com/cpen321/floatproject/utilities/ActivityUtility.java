@@ -77,12 +77,23 @@ public class ActivityUtility extends Activity {
         }
     }
 
+    /**
+     * Converts given angle in degrees to radians.
+     * @param degrees angle to be converted into radians.
+     * @return given angle converted from degrees into radians.
+     */
     public static double degreestoradians(double degrees){
         double radiansperdegree = Math.PI/180.0;
 
         return degrees*radiansperdegree;
     }
 
+    /**
+     * Converts given distance on earth in metres to geographical degrees.
+     * Note that this is an approximation.
+     * @param metres distance to be converted into degrees.
+     * @return given distance in degrees.
+     */
     public static double metrestodegrees(int metres){
         double metresperdegree = 111111.0;
 

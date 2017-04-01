@@ -13,8 +13,7 @@ public interface Writable {
     public void update(Object o, DatabaseReference databaseReference);
 
     /*
-    * Put the corresponding object into the database
+     * Put the corresponding object into the database
      */
-
     public void put(Object o, DatabaseReference databaseReference);
 }
