@@ -55,9 +55,7 @@ public class CampSpreaded extends Activity {
             currentLoc.showSettingsAlert();
         }
 
-
         currentLocation = new LatLng(currentLoc.getLatitude(),currentLoc.getLongitude());
-
 
         //read camp and add loc to camp list of loc
         final String theCampaign = intent.getStringExtra("Title");

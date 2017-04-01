@@ -156,7 +156,6 @@ public class MapPage extends FragmentActivity implements OnMapReadyCallback,
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        //Log.d("Tag", "onCreate()");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.map);
 

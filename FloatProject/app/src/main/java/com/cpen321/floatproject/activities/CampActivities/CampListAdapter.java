@@ -50,9 +50,8 @@ public class CampListAdapter extends BaseAdapter{
         return position;
     }
 
-
     public View getView(int position, View convertView, ViewGroup parent) {
-        final ViewHolder holder;
+        final ViewHolder holder; //holds references to views
         if (convertView == null) {
             convertView = mInflater.inflate(R.layout.camp_list_layout, null);
             holder = new ViewHolder();

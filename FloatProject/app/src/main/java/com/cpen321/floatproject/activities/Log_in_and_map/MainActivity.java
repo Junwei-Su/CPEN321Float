@@ -43,13 +43,17 @@ public class MainActivity extends FragmentActivity {
         mapPageProfileTracker = new ProfileTracker() {
             @Override
             protected void onCurrentProfileChanged(Profile profile, Profile profile2) {
-                // profile2 is the new mprofile
+                // profile2 is the new profile
                 updateMapButton(profile2);
                 mapPageProfileTracker.stopTracking();
             }
         };
     }
 
+    /**
+     * Makes button visible if logged in, otherwise invisible
+     * @param profile new profile
+     */
     public void updateMapButton(Profile profile){
         if(profile == null){
             //not logged, make map button gone
